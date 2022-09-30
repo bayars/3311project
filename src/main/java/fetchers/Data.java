@@ -36,6 +36,7 @@ public class Data {
 		 * Some do not work so well, so try different ones if you're having trouble
 		 */
 		
+		
 		switch (analysisMode) {
 			case 0: 
 				urlString = String.format("http://api.worldbank.org/v2/country/%s/indicator/SP.POP.TOTL?date=%d:%d&format=json", country, yearStart, yearEnd);
@@ -134,7 +135,7 @@ public class Data {
 	}
 	
 	public static void main(String[] args) {
-		
+		//test push
 		//This will become the options that are chosen from the UI
 		String country = "USA";
 		int startYear = 2000;
