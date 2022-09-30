@@ -270,7 +270,7 @@ public class EXAMPLE extends JFrame {
 		chartPanel.setBackground(Color.white);
 		west.add(chartPanel);
 	}
-
+//test
 	private void createBar(JPanel west) {
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		dataset.setValue(5.6, "Mortality/1000 births", "2018");
