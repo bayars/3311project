@@ -14,63 +14,26 @@ import java.util.Scanner;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 
+import analysis.Analysis;
+
 
 public class Data {
 	
 	
-	/*
-	 * 1. Based on the analysis mode, the method selects the appropriate link.
-	 * 2. Puts the data from the URL into a JsonArray
-	 * 3. For each year (chosen from range in UI), grab the corresponding y-value
-	 * 4. Put the (x, y) Point into the DataSet
-	 * 5. "Return (for now)" the DataSet of Points
-	 * 
-	 */
-	public static DataSet fetchData(String country, int yearStart, int yearEnd, int analysisMode) {
-		
-		String urlString = "";
-		
-		
-		/*
-		 * API: http://api.worldbank.org/v2/source/75/indicators
-		 * Some do not work so well, so try different ones if you're having trouble
-		 */
-		
-		
-		switch (analysisMode) {
-			case 0: 
-				urlString = String.format("http://api.worldbank.org/v2/country/%s/indicator/SP.POP.TOTL?date=%d:%d&format=json", country, yearStart, yearEnd);
-
-				break;
-			case 1:
-				urlString = String.format("http://api.worldbank.org/v2/country/%s/indicator/SH.MED.BEDS.ZS?date=%d:%d&format=json", country, yearStart, yearEnd);
-				break;
-			case 2:
-				//urlString =
-				break;
-			case 3:
-				//urlString =
-				break;
-			case 4:
-				//urlString =
-				break;
-			case 5:
-				//urlString =
-				break;
-			case 6:
-				//urlString =
-				break;
-			case 7:
-				//urlString =
-				break;
-		}
+	private static String makeURL(String country, int yearStart, int yearEnd, String analysisMode) {
+		String url = "http://api.worldbank.org/v2/country/%s/indicator/" + analysisMode + "?date=%d:%d&format=json";
+		String urlFormatted = String.format(url, country, yearStart, yearEnd);
+		return urlFormatted;
+	}
 	
-		
+	
+	public static DataSet fetchData(String country, int yearStart, int yearEnd, String analysisMode) {
+
+		String urlString = makeURL(country, yearStart, yearEnd, analysisMode);
 		DataSet ds = new DataSet();
 
 		
-	//Prof wrote this to form connection:	
-	//----------------------------------------------------------------------------------------
+
 		try {
 			URL url = new URL(urlString);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -84,49 +47,17 @@ public class Data {
 					inline += sc.nextLine();
 				}
 				sc.close();
-				JsonArray jsonArray = new JsonParser().parse(inline).getAsJsonArray();
-	//----------------------------------------------------------------------------------------	
-				switch (analysisMode) {
-				case 0: 
-	
-					for (int x = yearStart, i = 0; x <= yearEnd && i < jsonArray.get(1).getAsJsonArray().size(); x++, i++) {
-						double y = jsonArray.get(1).getAsJsonArray().get(i).getAsJsonObject().get("value").getAsInt();
-						Point p = new Point(x, y);
-						ds.addPoint(p);
-
-					}	
-					break;
-					
-				case 1:
-					
-					for (int x = yearStart, i = 0; x <= yearEnd && i < jsonArray.get(1).getAsJsonArray().size(); x++, i++) {
-						double y = Double.parseDouble(jsonArray.get(1).getAsJsonArray().get(i).getAsJsonObject().get("value").getAsString());
+				JsonArray jsonArray = new JsonParser().parse(inline).getAsJsonArray();	
+				
+				for (int x = yearStart, i = jsonArray.get(1).getAsJsonArray().size() - 1; x <= yearEnd && i >= 0; x++, i--) {
+					if (jsonArray.get(1).getAsJsonArray().get(i).getAsJsonObject().get("value").isJsonNull()) {
+						ds.addPoint(new Point(x,0));
+					}else {
+						double y = jsonArray.get(1).getAsJsonArray().get(i).getAsJsonObject().get("value").getAsDouble();
 						Point p = new Point(x, y);
 						ds.addPoint(p);
 					}
-					break;
-					
-				case 2:
-					//logic to parse data from URL to DataSet (example in case 0 and 1)
-					break;
-				case 3:
-					//logic to parse data from URL to DataSet (example in case 0 and 1)					
-					break;
-				case 4:
-					//logic to parse data from URL to DataSet (example in case 0 and 1)
-					break;
-				case 5:
-					//logic to parse data from URL to DataSet (example in case 0 and 1)
-					break;
-				case 6:
-					//logic to parse data from URL to DataSet (example in case 0 and 1)
-					break;
-				case 7:
-					//logic to parse data from URL to DataSet (example in case 0 and 1)
-					break;
-			}
-				
-							
+				}			
 			}
 
 		} catch (IOException e) {
@@ -135,19 +66,42 @@ public class Data {
 	}
 	
 	public static void main(String[] args) {
-		//test push
-		//This will become the options that are chosen from the UI
-		String country = "USA";
+	
+		String country = "CAN";
 		int startYear = 2000;
-		int endYear = 2005;
+		int endYear = 2021;
 		
-		//test your analysis mode here
-		int analysisMode = 0;
+	
+		String a1 = "SP.POP.TOTL";
+		String a2 = "EN.ATM.CO2E.PC";
+		String a3 ="EN.ATM.PM25.MC.M3";
+		String a4 ="AG.LND.FRST.ZS";
+		String a5 ="NY.GDP.PCAP.CD";
+		String a6 ="SH.MED.BEDS.ZS";
+		String a7 ="SE.XPD.TOTL.GD.ZS";
+		String a8 ="SH.STA.MMRT";
+		String a9 ="SH.XPD.CHEX.PC.CD";
+		String a10 ="SH.XPD.CHEX.GD.ZS";
+		String a11 ="SP.DYN.IMRT.IN";
+		String a12 ="SH.ACS.MONY.Q1.ZS";
 		
-		DataSet ds = Data.fetchData(country, startYear, endYear, analysisMode);
-		System.out.println(ds.getPoints());
-	}
-	
-	
+		
+		DataSet ds = Data.fetchData(country, startYear, endYear, a4);
+		PieDataSet pie = Analysis.average(ds);
+		System.out.println(pie.getSections());
+		
+		
+		//DataSet ds = Data.fetchData(country, startYear, endYear, a2);
+		//DataSet ds2 = Data.fetchData(country, startYear, endYear, a5);
+		
+		
+		//DataSet ratio = Analysis.ratio(ds, ds2);
+		//System.out.println(ratio.getPoints());
+		
+		
+		//DataSet dsLine = Analysis.annualPercentChange(ds);
+		//System.out.println(dsLine.getPoints());
+	}	
 	
 }
+

@@ -5,7 +5,7 @@ import java.util.List;
 
 
 public class DataSet{
-	List<Point> p;
+	public List<Point> p;
 	
 	public DataSet() {
 		this.p = new ArrayList<Point>();
@@ -16,9 +16,11 @@ public class DataSet{
 	}
 	
 	public List<Point> getPoints() {
+		
 		for (int i = 0; i < p.size(); i++) {
 			System.out.println(p.get(i).x + ", " + p.get(i).y);
 		}
+		
 		return this.p;
 	}
 

@@ -258,6 +258,7 @@ public class EXAMPLE extends JFrame {
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		dataset.addValue(3.946, "Unemployed", "Men");
 		dataset.addValue(96.054, "Employed", "Men");
+		
 		dataset.addValue(3.837, "Unemployed", "Women");
 		dataset.addValue(96.163, "Employed", "Women");
 

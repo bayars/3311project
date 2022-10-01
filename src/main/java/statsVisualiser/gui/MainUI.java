@@ -172,17 +172,19 @@ public class MainUI extends JFrame {
 
 	private void createLine(JPanel west) {
 		
-		country = "";
+		country = "CAN";
 		int startYear = 2000;
-		int endYear = 2005;
-		int analysisMode = 0;
-		DataSet ds = Data.fetchData(country, startYear, endYear, analysisMode);
+		int endYear = 2021;
+		DataSet ds = Data.fetchData(country, startYear, endYear, "EN.ATM.CO2E.PC");
 		
 		XYSeries series = new XYSeries("Population for USA");
 		List<Point> points = ds.getPoints();
 		System.out.println(points);
 		for (double x = startYear, i = 0; x < endYear && i < endYear - startYear; x++, i++) {
 			double y = points.get((int) i).y;
+			if (y == 0) {
+				break;
+			}
 			series.add(x, y);
 		}
 		
@@ -230,6 +232,6 @@ public class MainUI extends JFrame {
 		frame.setVisible(true);
 	}
 	// TODO Auto-generated method stub
-	//testtttttttttttt
+	
 
 }
