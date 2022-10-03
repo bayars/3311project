@@ -21,6 +21,7 @@ private static final long serialVersionUID = 1L;
 	
 	public String country;
 	public int yearStart;
+	public int yearEnd;
 	
 	public JButton addView;
 	
@@ -57,13 +58,7 @@ private static final long serialVersionUID = 1L;
 		
 	
 		fromList = new JComboBox<Integer>(years);
-		fromList.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-		        JComboBox<Integer> combo = (JComboBox<Integer>) event.getSource();
-		        int fromList = (Integer) combo.getSelectedItem();
-		        yearStart = fromList;
-		    }
-		});
+	
 		
 		
 		toList = new JComboBox<Integer>(years);
@@ -149,18 +144,38 @@ private static final long serialVersionUID = 1L;
  
 				if (selectedBook.equals("Canada")) {
 					country = "CAN";
-					System.out.println(country);
-					
-           
-				} 
-				if (selectedBook.equals("USA")) {
+				} else if (selectedBook.equals("USA")) {
 					country = "USA";
-					System.out.println(country);
-           
+
 				} 
 			}
 		});
 		return country;
+	}	
+	
+	public int getyearStart() {
+		fromList.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				JComboBox<String> combo = (JComboBox<String>) event.getSource();
+				yearStart = (Integer) combo.getSelectedItem();
+ 
+				
+			}
+		});
+		
+		return yearStart;
+	}	
+	public int getyearEnd() {
+		toList.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				JComboBox<String> combo = (JComboBox<String>) event.getSource();
+				yearEnd = (Integer) combo.getSelectedItem();
+ 
+				
+			}
+		});
+		
+		return yearEnd;
 	}	
 	
 	
@@ -171,7 +186,8 @@ private static final long serialVersionUID = 1L;
 	public static void plotGraph(Main f) {
 		
 	
-			JPanel graph = Graph.createLine(f.getCountry(), 2010, 2019, "EN.ATM.CO2E.PC");
+			//JPanel graph = Graph.createLine(f.getCountry(), 2010, 2020, "a1");
+			JPanel graph = Graph.createLine(f.getCountry(), f.getyearStart(), f.getyearEnd() + 1, "a1"); //always add 1 to year end
 			f.getContentPane().add(graph);
 			f.resize(f.getWidth(), 500);
 			f.validate();
@@ -205,10 +221,22 @@ private static final long serialVersionUID = 1L;
 	
 		while (true) {
 			JPanel blank = null;
-			String c = null;
-			JPanel graph;
-			f.addView.addActionListener(f.click);
-			f.recalculate.addActionListener(f.click);
+			
+			
+			//selected JComboBoxes init.
+			String c = null; //country
+			int yearStart = 0;
+			int yearEnd = 0;
+			
+			
+			
+			
+			//action listeners
+			f.addView.addActionListener(f.click);       //+ button
+			f.recalculate.addActionListener(f.click);	//recalculate button
+			
+			
+			
 			if (f.line){
 				blank = Graph.createBlankLine();
 				f.getContentPane().add(blank);
@@ -216,17 +244,15 @@ private static final long serialVersionUID = 1L;
 			}
 			
 			c = f.getCountry();
+			yearStart = f.getyearStart();
+			yearEnd = f.getyearEnd();
 				
-			if (c != null) {
-				
-				if (f.r) {
-					
-			
-					
+			if (c != null && yearStart > 0 && yearEnd > 0) {
+				if (f.r) {		//recalculate is pressed
 					plotGraph(f);
 					f.r = false;
 					f.line = false;
-					
+					//set JComboBoxes to initial?
 					
 						
 						
