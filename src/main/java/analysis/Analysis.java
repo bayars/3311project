@@ -1,5 +1,6 @@
 package analysis;
 
+import fetchers.Data;
 import fetchers.DataSet;
 import fetchers.PieDataSet;
 import fetchers.Point;
@@ -19,15 +20,20 @@ public class Analysis {
 		
 		DataSet sol = new DataSet();
 		
-		for (int i = 1; i < ds.p.size() - 1; i++) {
-			double x = ds.p.get(i).x;
-			double fv = ds.p.get(i + 1).y;
-			double iv = ds.p.get(i).y;
-			double pc = (fv - iv)/iv * 100;
+		for (int i = 1; i < ds.getPoints().size(); i++) {
+			
+			double x = ds.p.get(i - 1).x;
+			double fv = ds.p.get(i).y;
+			double iv = ds.p.get(i - 1).y;
+			double pc = ((fv - iv)/iv) * 100;
 			Point p = new Point(x, pc);
 			sol.addPoint(p);
 		}
+	
+		sol.addPoint(ds.p.get(ds.getPoints().size() - 1));
+		
 		return sol;
+		
 	
 	}
 	
@@ -65,6 +71,11 @@ public class Analysis {
 		sol.ds.add(100 - (sum / ds.p.size()));
 		return sol;
 		
+	}
+	
+	public static void main(String[] args) {
+		DataSet here = Analysis.annualPercentChange(Data.fetchData("CAN", 2010, 2019, "EN.ATM.CO2E.PC"));
+		System.out.println(here.getPoints());
 	}
 	
 	
