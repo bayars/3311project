@@ -92,7 +92,7 @@ public class Data {
 		PieDataSet pie = Analysis.average(ds);
 		System.out.println(pie.getSections());
 		
-		
+		//
 		//DataSet ds = Data.fetchData(country, startYear, endYear, a2);
 		//DataSet ds2 = Data.fetchData(country, startYear, endYear, a5);
 		
