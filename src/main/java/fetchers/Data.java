@@ -29,7 +29,7 @@ public class Data {
 	
 	public static DataSet fetchData(String country, int yearStart, int yearEnd, String analysisMode) {
 
-		String urlString = makeURL(country, yearStart, yearEnd, analysisMode);
+		String urlString = makeURL(country, yearStart - 1, yearEnd, analysisMode);
 		DataSet ds = new DataSet();
 
 		
@@ -49,7 +49,8 @@ public class Data {
 				sc.close();
 				JsonArray jsonArray = new JsonParser().parse(inline).getAsJsonArray();	
 				
-				for (int x = yearStart, i = jsonArray.get(1).getAsJsonArray().size() - 1; x <= yearEnd && i >= 0; x++, i--) {
+				int x = yearStart;
+				for (int i = jsonArray.get(1).getAsJsonArray().size() - 1; i >= 0; i--) {
 					if (jsonArray.get(1).getAsJsonArray().get(i).getAsJsonObject().get("value").isJsonNull()) {
 						ds.addPoint(new Point(x,0));
 					}else {
@@ -57,6 +58,7 @@ public class Data {
 						Point p = new Point(x, y);
 						ds.addPoint(p);
 					}
+					x++;
 				}			
 			}
 
