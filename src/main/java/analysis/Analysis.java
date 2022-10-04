@@ -74,7 +74,8 @@ public class Analysis {
 	}
 	
 	public static void main(String[] args) {
-		DataSet here = Analysis.annualPercentChange(Data.fetchData("CAN", 2010, 2019, "EN.ATM.CO2E.PC"));
+		DataSet here = Analysis.ratio(Data.fetchData("CAN", 2011, 2019, "EN.ATM.CO2E.PC"), 
+				Data.fetchData("CAN", 2011, 2019, "NY.GDP.PCAP.CD"));
 		System.out.println(here.getPoints());
 	}
 	
