@@ -19,25 +19,32 @@ public class Main extends JFrame {
 	
 private static final long serialVersionUID = 1L;
 	
+	//dynamic values of buttons
 	public String country;
-	public int yearStart;
-	public int yearEnd;
+	public int yearStart, yearEnd;
 	
-	public JButton addView;
+	//+/- buttons and recalculate
+	public JButton addView, removeView, recalculate; 
 	
-	public JButton recalculate; 
-	public boolean r;
+	//how program checks if button pressed/graph selected
+	public String view;
+	public boolean r, plus, line, pie, scatter, bar;
+	public String analysis;
 
-	public boolean line;
-	public static JComboBox<String> methodsList;
+	//ComboBoxes
+	public static JComboBox<String> viewsList;
+	public static JComboBox<String> analysisMode;
 	public static JComboBox<String> countriesList;
 	public static JComboBox<Integer> fromList;
 	public static JComboBox<Integer> toList;
 
+
+	
 	public Main() {
 		super("Country Statistics");
 		
-		// Set top bar
+//Top Bar----------------------------------------------------------------------		
+		//create country List
 		JLabel chooseCountryLabel = new JLabel("Choose a country: ");
 		Vector<String> countriesNames = new Vector<String>();
 		countriesNames.add("USA");
@@ -48,21 +55,17 @@ private static final long serialVersionUID = 1L;
 		countriesNames.sort(null);
 		countriesList = new JComboBox<String>(countriesNames);
 		
-
+		//create to and from lists
 		JLabel from = new JLabel("From");
 		JLabel to = new JLabel("To");
 		Vector<Integer> years = new Vector<Integer>();
 		for (int i = 2021; i >= 2010; i--) {
 			years.add(i);
 		}
-		
-	
 		fromList = new JComboBox<Integer>(years);
-	
-		
-		
 		toList = new JComboBox<Integer>(years);
 
+		//add country list and to/from lists to north JPanel
 		JPanel north = new JPanel();
 		north.add(chooseCountryLabel);
 		north.add(countriesList);
@@ -70,49 +73,39 @@ private static final long serialVersionUID = 1L;
 		north.add(fromList);
 		north.add(to);
 		north.add(toList);
-
-		// Set bottom bar
 		recalculate = new JButton("Recalculate");
 		r = false;
-		
-
+//------------------------------------------------------------------------------			
+//Bottom Bar--------------------------------------------------------------------
 		JLabel viewsLabel = new JLabel("Available Views: ");
 
 		Vector<String> viewsNames = new Vector<String>();
-		viewsNames.add("Pie Chart");
 		viewsNames.add("Line Chart");
+		viewsNames.add("Pie Chart");
 		viewsNames.add("Bar Chart");
 		viewsNames.add("Scatter Chart");
-		viewsNames.add("Report");
-		JComboBox<String> viewsList = new JComboBox<String>(viewsNames);
-		
-		
-		
+		viewsList = new JComboBox<String>(viewsNames);
+		view = "Line";
+
 		addView = new JButton("+");
-		
-		
-		
-		
-		
-		
-		JButton removeView = new JButton("-");
+	    removeView = new JButton("-");
 
 		JLabel methodLabel = new JLabel("        Choose analysis method: ");
 		
-		
-		
 		Vector<String> methodsNames = new Vector<String>();
-		methodsNames.add("Mortality");
-		methodsNames.add("Mortality vs Expenses");
-		methodsNames.add("Mortality vs Expenses & Hospital Beds");
-		methodsNames.add("Mortality vs GDP");
-		methodsNames.add("Unemployment vs GDP");
-		methodsNames.add("Unemployment");
-		methodsList = new JComboBox<String>(methodsNames);
-		//method = (String) methodsList.getSelectedItem();
-	
+		methodsNames.add("Analysis 1");  //a1
+		methodsNames.add("Analysis 2");  //a2
+		methodsNames.add("Analysis 3");  //a3
+		methodsNames.add("Analysis 4");  //a4
+		methodsNames.add("Analysis 5");  //a5
+		methodsNames.add("Analysis 6");  //a6
+		methodsNames.add("Analysis 7");  //a7
+		methodsNames.add("Analysis 8");  //a8
+		analysisMode = new JComboBox<String>(methodsNames);
 		
+		analysis = "a1";
 
+		//add +/- and recalculate buttons to south JPanel
 		JPanel south = new JPanel();
 		south.add(viewsLabel);
 		south.add(viewsList);
@@ -120,22 +113,22 @@ private static final long serialVersionUID = 1L;
 		south.add(removeView);
 
 		south.add(methodLabel);
-		south.add(methodsList);
+		south.add(analysisMode);
 		south.add(recalculate);
-
+//------------------------------------------------------------------------------
+//Finish setup------------------------------------------------------------------
 		JPanel east = new JPanel();
-		
-	
 		JPanel west = new JPanel();
 		west.setLayout(new GridLayout(5, 5));
 		
 		getContentPane().add(north, BorderLayout.NORTH);
 		getContentPane().add(east, BorderLayout.EAST);
 		getContentPane().add(south, BorderLayout.SOUTH);
-		
 		getContentPane().add(west, BorderLayout.WEST);
+//------------------------------------------------------------------------------
 	}
 	
+	//Action Listener for country selection
 	public String getCountry() {
 		countriesList.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -153,6 +146,7 @@ private static final long serialVersionUID = 1L;
 		return country;
 	}	
 	
+	//Action Listener for start year selection
 	public int getyearStart() {
 		fromList.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -165,6 +159,8 @@ private static final long serialVersionUID = 1L;
 		
 		return yearStart;
 	}	
+	
+	//Action Listener for end year selection
 	public int getyearEnd() {
 		toList.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -179,35 +175,82 @@ private static final long serialVersionUID = 1L;
 	}	
 	
 	
+	//Action Listener for analysis
 	
-	
-	
-
-	public static void plotGraph(Main f) {
+	public String getAnalysisMode() {
+		analysisMode.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				JComboBox<String> combo = (JComboBox<String>) event.getSource();
+				String am = (String) combo.getSelectedItem();
+				if (am.equals("Analysis 1")) {
+					analysis = "a1";
+				} else if (am.equals("Analysis 2")) {
+					analysis = "a2";
+				} else if (am.equals("Analysis 3")) {
+					analysis = "a3";
+				} else if (am.equals("Analysis 4")) {
+					analysis = "a4";
+				} else if (am.equals("Analysis 5")) {
+					analysis = "a5";
+				} else if (am.equals("Analysis 6")) {
+					analysis = "a6";
+				} else if (am.equals("Analysis 7")) {
+					analysis = "a7";
+				}else if (am.equals("Analysis 8")) {
+					analysis = "a8";
+				}
+ 
+				
+			}
+		});
+		return analysis;
 		
-	
-			//JPanel graph = Graph.createLine(f.getCountry(), 2010, 2020, "a1");
-			JPanel graph = Graph.createLine(f.getCountry(), f.getyearStart(), f.getyearEnd() + 1, "a1"); //always add 1 to year end
-			f.getContentPane().add(graph);
-			f.resize(f.getWidth(), 500);
-			f.validate();
 		
 	}
-	public class Clicklistener implements ActionListener
-	{
-	  public void actionPerformed(ActionEvent e)
-	  {
-	    if (e.getSource() == addView)
-	    {
-	      line = true;
-	    }
-	    if (e.getSource() == recalculate) {
-	    	r = true;
-	    }
+	
+	
+	
+	//Action Listener for viewer
+		public void getView() {
+			viewsList.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent event) {
+					JComboBox<String> combo = (JComboBox<String>) event.getSource();
+					String v = (String) combo.getSelectedItem();
+					if (v.equals("Pie Chart")) {
+						view = "Pie";
+					} else if (v.equals("Line Chart")) {
+						view = "Line";
+					} else if (v.equals("Bar Chart")) {
+						view = "Bar";
+					} else if (v.equals("Scatter Chart")) {
+						view = "Scatter";
+					} 
+	 
+					
+				}
+			});
+		}	
+	
+//Listen for clicks------------------------------------------------------------------
+	public class Clicklistener implements ActionListener {
+		public int clicked;
+		
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource() == addView){
+				plus = true;
+			
+				clicked++;
+			} else if (e.getSource() == recalculate) {
+				r = true;
+				System.out.println("clicked");
+			}
 	    
-	  }
+		}
 	}
 	Clicklistener click = new Clicklistener();
+//------------------------------------------------------------------------------
+	
+	
 	
 	
 	public static void main(String[] args) {
@@ -217,41 +260,71 @@ private static final long serialVersionUID = 1L;
 		f.pack();
 		f.setVisible(true);
 		
+		f.addView.addActionListener(f.click);
 		
-	
+		int cl = 0;
 		while (true) {
-			JPanel blank = null;
-			
-			
-			//selected JComboBoxes init.
-			String c = null; //country
-			int yearStart = 0;
-			int yearEnd = 0;
-			
+			if (f.view != null) {
+				cl = f.click.clicked;
+			}
+			//System.out.println(f.view);
+			//System.out.println(f.r);
 			
 			
 			
-			//action listeners
-			f.addView.addActionListener(f.click);       //+ button
+			
+			
+		//  f.minusView.addActionListener(f.click);     //- button
 			f.recalculate.addActionListener(f.click);	//recalculate button
+			f.getView();
+			f.getAnalysisMode();
+			//System.out.println(	f.getAnalysisMode());
 			
-			
-			
-			if (f.line){
-				blank = Graph.createBlankLine();
+			if (f.view == "Line" && f.plus == true){
+				
+				JPanel blank = Graph.createBlankLine();
+
 				f.getContentPane().add(blank);
 				f.resize(f.getWidth(), 500);
+				f.validate();
 			}
 			
-			c = f.getCountry();
-			yearStart = f.getyearStart();
-			yearEnd = f.getyearEnd();
+			if (f.view == "Line"){
 				
-			if (c != null && yearStart > 0 && yearEnd > 0) {
-				if (f.r) {		//recalculate is pressed
-					plotGraph(f);
-					f.r = false;
-					f.line = false;
+			
+			
+				String c = f.getCountry();
+				int yearStart = f.getyearStart();
+				int yearEnd = f.getyearEnd();
+				
+				if (c != null && yearStart > 0 && yearEnd > 0) {
+					if (f.r) {		//recalculate is pressed
+						if (f.view == "Line") {
+						
+							
+							JPanel graph = Graph.createLine(f.getCountry(), f.getyearStart(), f.getyearEnd() + 1, f.getAnalysisMode()); //always add 1 to year end
+							f.getContentPane().add(graph);		
+							f.resize(f.getWidth(), 500);
+							f.validate();
+							
+							f.r = false;
+							f.plus = false;
+							
+							
+							continue;
+						 //set JComboBoxes to initial?
+						}
+						      
+				      /*
+					  else if (f.view == "Bar")
+					  
+					  else if (f.view == "Scatter")
+					  
+					  else if (f.view == "Bar")
+					  	
+					  
+					 */
+					
 					//set JComboBoxes to initial?
 					
 						
@@ -259,6 +332,7 @@ private static final long serialVersionUID = 1L;
 					}
 					
 				}
+			}
 		
 		
 		}
