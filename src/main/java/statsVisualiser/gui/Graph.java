@@ -163,7 +163,8 @@ FIX THIS*	The change rate for the first selected year would be with respect to t
 			dataset.addSeries(series1);
 			dataset.addSeries(series2);
 			dataset.addSeries(series3);
-			
+		
+		//if  analysis 2:
 		}else if (analysis == "a2") {
 			DataSet ds1 = Analysis.annualPercentChange(Data.fetchData(country, yearStart, yearEnd, "EN.ATM.PM25.MC.M3"));
 			DataSet ds2 = Analysis.annualPercentChange(Data.fetchData(country, yearStart, yearEnd, "AG.LND.FRST.ZS"));
@@ -191,11 +192,43 @@ FIX THIS*	The change rate for the first selected year would be with respect to t
 			dataset = new XYSeriesCollection();
 			dataset.addSeries(series1);
 			dataset.addSeries(series2);
+			
+			
+		//if  analysis 3:
+		}else if (analysis == "a3") {
+			DataSet ds = Analysis.ratio(Data.fetchData(country, yearStart, yearEnd, "EN.ATM.CO2E.PC"), 
+					Data.fetchData(country, yearStart, yearEnd, "NY.GDP.PCAP.CD"));
+			
+			XYSeries series = new XYSeries("CO2 emissions (as metric tons per capita) / GDP per capita (as current US$)");
+			
+			List<Point> points = ds.getPoints();
+			
+			int x = yearStart;
+			for (int i = 0; i < yearEnd - yearStart; i++) {
+				double y = points.get(i).y;
+				System.out.println(x + ", " + y);
+				series.add(x, y);
+				x++;
+			}
+			dataset = new XYSeriesCollection();
+			dataset.addSeries(series);
+			System.out.println(dataset.toString());
+
 		}
 		
+		/*
+		
+		} else if (analysis == "a4") {
+		} else if (analysis == "a5") {
+		} else if (analysis == "a6") {
+		} else if (analysis == "a7") {
+		} else if (analysis == "a8") {
+		}
+		
+		*/
 		
 		//Formatting 
-		JFreeChart chart = ChartFactory.createXYLineChart("Population for USA", "Year", "", dataset,
+		JFreeChart chart = ChartFactory.createXYLineChart("", "Year", "", dataset,
 				PlotOrientation.VERTICAL, true, true, false);
 
 		XYPlot plot = chart.getXYPlot();
@@ -278,9 +311,9 @@ public static void main(String[] args) {
 	f.pack();
 	f.setVisible(true);
 	
-	String analysisMode = "a1";
+	String analysisMode = "a3";
 	//JPanel g = Graph.createScatter("CAN", 2010, 2019, "EN.ATM.CO2E.PC");
-	JPanel g1 = Graph.createLine("CAN", 2010, 2019, analysisMode);
+	JPanel g1 = Graph.createLine("CAN", 2011, 2017, analysisMode);
 	//f.getContentPane().add(g);
 	f.getContentPane().add(g1);
 	f.resize(500, 500);
