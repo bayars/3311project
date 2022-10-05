@@ -1,6 +1,7 @@
 package statsVisualiser.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -270,6 +271,7 @@ private static final long serialVersionUID = 1L;
 			//System.out.println(f.view);
 			//System.out.println(f.r);
 			
+
 			
 			
 			
@@ -287,11 +289,34 @@ private static final long serialVersionUID = 1L;
 				f.getContentPane().add(blank);
 				f.resize(f.getWidth(), 500);
 				f.validate();
+				f.plus = false;
+				
+			}else if (f.view == "Pie" && f.plus == true){
+				JPanel blank = Graph.createBlankPie();
+
+				f.getContentPane().add(blank);
+				f.resize(f.getWidth(), 500);
+				f.validate();
+				f.plus = false;
+			}else if (f.view == "Scatter" && f.plus == true){
+				JPanel blank = Graph.createBlankScatter();
+
+				f.getContentPane().add(blank);
+				f.resize(f.getWidth(), 500);
+				f.validate();
+				f.plus = false;
+				
+				
+			}else if (f.view == "Bar" && f.plus == true){
+				JPanel blank = Graph.createBlankScatter();
+
+				f.getContentPane().add(blank);
+				f.resize(f.getWidth(), 500);
+				f.validate();
+				f.plus = false;
 			}
 			
-			if (f.view == "Line"){
-				
-			
+
 			
 				String c = f.getCountry();
 				int yearStart = f.getyearStart();
@@ -300,38 +325,54 @@ private static final long serialVersionUID = 1L;
 				if (c != null && yearStart > 0 && yearEnd > 0) {
 					if (f.r) {		//recalculate is pressed
 						if (f.view == "Line") {
-						
-							
 							JPanel graph = Graph.createLine(f.getCountry(), f.getyearStart(), f.getyearEnd() + 1, f.getAnalysisMode()); //always add 1 to year end
+							f.getContentPane().add(graph);
+							
+							f.resize(f.getWidth(), 500);
+							f.validate();
+							f.r = false;
+							f.plus = false;
+							if (f.click.clicked == 2) {
+								graph.setAlignmentX(Component.LEFT_ALIGNMENT);
+								
+							}
+						
+						}else if (f.view == "Pie") {
+							JPanel graph = Graph.createPie(f.getCountry(), f.getyearStart(), f.getyearEnd() + 1, f.getAnalysisMode()); //always add 1 to year end
 							f.getContentPane().add(graph);		
 							f.resize(f.getWidth(), 500);
 							f.validate();
-							
+							f.r = false;
+							f.plus = false;
+					  
+					  	}else if (f.view == "Scatter") {
+					  		JPanel graph = Graph.createScatter(f.getCountry(), f.getyearStart(), f.getyearEnd() + 1, f.getAnalysisMode()); //always add 1 to year end
+							f.getContentPane().add(graph);		
+							f.resize(f.getWidth(), 500);
+							f.validate();
+							f.r = false;
+							f.plus = false;
+					  	
+						}else if (f.view == "Bar") {
+							JPanel graph = Graph.createBar(f.getCountry(), f.getyearStart(), f.getyearEnd() + 1, f.getAnalysisMode()); //always add 1 to year end
+							f.getContentPane().add(graph);		
+							f.resize(f.getWidth(), 500);
+							f.validate();
 							f.r = false;
 							f.plus = false;
 							
-							
-							continue;
-						 //set JComboBoxes to initial?
-						}
-						      
-				      /*
-					  else if (f.view == "Bar")
-					  
-					  else if (f.view == "Scatter")
-					  
-					  else if (f.view == "Bar")
-					  	
-					  
-					 */
-					
-					//set JComboBoxes to initial?
-					
-						
+						} 
 						
 					}
+					 
 					
-				}
+					
+					
+						
+						
+					
+					
+				
 			}
 		
 		
