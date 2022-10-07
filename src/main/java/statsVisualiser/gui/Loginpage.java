@@ -3,6 +3,8 @@ package statsVisualiser.gui;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -68,7 +70,7 @@ public class Loginpage extends JFrame implements ActionListener {
 			password = passwordField.getText();
 			Csv userCredentials = new Csv();
 			try {
-				userCredentials.load("/home/safa/git/users.csv");
+				userCredentials.load("/Users/karypelly/Desktop/user.csv");
 			} catch (Exception e1) {
 				e1.printStackTrace();
 				System.out.println("File Location not Correct!!!");
@@ -79,8 +81,8 @@ public class Loginpage extends JFrame implements ActionListener {
 				passwordList.add(user.get(i).getPassword());
 			}
 			if ( usernameList.contains(username) && passwordList.contains(password) ){
-				MainUI main = new  MainUI();
-				main.createUI();
+				//MainUI main = new  MainUI();
+				//main.createUI();
 			}else{
 				JOptionPane.showMessageDialog(this, "Login Credentials incorrect!!");
 			}
@@ -89,6 +91,7 @@ public class Loginpage extends JFrame implements ActionListener {
 	}
    
 	public static void main(String[] args) {
+
 		JFrame frame = new Loginpage();
         frame.setTitle("Login Page");
         frame.setBounds(10,10,400,200);

@@ -812,7 +812,7 @@ public class Graph extends JFrame  {
 		plot.mapDatasetToRangeAxis(0, 0);// 1st dataset to 1st y-axis
 
 
-		JFreeChart scatterChart = new JFreeChart("Population for USA",
+		JFreeChart scatterChart = new JFreeChart(analysis,
 				new Font("Serif", java.awt.Font.BOLD, 18), plot, true);
 
 		ChartPanel chartPanel = new ChartPanel(scatterChart);
