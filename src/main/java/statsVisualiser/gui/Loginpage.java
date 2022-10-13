@@ -81,7 +81,7 @@ public class Loginpage extends JFrame implements ActionListener {
 				passwordList.add(user.get(i).getPassword());
 			}
 			if ( usernameList.contains(username) && passwordList.contains(password) ){
-				Main.run();
+				Main main = new Main();
 			}else{
 				JOptionPane.showMessageDialog(this, "Login Credentials incorrect!!");
 			}

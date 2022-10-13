@@ -276,13 +276,7 @@ private static final long serialVersionUID = 1L;
 					panelCenter.repaint();
 					f.pack();
 					graphStack.push(graph);
-					
-
 			}
-			
-			
-			
-			
 		});
 		
 		
@@ -296,53 +290,9 @@ private static final long serialVersionUID = 1L;
 				graphStack.pop();
 
 			}
-			
-			
-			
-			
 		});
-
-		
 		f.pack();
 		f.setVisible(true);
-
-
-		
-		
-		
-		
-	
-	}
-	
-	
-
-
-
-
-	
-	
-	
-	
-
-	
-	
-	
-
-	
-	public static void main(String[] args) {
-
-	
-	
-	
-		Main main = new Main();
-		
-		
-		
-		
-		
-		
-		
-		
 	}
 }
 		
