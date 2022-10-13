@@ -1,26 +1,36 @@
 package statsVisualiser.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.Stack;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
+import javax.swing.border.EmptyBorder;
 
-public class Main extends JFrame {
+public class Main  {
 	
 private static final long serialVersionUID = 1L;
 	
+	
+
 	//dynamic values of buttons
 	public String country;
 	public int yearStart, yearEnd;
@@ -34,342 +44,306 @@ private static final long serialVersionUID = 1L;
 	public String analysis;
 
 	//ComboBoxes
-	public static JComboBox<String> viewsList;
-	public static JComboBox<String> analysisMode;
-	public static JComboBox<String> countriesList;
-	public static JComboBox<Integer> fromList;
-	public static JComboBox<Integer> toList;
+	public static JComboBox<String> viewSelector;
+	public static JComboBox<String> countrySelector;
+	public static JComboBox<Integer> fromSelector;
+	public static JComboBox<Integer> toSelector;
+	public static JComboBox<String> analysisSelector;
 
+	//Sections of ui
+	JPanel panelNorth = new JPanel();
+	JPanel panelSouth = new JPanel();
+	JPanel panelCenter = new JPanel();
+	
+	static JFrame f = new JFrame();
+
+	JPanel latestAdded;
+	
+	int counter = 0;
+	
+	 Stack<JPanel> graphStack = new Stack<JPanel>();  
 
 	
 	public Main() {
-		super("Country Statistics");
 		
-//Top Bar----------------------------------------------------------------------		
-		//create country List
-		JLabel chooseCountryLabel = new JLabel("Choose a country: ");
+
+
+
+
+
+
+		panelNorth.setLayout(new FlowLayout());
+		panelSouth.setLayout(new FlowLayout());
+		panelCenter.setLayout(new GridLayout(0,3));
+
+		
+
+		f.add(panelNorth,BorderLayout.NORTH);
+		f.add(panelSouth,BorderLayout.SOUTH);
+		f.add(panelCenter,BorderLayout.CENTER);
+
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		
+		
 		Vector<String> countriesNames = new Vector<String>();
 		countriesNames.add("USA");
 		countriesNames.add("Canada");
 		countriesNames.add("France");
 		countriesNames.add("China");
 		countriesNames.add("Brazil");
-		countriesNames.sort(null);
-		countriesList = new JComboBox<String>(countriesNames);
 		
-		//create to and from lists
-		JLabel from = new JLabel("From");
-		JLabel to = new JLabel("To");
+		
 		Vector<Integer> years = new Vector<Integer>();
-		for (int i = 2021; i >= 2010; i--) {
+		for(int i = 1972; i < 2022; i++) {
 			years.add(i);
 		}
-		fromList = new JComboBox<Integer>(years);
-		toList = new JComboBox<Integer>(years);
-
-		//add country list and to/from lists to north JPanel
-		JPanel north = new JPanel();
-		north.add(chooseCountryLabel);
-		north.add(countriesList);
-		north.add(from);
-		north.add(fromList);
-		north.add(to);
-		north.add(toList);
-		recalculate = new JButton("Recalculate");
-		r = false;
-		remove = false;
-//------------------------------------------------------------------------------			
-//Bottom Bar--------------------------------------------------------------------
-		JLabel viewsLabel = new JLabel("Available Views: ");
-
+	
+		
+		Vector<String> analyses = new Vector<String>();
+		analyses.add("Analysis 1");  
+		analyses.add("Analysis 2");  
+		analyses.add("Analysis 3");  
+		analyses.add("Analysis 4");  
+		analyses.add("Analysis 5");  
+		analyses.add("Analysis 6");  
+		analyses.add("Analysis 7");  
+		analyses.add("Analysis 8");  
+		
 		Vector<String> viewsNames = new Vector<String>();
 		viewsNames.add("Line Chart");
 		viewsNames.add("Pie Chart");
 		viewsNames.add("Bar Chart");
 		viewsNames.add("Scatter Chart");
-		viewsList = new JComboBox<String>(viewsNames);
 		view = "Line";
-
-		addView = new JButton("+");
-	    removeView = new JButton("-");
-	    yearStart = 2021;
-	    yearEnd = 2021;
-
-		JLabel methodLabel = new JLabel("        Choose analysis method: ");
 		
-		Vector<String> methodsNames = new Vector<String>();
-		methodsNames.add("Analysis 1");  //a1
-		methodsNames.add("Analysis 2");  //a2
-		methodsNames.add("Analysis 3");  //a3
-		methodsNames.add("Analysis 4");  //a4
-		methodsNames.add("Analysis 5");  //a5
-		methodsNames.add("Analysis 6");  //a6
-		methodsNames.add("Analysis 7");  //a7
-		methodsNames.add("Analysis 8");  //a8
-		analysisMode = new JComboBox<String>(methodsNames);
+		 viewSelector = new JComboBox<String>(viewsNames);
+		 countrySelector = new JComboBox<String>(countriesNames);
+		 fromSelector = new JComboBox<Integer>(years);
+	  	 toSelector = new JComboBox<Integer>(years);
+		 analysisSelector = new JComboBox<String>(analyses);
 		
+		JButton plusButton = new JButton("+");
+		JButton minusButton = new JButton("-");
+		JLabel to = new JLabel("to");
+
+		
+		countrySelector.setBorder(new EmptyBorder(10,1,1,1));
+		fromSelector.setBorder(new EmptyBorder(10,1,1,1));
+		toSelector.setBorder(new EmptyBorder(10,1,1,1));
+		to.setBorder(new EmptyBorder(10,1,1,1));
+		
+		countrySelector.setPreferredSize(new Dimension(200,35));
+		
+		panelNorth.add(countrySelector);
+		panelNorth.add(fromSelector);
+		panelNorth.add(to);
+		panelNorth.add(toSelector);
+		
+		panelSouth.add(analysisSelector);
+		panelSouth.add(viewSelector);
+		panelSouth.add(plusButton);
+		panelSouth.add(minusButton);
+
+		
+		country = "USA";
+		view = "Line Chart";
+		yearStart = 1972;
+		yearEnd = 1972;
 		analysis = "a1";
 
-		//add +/- and recalculate buttons to south JPanel
-		JPanel south = new JPanel();
-		south.add(viewsLabel);
-		south.add(viewsList);
-		south.add(addView);
-		south.add(removeView);
-
-		south.add(methodLabel);
-		south.add(analysisMode);
-		south.add(recalculate);
-//------------------------------------------------------------------------------
-//Finish setup------------------------------------------------------------------
-		JPanel east = new JPanel();
-		JPanel west = new JPanel();
-		west.setLayout(new GridLayout(5, 5));
 		
-		getContentPane().add(north, BorderLayout.NORTH);
-		getContentPane().add(east, BorderLayout.EAST);
-		getContentPane().add(south, BorderLayout.SOUTH);
-		getContentPane().add(west, BorderLayout.WEST);
-//------------------------------------------------------------------------------
-	}
-	
-	//Action Listener for country selection
-	public String getCountry() {
-		countriesList.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				JComboBox<String> combo = (JComboBox<String>) event.getSource();
-				String selectedBook = (String) combo.getSelectedItem();
- 
-				if (selectedBook.equals("Canada")) {
-					country = "CAN";
-				} else if (selectedBook.equals("Brazil")) {
-					country = "BRA";
-
-				} else if (selectedBook.equals("USA")) {
-					country = "USA";
-
-				} else if (selectedBook.equals("China")) {
-					country = "CHN";
-
-				} else if (selectedBook.equals("France")) {
-					country = "FRA";
-
-				} 
-			}
-		});
-		return country;
-	}	
-	
-	//Action Listener for start year selection
-	public int getyearStart() {
-		fromList.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				JComboBox<String> combo = (JComboBox<String>) event.getSource();
-				yearStart = (Integer) combo.getSelectedItem();
- 
-				
-			}
-		});
-		
-		return yearStart;
-	}	
-	
-	//Action Listener for end year selection
-	public int getyearEnd() {
-		toList.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				JComboBox<String> combo = (JComboBox<String>) event.getSource();
-				yearEnd = (Integer) combo.getSelectedItem();
- 
-				
-			}
-		});
-		
-		return yearEnd;
-	}	
-	
-	
-	//Action Listener for analysis
-	
-	public String getAnalysisMode() {
-		analysisMode.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				JComboBox<String> combo = (JComboBox<String>) event.getSource();
-				String am = (String) combo.getSelectedItem();
-				if (am.equals("Analysis 1")) {
-					analysis = "a1";
-				} else if (am.equals("Analysis 2")) {
-					analysis = "a2";
-				} else if (am.equals("Analysis 3")) {
-					analysis = "a3";
-				} else if (am.equals("Analysis 4")) {
-					analysis = "a4";
-				} else if (am.equals("Analysis 5")) {
-					analysis = "a5";
-				} else if (am.equals("Analysis 6")) {
-					analysis = "a6";
-				} else if (am.equals("Analysis 7")) {
-					analysis = "a7";
-				}else if (am.equals("Analysis 8")) {
-					analysis = "a8";
-				}
- 
-				
-			}
-		});
-		return analysis;
-		
-		
-	}
-	
-	
-	
-	//Action Listener for viewer
-		public void getView() {
-			viewsList.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent event) {
-					JComboBox<String> combo = (JComboBox<String>) event.getSource();
-					String v = (String) combo.getSelectedItem();
-					if (v.equals("Pie Chart")) {
-						view = "Pie";
-					} else if (v.equals("Line Chart")) {
-						view = "Line";
-					} else if (v.equals("Bar Chart")) {
-						view = "Bar";
-					} else if (v.equals("Scatter Chart")) {
-						view = "Scatter";
-					} 
-	 
-					
-				}
-			});
-		}	
-	
-//Listen for clicks------------------------------------------------------------------
-	public class Clicklistener implements ActionListener {
-		public int clicked;
-		
-		public void actionPerformed(ActionEvent e) {
-			if (e.getSource() == addView){
-				if (clicked < 6){
-					clicked++;
-					plus = true;
-				}
-				
-				
+		countrySelector.addActionListener(new ActionListener() {
 			
-			} else if (e.getSource() == recalculate) {
-				r = true;
+			public void actionPerformed(ActionEvent e) {
+					String selected = (String) countrySelector.getSelectedItem();
+					switch(selected) {
+					
+					case "USA":
+						country = "USA";
+						break;
+					case "Canada":
+						country = "CA";
+						break;	
+					case "Brazil":
+						country = "BRA";
+						break;
+					case "China":
+						country = "CHN";
+						break;	
+					case "France":
+						country = "FRA";
+						break;
+
+					
+					
+					
+					
+					
+					}
+			}
+			
+		});
+		
+		analysisSelector.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+					String selected = (String) analysisSelector.getSelectedItem();
+					analysis = selected;
+			}
+			
+		});
+		
+		viewSelector.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+					String selected = (String) viewSelector.getSelectedItem();
+					view = selected;
+					System.out.println(selected);
+			}
+			
+		});
+		
+		fromSelector.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				int selected = (Integer) fromSelector.getSelectedItem();
+				yearStart = selected;
+			}
+			
+		});
+			
+		toSelector.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				int selected = (Integer) toSelector.getSelectedItem();
+				yearEnd = selected;
+			}
+			
+			
+			
+			
+		});
+		
+		plusButton.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
 				
-			}else if (e.getSource() == removeView) {
-				if (clicked > 0) {
-					clicked--;
-					remove = true;
-				}
+				JPanel graph = null;
 				
 
+					switch(view) {
+						case "Line Chart":
+							 graph = Graph.createLine(country, yearStart, yearEnd, analysis);
+							 System.out.println(analysis);
+							 System.out.println(country);
+							 System.out.println(yearStart);
+							 System.out.println(yearEnd);
+							 System.out.println(view);
+
+						break;
+						case "Pie Chart":
+							 graph = Graph.createPie(country, yearStart, yearEnd, analysis);
+							 System.out.println(analysis);
+							 System.out.println(country);
+							 System.out.println(yearStart);
+							 System.out.println(yearEnd);
+							 System.out.println(view);
+
+						break;
+						case "Scatter Chart":
+							 graph = Graph.createScatter(country, yearStart, yearEnd, analysis);
+							 System.out.println(analysis);
+							 System.out.println(country);
+							 System.out.println(yearStart);
+							 System.out.println(yearEnd);
+							 System.out.println(view);
+
+						break;
+						case "Bar Chart":
+							 graph = Graph.createBar(country, yearStart, yearEnd, analysis);
+							 System.out.println(analysis);
+							 System.out.println(country);
+							 System.out.println(yearStart);
+							 System.out.println(yearEnd);
+							 System.out.println(view);
+
+						break;
+					}
+					
+					
+					graph.setVisible(true);
+					panelCenter.add(graph);
+					panelCenter.repaint();
+					f.pack();
+					graphStack.push(graph);
+					
+
 			}
-	    
-		}
-	}
-	Clicklistener click = new Clicklistener();
-//------------------------------------------------------------------------------
-	public static void run() {
-		Main f = new Main();
+			
+			
+			
+			
+		});
 		
-		f.setPreferredSize(new Dimension(1600, 800));
-	
-	    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    JPanel content = new JPanel(new GridLayout(2,2));
-	    f.add(content);
+		
+		minusButton.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+			
+				panelCenter.remove(graphStack.peek());
+				panelCenter.repaint();
+				f.pack();
+				graphStack.pop();
+
+			}
+			
+			
+			
+			
+		});
+
 		
 		f.pack();
-		
 		f.setVisible(true);
-		
-		f.addView.addActionListener(f.click);
-		f.removeView.addActionListener(f.click);
-		
-		
-		JPanel blank = null;
-		int cl = 0;
-		while (true) {
-			if (f.addView.isSelected()){
-				System.out.println("here");
-			}
-			cl = f.click.clicked;
-			
-				//System.out.println(cl);
-				f.recalculate.addActionListener(f.click);	//recalculate button
-				f.getView();
-				f.getAnalysisMode();
 
-				
-				
-				if (f.view == "Line" && f.plus == true){
-					blank = Graph.createBlankLine();
-					content.add(blank);
-				}else if (f.view == "Pie" && f.plus == true){
-					blank = Graph.createBlankPie();
-					content.add(blank);
-				}else if (f.view == "Scatter" && f.plus == true){
-					blank = Graph.createBlankScatter();
-					content.add(blank);
-				}else if (f.view == "Bar" && f.plus == true){
-					blank = Graph.createBlankScatter();
-					content.add(blank);
-				}
-				f.validate();
-				f.plus = false;
-				
-				if (f.remove == true){
-					
-					content.remove(f.getComponentCount() - 1);
-					
-					
-					content.validate();
-					content.repaint();
-					f.remove = false;
-				}
-				
-			
-			String c = f.getCountry();
-			int yearStart = f.getyearStart();
-			int yearEnd = f.getyearEnd();
-		
-			if (c != null && yearStart > 0 && yearEnd > 0 && cl >= 0 && cl < 7) {
-				
-				if (f.r) {		//recalculate is pressed
-					JPanel graph = null;
-					if (f.view == "Line") {
-						graph = Graph.createLine(f.getCountry(), f.getyearStart(), f.getyearEnd() + 1, f.getAnalysisMode()); //always add 1 to year end
 
-					}else if (f.view == "Pie") {
-						graph = Graph.createPie(f.getCountry(), f.getyearStart(), f.getyearEnd() + 1, f.getAnalysisMode()); //always add 1 to year end
-				  
-				  	}else if (f.view == "Scatter") {
-				  		graph = Graph.createScatter(f.getCountry(), f.getyearStart(), f.getyearEnd() + 1, f.getAnalysisMode()); //always add 1 to year end
-				  	
-					}else if (f.view == "Bar") {
-						graph = Graph.createBar(f.getCountry(), f.getyearStart(), f.getyearEnd() + 1, f.getAnalysisMode()); //always add 1 to year end
-						
-					} 
-					//content.remove(f.getComponentCount());
-					content.add(graph);
-					f.getContentPane().remove(blank);
-					f.validate();
-					f.r = false;
-					f.plus = false;
-					f.remove = false;
-					
-				}
-			}
-		}
+		
+		
+		
+		
+	
 	}
 	
 	
+
+
+
+
+	
+	
+	
+	
+
+	
+	
+	
+
+	
 	public static void main(String[] args) {
-		Main.run();
+
+	
+	
+	
+		Main main = new Main();
+		
+		
+		
+		
+		
+		
+		
+		
 	}
 }
 		
