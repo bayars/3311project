@@ -55,7 +55,7 @@ private static final long serialVersionUID = 1L;
 	JPanel panelSouth = new JPanel();
 	JPanel panelCenter = new JPanel();
 	
-	static JFrame f = new JFrame();
+	 JFrame f = new JFrame();
 
 	JPanel latestAdded;
 	
@@ -66,7 +66,6 @@ private static final long serialVersionUID = 1L;
 	
 	public Main() {
 		
-
 
 
 
