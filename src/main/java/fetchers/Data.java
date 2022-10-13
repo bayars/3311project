@@ -29,7 +29,7 @@ public class Data {
 	
 	public static DataSet fetchData(String country, int yearStart, int yearEnd, String analysisMode) {
 
-		String urlString = makeURL(country, yearStart - 1, yearEnd, analysisMode);
+		String urlString = makeURL(country, yearStart, yearEnd, analysisMode);
 		DataSet ds = new DataSet();
 
 		
@@ -47,6 +47,7 @@ public class Data {
 					inline += sc.nextLine();
 				}
 				sc.close();
+				System.out.println(inline);
 				JsonArray jsonArray = new JsonParser().parse(inline).getAsJsonArray();	
 				
 				int x = yearStart;
