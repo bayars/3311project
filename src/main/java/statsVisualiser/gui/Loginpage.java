@@ -29,7 +29,7 @@ public class Loginpage extends JFrame implements ActionListener {
     JPasswordField passwordField=new JPasswordField();
     JButton submitButton=new JButton("Submit!");
     
-	Loginpage(){
+	public Loginpage(){
 		container.setLayout(null);
 		setLocationAndSize();
         addComponentsToContainer();
@@ -70,7 +70,7 @@ public class Loginpage extends JFrame implements ActionListener {
 			password = passwordField.getText();
 			Csv userCredentials = new Csv();
 			try {
-				userCredentials.load("/Users/karypelly/Desktop/users.csv");
+				userCredentials.load("/home/safa/git/3311project/users.csv");
 			} catch (Exception e1) {
 				e1.printStackTrace();
 				System.out.println("File Location not Correct!!!");
@@ -80,13 +80,20 @@ public class Loginpage extends JFrame implements ActionListener {
 				usernameList.add(user.get(i).getName());
 				passwordList.add(user.get(i).getPassword());
 			}
-			if ( usernameList.contains(username) && passwordList.contains(password) ){
+			if ( authentication(usernameList, passwordList, username, password) ){
 				Main main = new Main();
 			}else{
 				JOptionPane.showMessageDialog(this, "Login Credentials incorrect!!");
 			}
 		}
 		
+	}
+	
+	public boolean authentication(ArrayList<String> Userlist, ArrayList<String> passwordList, String Username, String Password ) {
+		if (Userlist.contains(Username) && passwordList.contains(Password) ) {
+			return true;
+		}
+		return false;
 	}
    
 	public static void main(String[] args) {
