@@ -20,7 +20,7 @@ import analysis.Analysis;
 public class Data {
 	
 	
-	private static String makeURL(String country, int yearStart, int yearEnd, String analysisMode) {
+	public static String makeURL(String country, int yearStart, int yearEnd, String analysisMode) {
 		String url = "http://api.worldbank.org/v2/country/%s/indicator/" + analysisMode + "?date=%d:%d&format=json";
 		String urlFormatted = String.format(url, country, yearStart, yearEnd);
 		return urlFormatted;

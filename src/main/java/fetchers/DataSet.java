@@ -16,15 +16,11 @@ public class DataSet{
 	}
 	
 	public List<Point> getPoints() {
-		
-		for (int i = 0; i < p.size(); i++) {
-			System.out.println(p.get(i).x + ", " + p.get(i).y);
-		}
-		
+
 		return this.p;
 	}
-	
-	//toString method?
 
-	
+	public int length() {
+		return this.p.size();
+	}
 }

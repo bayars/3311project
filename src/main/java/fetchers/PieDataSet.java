@@ -15,10 +15,12 @@ public class PieDataSet {
 	}
 	
 	public List<Double> getSections() {
-		for (int i = 0; i < ds.size(); i++) {
-			System.out.println(ds.get(i));
-		}
 		return this.ds;
 	}
+	
+	public int length() {
+		return this.ds.size();
+	}
+
 	
 }
