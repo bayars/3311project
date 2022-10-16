@@ -35,7 +35,6 @@ public class Analysis {
 			sol.addPoint(p);
 		}
 	
-		sol.addPoint(ds.p.get(ds.getPoints().size() - 1));
 		
 		return sol;
 		

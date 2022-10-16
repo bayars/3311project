@@ -884,10 +884,10 @@ public class Graph extends JFrame {
 		f.setVisible(true);
 
 		// check all analysis modes
-		String analysisMode = "a8";
+		String analysisMode = "a2";
 
 		// check all graph types
-		JPanel g1 = Graph.createScatter("CAN", 2007, 2009, analysisMode);
+		JPanel g1 = Graph.createLine("CAN", 2007, 2019, analysisMode);
 
 		// dont change
 		f.getContentPane().add(g1);
