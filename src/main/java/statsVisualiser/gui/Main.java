@@ -174,11 +174,6 @@ private static final long serialVersionUID = 1L;
 						country = "FRA";
 						break;
 
-					
-					
-					
-					
-					
 					}
 			}
 			
@@ -188,7 +183,39 @@ private static final long serialVersionUID = 1L;
 			
 			public void actionPerformed(ActionEvent e) {
 					String selected = (String) analysisSelector.getSelectedItem();
+
 					analysis = selected;
+					System.out.println(selected);
+
+					switch (selected){
+					
+					case "Analysis 1":
+						analysis = "a1";
+						break;
+					case "Analysis 2":
+						analysis = "a2";
+						break;
+					case "Analysis 3":
+						analysis = "a3";
+						break;
+					case "Analysis 4":
+						analysis = "a4";
+						break;
+					case "Analysis 5":
+						analysis = "a5";
+						break;
+					case "Analysis 6":
+						analysis = "a6";
+						break;
+					case "Analysis 7":
+						analysis = "a7";
+						break;
+					case "Analysis 8":
+						analysis = "a8";
+						break;
+						
+					}
+
 			}
 			
 		});
