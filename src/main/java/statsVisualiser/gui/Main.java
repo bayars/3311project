@@ -183,10 +183,10 @@ private static final long serialVersionUID = 1L;
 			
 			public void actionPerformed(ActionEvent e) {
 					String selected = (String) analysisSelector.getSelectedItem();
-<<<<<<< HEAD
+
 					analysis = selected;
 					System.out.println(selected);
-=======
+
 					switch (selected){
 					
 					case "Analysis 1":
@@ -215,7 +215,7 @@ private static final long serialVersionUID = 1L;
 						break;
 						
 					}
->>>>>>> 53662fff65aba978b21f5957fa05948912c2fdd4
+
 			}
 			
 		});
