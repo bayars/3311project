@@ -16,7 +16,7 @@ public class loginTest {
 	@Test
 	public void CsvLoad() throws Exception {
 		Csv user = new Csv();
-		user.load("/home/safa/git/3311project/users.csv");
+		user.load("./users.csv");
 		assertTrue( user.users.toString().contains("efecan") );
 	}
 	
