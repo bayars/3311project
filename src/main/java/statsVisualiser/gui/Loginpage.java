@@ -70,7 +70,7 @@ public class Loginpage extends JFrame implements ActionListener {
 			password = passwordField.getText();
 			Csv userCredentials = new Csv();
 			try {
-				userCredentials.load("/3311project/users.csv");
+				userCredentials.load("./users.csv");
 			} catch (Exception e1) {
 				e1.printStackTrace();
 				System.out.println("File Location not Correct!!!");
