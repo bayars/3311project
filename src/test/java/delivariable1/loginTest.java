@@ -22,7 +22,7 @@ public class loginTest {
 	
 	@Test
 	public void ValidCredentialUserLogin() throws Exception {
-		Loginpage login = new Loginpage();
+		Loginpage login = Loginpage.getInstance();
 		ArrayList<String> usernameList = new ArrayList<String>();
 		ArrayList<String> passswordList = new ArrayList<String>();
 		usernameList.add("safa");
@@ -34,7 +34,7 @@ public class loginTest {
 	
 	@Test
 	public void InvalidCredentialUserLogin() throws Exception {
-		Loginpage login = new Loginpage();
+		Loginpage login = Loginpage.getInstance();
 		ArrayList<String> usernameList = new ArrayList<String>();
 		ArrayList<String> passswordList = new ArrayList<String>();
 		usernameList.add("safa");

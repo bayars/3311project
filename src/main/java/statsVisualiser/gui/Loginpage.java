@@ -20,6 +20,7 @@ import login.User;
 public class Loginpage extends JFrame implements ActionListener {
 	
     private static final long serialVersionUID = 1L;
+    private static Loginpage loginpageInstance = null;
 
 	Container container=getContentPane();
 	
@@ -29,11 +30,18 @@ public class Loginpage extends JFrame implements ActionListener {
     JPasswordField passwordField=new JPasswordField();
     JButton submitButton=new JButton("Submit!");
     
-	public Loginpage(){
+	private Loginpage(){
 		container.setLayout(null);
 		setLocationAndSize();
         addComponentsToContainer();
         listenButtons();
+   }
+	
+   public static Loginpage getInstance() {
+	   if( loginpageInstance == null) {
+		   loginpageInstance = new Loginpage();
+	   }
+	   return loginpageInstance;
    }
 
    public void setLocationAndSize()
