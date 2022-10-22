@@ -1,21 +1,15 @@
 package statsVisualiser.gui;
 
 import java.awt.BasicStroke;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
+
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.jfree.chart.ChartFactory;
@@ -41,12 +35,13 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import analysis.Analysis;
-import fetchers.Data;
 import fetchers.DataSet;
 import fetchers.PieDataSet;
 import fetchers.Point;
 
 public class Graph extends JFrame {
+
+	private static final long serialVersionUID = 1L;
 
 	/*
 	 * A1. Displayed as 3-series graphs, the annual percentage change of
@@ -163,25 +158,21 @@ public class Graph extends JFrame {
 		pie.add(chartPanel);
 		return pie;
 	}
-	
+
 	// -------------------------Pie--------------------------------------------------------------------------------
 
 	public static JPanel createPie(String country, int yearStart, int yearEnd, String analysis) {
 
 		JPanel pie = new JPanel();
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		PieDataSet pds = Analysis.getPieData(country, yearStart, yearEnd, analysis);
+		//System.out.println(pds + "\n");
 
-		if (analysis == "a4") {
-			PieDataSet pds = Analysis.average(Data.fetchData(country, yearStart, yearEnd, "AG.LND.FRST.ZS"));
-			dataset.addValue(pds.getSections().get(0), "Forest area", "Forest area (% of land area)");
-			dataset.addValue(pds.getSections().get(1), "Land for other uses", "Forest area (% of land area)");
+		List<String> captions = Analysis.captions(analysis);
+		//System.out.println(captions.get(index));
 
-		} else if (analysis == "a5") {
-			PieDataSet pds = Analysis.average(Data.fetchData(country, yearStart, yearEnd, "SE.XPD.TOTL.GD.ZS"));
-			dataset.addValue(pds.getSections().get(0), "Education",
-					"Government expenditure on education (as % of GDP)");
-			dataset.addValue(pds.getSections().get(1), "Other", "Government expenditure on education (as % of GDP)");
-		}
+		dataset.addValue(pds.getSections().get(0), captions.get(0), captions.get(2));
+		dataset.addValue(pds.getSections().get(1), captions.get(1), captions.get(2));
 
 		JFreeChart pieChart = ChartFactory.createMultiplePieChart(analysis, dataset, TableOrder.BY_COLUMN, true, true,
 				false);
@@ -199,176 +190,42 @@ public class Graph extends JFrame {
 
 		// create new JPanel for Graph
 		JPanel line = new JPanel();
+		int i = 0;
+		int j = 0;
+		XYSeriesCollection dataset;
+		List<XYSeries> series = new ArrayList<XYSeries>();
+		List<List<Point>> points = new ArrayList<List<Point>>();
+		
+		List<DataSet> data = Analysis.getData(country, yearStart, yearEnd, analysis);
+		List<String> captions = Analysis.captions(analysis);
+		
+		//System.out.println(data.size());
+		for (String s : captions) {
+			System.out.println(s);
+			XYSeries newseries = new XYSeries(s);
+			series.add(newseries);
+			points.add(data.get(i).getPoints());
+			i++;
+		}
 
-		XYSeriesCollection dataset = null;
-
-		// if analysis 1:
-		if (analysis == "a1") {
-			// create 3 datasets corresponding to annual percent change of 1, 2, and 3
-			DataSet ds1 = Analysis
-					.annualPercentChange(Data.fetchData(country, yearStart - 1, yearEnd, "EN.ATM.CO2E.PC"));
-			DataSet ds2 = Analysis
-					.annualPercentChange(Data.fetchData(country, yearStart - 1, yearEnd, "EG.USE.PCAP.KG.OE"));
-			DataSet ds3 = Analysis
-					.annualPercentChange(Data.fetchData(country, yearStart - 1, yearEnd, "EN.ATM.PM25.MC.M3"));
-
-			XYSeries series1 = new XYSeries("CO2 emissions (as metric tons per capita)");
-			XYSeries series2 = new XYSeries("Energy use (as kg of oil equivalent per capita)");
-			XYSeries series3 = new XYSeries(
-					"PM2.5 air pollution, mean annual exposure \n (as micrograms per cubic meter)");
-
-			List<Point> points1 = ds1.getPoints();
-			List<Point> points2 = ds2.getPoints();
-			List<Point> points3 = ds3.getPoints();
-
-			// plot the graphs
-			int x = yearStart;
-			for (int i = 0; i < (yearEnd - yearStart) + 1; i++) {
-				double y1 = points1.get(i).y;
-				double y2 = points2.get(i).y;
-				double y3 = points3.get(i).y;
-				if (y1 > -100 && y1 < 100 && y1 != 0) {
-					series1.add(x, y1);
+		// plot the graphs
+		int x = yearStart;
+		for (i = 0; i < (yearEnd - yearStart) + 1; i++) {
+			List<Double> y = new ArrayList<Double>();
+			for (j = 0; j < points.size(); j++) {
+				y.add(points.get(j).get(i).y);
+				if (y.get(j) > -100 && y.get(j) < 100 && y.get(j) != 0) {
+					series.get(j).add(x, y.get(j));
 				}
-				if (y2 > -100 && y2 < 100 && y2 != 0) {
-					series2.add(x, y2);
-				}
-				if (y3 > -100 && y3 < 100 && y3 != 0) {
-					series3.add(x, y3);
-				}
-
-				x++;
 			}
-			dataset = new XYSeriesCollection();
-			dataset.addSeries(series1);
-			dataset.addSeries(series2);
-			dataset.addSeries(series3);
+			System.out.println(y);
+			x++;
+		}
 
-			// if analysis 2:
-		} else if (analysis == "a2") {
-			DataSet ds1 = Analysis
-					.annualPercentChange(Data.fetchData(country, yearStart - 1, yearEnd, "EN.ATM.PM25.MC.M3"));
-			DataSet ds2 = Analysis
-					.annualPercentChange(Data.fetchData(country, yearStart - 1, yearEnd, "AG.LND.FRST.ZS"));
+		dataset = new XYSeriesCollection();
 
-			XYSeries series1 = new XYSeries(
-					"PM2.5 air pollution, mean annual \n exposure (as micrograms per cubic meter)");
-			XYSeries series2 = new XYSeries("Forest area (as % of land area)");
-
-			List<Point> points1 = ds1.getPoints();
-			List<Point> points2 = ds2.getPoints();
-
-			// plot the graphs
-			int x = yearStart;
-			for (int i = 0; i < (yearEnd - yearStart) + 1; i++) {
-				double y1 = points1.get(i).y;
-				double y2 = points2.get(i).y;
-				if (y1 > -100 && y1 < 100 && y1 != 0) {
-					series1.add(x, y1);
-				}
-				if (y2 > -100 && y2 < 100 && y2 != 0) {
-					series2.add(x, y2);
-				}
-				x++;
-			}
-			dataset = new XYSeriesCollection();
-			dataset.addSeries(series1);
-			dataset.addSeries(series2);
-
-			// if analysis 3:
-		} else if (analysis == "a3") {
-			DataSet ds = Analysis.ratio(Data.fetchData(country, yearStart, yearEnd, "EN.ATM.CO2E.PC"),
-					Data.fetchData(country, yearStart, yearEnd, "NY.GDP.PCAP.CD"));
-
-			XYSeries series = new XYSeries(
-					"CO2 emissions (as metric tons per capita) \n/ GDP per capita (as current US$)");
-
-			List<Point> points = ds.getPoints();
-
-			int x = yearStart;
-			for (int i = 0; i < (yearEnd - yearStart) + 1; i++) {
-				double y = points.get(i).y;
-				series.add(x, y);
-				x++;
-			}
-			dataset = new XYSeriesCollection();
-			dataset.addSeries(series);
-
-			// if analysis 6: (WTF IS THIS)
-		} else if (analysis == "a6") {
-
-			DataSet ds = Analysis.ratio2(Data.fetchData(country, yearStart, yearEnd, "SH.XPD.CHEX.PC.CD"),
-					Data.fetchData(country, yearStart, yearEnd, "SP.POP.TOTL"),
-					Data.fetchData(country, yearStart, yearEnd, "SH.MED.BEDS.ZS"));
-
-			XYSeries series = new XYSeries(
-					"Current health expenditure (per 1,000 people) \n" + "/ Hospital beds (per 1,000 people)");
-
-			List<Point> points = ds.getPoints();
-
-			int x = yearStart;
-			for (int i = 0; i < (yearEnd - yearStart) + 1; i++) {
-				double y = points.get(i).y;
-				series.add(x, y);
-				x++;
-			}
-			dataset = new XYSeriesCollection();
-			dataset.addSeries(series);
-
-			// if analysis 7: (DS1 has no data)
-		} else if (analysis == "a7") {
-			DataSet ds1 = Data.fetchData(country, yearStart, yearEnd, "SH.ACS.MONY.Q1.ZS");
-			DataSet ds2 = Data.fetchData(country, yearStart, yearEnd, "SP.DYN.IMRT.IN");
-
-			XYSeries series1 = new XYSeries(
-					"Problems in accessing health care (getting money for treatment) (% of women): Q1 (lowest wealth)");
-			XYSeries series2 = new XYSeries("Mortality rate, infant (per 1,000 live births)");
-
-			List<Point> points1 = ds1.getPoints();
-			List<Point> points2 = ds2.getPoints();
-
-			// plot the graphs
-			int x = yearStart;
-			for (int i = 0; i < (yearEnd - yearStart) + 1; i++) {
-				double y1 = points1.get(i).y;
-				double y2 = points2.get(i).y;
-				series1.add(x, y1);
-				series2.add(x, y2);
-				x++;
-			}
-			dataset = new XYSeriesCollection();
-			dataset.addSeries(series1);
-			dataset.addSeries(series2);
-
-			// if analysis 8:
-		} else if (analysis == "a8") {
-			DataSet ds1 = Analysis
-					.annualPercentChange(Data.fetchData(country, yearStart - 1, yearEnd, "SE.XPD.TOTL.GD.ZS"));
-			DataSet ds2 = Analysis
-					.annualPercentChange(Data.fetchData(country, yearStart - 1, yearEnd, "SH.XPD.CHEX.GD.ZS"));
-
-			XYSeries series1 = new XYSeries("Government expenditure on education, total (% of GDP) ");
-			XYSeries series2 = new XYSeries("Current health expenditure (% of GDP)");
-
-			List<Point> points1 = ds1.getPoints();
-			List<Point> points2 = ds2.getPoints();
-
-			// plot the graphs
-			int x = yearStart;
-			for (int i = 0; i < (yearEnd - yearStart) + 1; i++) {
-				double y1 = points1.get(i).y;
-				double y2 = points2.get(i).y;
-				if (y1 > -100 && y1 < 100 && y1 != 0) {
-					series1.add(x, y1);
-				}
-				if (y2 > -100 && y2 < 100 && y2 != 0) {
-					series2.add(x, y2);
-				}
-				x++;
-			}
-			dataset = new XYSeriesCollection();
-			dataset.addSeries(series1);
-			dataset.addSeries(series2);
+		for (i = 0; i < series.size(); i++) {
+			dataset.addSeries(series.get(i));
 		}
 
 		// Formatting
@@ -407,264 +264,45 @@ public class Graph extends JFrame {
 
 		JPanel bar = new JPanel();
 		CategoryPlot plot = new CategoryPlot();
+		int i = 0;
+		int j = 0;
+		List<List<Point>> points = new ArrayList<List<Point>>();
+		List<DefaultCategoryDataset> dataset = new ArrayList<DefaultCategoryDataset>();
+		List<BarRenderer> barrenderer = new ArrayList<BarRenderer>();
+		
+		List<DataSet> data = Analysis.getData(country, yearStart, yearEnd, analysis);
+		List<String> captions = Analysis.captions(analysis);
 
-		// if analysis 1:
-		if (analysis == "a1") {
-
-			DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-			DefaultCategoryDataset dataset2 = new DefaultCategoryDataset();
-			DefaultCategoryDataset dataset3 = new DefaultCategoryDataset();
-
-			// create 3 datasets corresponding to annual percent change of 1, 2, and 3
-			DataSet ds1 = Analysis
-					.annualPercentChange(Data.fetchData(country, yearStart - 1, yearEnd, "EN.ATM.CO2E.PC"));
-			DataSet ds2 = Analysis
-					.annualPercentChange(Data.fetchData(country, yearStart - 1, yearEnd, "EG.USE.PCAP.KG.OE"));
-			DataSet ds3 = Analysis
-					.annualPercentChange(Data.fetchData(country, yearStart - 1, yearEnd, "EN.ATM.PM25.MC.M3"));
-
-			List<Point> points1 = ds1.getPoints();
-			List<Point> points2 = ds2.getPoints();
-			List<Point> points3 = ds3.getPoints();
-
-			// plot the graphs
-			int x = yearStart;
-			for (int i = 0; i < (yearEnd - yearStart) + 1; i++) {
-				double y1 = points1.get(i).y;
-				double y2 = points2.get(i).y;
-				double y3 = points3.get(i).y;
-				if (y1 > -100 && y1 < 100 && y1 != 0) {
-					dataset.setValue(y1, "CO2 emissions (as metric tons per capita)", String.valueOf(x));
-				}
-				if (y2 > -100 && y2 < 100 && y2 != 0) {
-					dataset2.setValue(y2, "Energy use (as kg of oil equivalent per capita)", String.valueOf(x));
-				}
-				if (y3 > -100 && y3 < 100 && y3 != 0) {
-					dataset3.setValue(y3, "PM2.5 air pollution, mean annual exposure \n (as micrograms per cubic meter)",
-							String.valueOf(x));
-				}
-
-				x++;
-			}
-
-			BarRenderer barrenderer1 = new BarRenderer();
-			BarRenderer barrenderer2 = new BarRenderer();
-			BarRenderer barrenderer3 = new BarRenderer();
-
-			plot.setDataset(0, dataset);
-			plot.setRenderer(0, barrenderer1);
-			CategoryAxis domainAxis = new CategoryAxis("Year");
-			plot.setDomainAxis(domainAxis);
-			plot.setRangeAxis(new NumberAxis(""));
-
-			plot.setDataset(1, dataset2);
-			plot.setRenderer(1, barrenderer2);
-			plot.setRangeAxis(1, new NumberAxis(""));
-
-			plot.setDataset(1, dataset3);
-			plot.setRenderer(1, barrenderer3);
-			plot.setRangeAxis(1, new NumberAxis(""));
-
-			plot.mapDatasetToRangeAxis(0, 0);// 1st dataset to 1st y-axis
-			plot.mapDatasetToRangeAxis(1, 1); // 2nd dataset to 2nd y-axis
-
-			// if analysis 2:
-		} else if (analysis == "a2") {
-
-			DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-			DefaultCategoryDataset dataset2 = new DefaultCategoryDataset();
-
-			DataSet ds1 = Analysis
-					.annualPercentChange(Data.fetchData(country, yearStart - 1, yearEnd, "EN.ATM.PM25.MC.M3"));
-			DataSet ds2 = Analysis
-					.annualPercentChange(Data.fetchData(country, yearStart - 1, yearEnd, "AG.LND.FRST.ZS"));
-
-			List<Point> points1 = ds1.getPoints();
-			List<Point> points2 = ds2.getPoints();
-
-			// plot the graphs
-			int x = yearStart;
-			for (int i = 0; i < (yearEnd - yearStart) + 1; i++) {
-				double y1 = points1.get(i).y;
-				double y2 = points2.get(i).y;
-				if (y1 > -100 && y1 < 100 && y1 != 0) {
-					dataset.setValue(y1, "PM2.5 air pollution, mean annual \n exposure (as micrograms per cubic meter)",
-							String.valueOf(x));
-				}
-				if (y2 > -100 && y2 < 100 && y2 != 0) {
-					dataset2.setValue(y2, "Forest area (as % of land area)", String.valueOf(x));
-				}
-				x++;
-			}
-
-			BarRenderer barrenderer1 = new BarRenderer();
-			BarRenderer barrenderer2 = new BarRenderer();
-
-			plot.setDataset(0, dataset);
-			plot.setRenderer(0, barrenderer1);
-			CategoryAxis domainAxis = new CategoryAxis("Year");
-			plot.setDomainAxis(domainAxis);
-			plot.setRangeAxis(new NumberAxis(""));
-
-			plot.setDataset(1, dataset2);
-			plot.setRenderer(1, barrenderer2);
-			plot.setRangeAxis(1, new NumberAxis(""));
-
-			plot.mapDatasetToRangeAxis(0, 0);// 1st dataset to 1st y-axis
-			plot.mapDatasetToRangeAxis(1, 1); // 2nd dataset to 2nd y-axis
-
-			// if analysis 3:
-		} else if (analysis == "a3") {
-
-			DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-
-			DataSet ds = Analysis.ratio(Data.fetchData(country, yearStart, yearEnd, "EN.ATM.CO2E.PC"),
-					Data.fetchData(country, yearStart, yearEnd, "NY.GDP.PCAP.CD"));
-
-			XYSeries series = new XYSeries(
-					"CO2 emissions (as metric tons per capita) \n/ GDP per capita (as current US$)");
-
-			List<Point> points = ds.getPoints();
-
-			int x = yearStart;
-			for (int i = 0; i < (yearEnd - yearStart) + 1; i++) {
-				double y = points.get(i).y;
-				dataset.setValue(y, "CO2 emissions (as metric tons per capita) / GDP per capita (as current US$)",
-						String.valueOf(x));
-
-				x++;
-			}
-
-			BarRenderer barrenderer1 = new BarRenderer();
-
-			plot.setDataset(0, dataset);
-			plot.setRenderer(0, barrenderer1);
-			CategoryAxis domainAxis = new CategoryAxis("Year");
-			plot.setDomainAxis(domainAxis);
-			plot.setRangeAxis(new NumberAxis(""));
-
-			plot.mapDatasetToRangeAxis(0, 0);// 1st dataset to 1st y-axis
-
-			// if analysis 6: (WTF IS THIS)
-		} else if (analysis == "a6") {
-
-			DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-
-			DataSet ds = Analysis.ratio2(Data.fetchData(country, yearStart, yearEnd, "SH.XPD.CHEX.PC.CD"),
-					Data.fetchData(country, yearStart, yearEnd, "SP.POP.TOTL"),
-					Data.fetchData(country, yearStart, yearEnd, "SH.MED.BEDS.ZS"));
-
-			XYSeries series = new XYSeries(
-					"Current health expenditure (per 1,000 people) \n" + "/ Hospital beds (per 1,000 people)");
-
-			List<Point> points = ds.getPoints();
-
-			int x = yearStart;
-			for (int i = 0; i < (yearEnd - yearStart) + 1; i++) {
-				double y = points.get(i).y;
-				dataset.setValue(y, "Current health expenditure (per 1,000 people) \\n\" + \"/ Hospital beds (per 1,000 people)",
-						String.valueOf(x));
-
-				x++;
-			}
-
-			BarRenderer barrenderer1 = new BarRenderer();
-
-			plot.setDataset(0, dataset);
-			plot.setRenderer(0, barrenderer1);
-			CategoryAxis domainAxis = new CategoryAxis("Year");
-			plot.setDomainAxis(domainAxis);
-			plot.setRangeAxis(new NumberAxis(""));
-
-			plot.mapDatasetToRangeAxis(0, 0);// 1st dataset to 1st y-axis
-
-			// if analysis 7: (DS1 has no data)
-		} else if (analysis == "a7") {
-
-			DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-			DefaultCategoryDataset dataset2 = new DefaultCategoryDataset();
-
-			DataSet ds1 = Data.fetchData(country, yearStart, yearEnd, "SH.ACS.MONY.Q1.ZS");
-			DataSet ds2 = Data.fetchData(country, yearStart, yearEnd, "SP.DYN.IMRT.IN");
-
-			List<Point> points1 = ds1.getPoints();
-			List<Point> points2 = ds2.getPoints();
-
-			// plot the graphs
-			int x = yearStart;
-			for (int i = 0; i < (yearEnd - yearStart) + 1; i++) {
-				double y1 = points1.get(i).y;
-				double y2 = points2.get(i).y;
-				dataset.setValue(y1,
-						"Problems in accessing health care (getting money for treatment) (% of women): Q1 (lowest wealth)",
-						String.valueOf(x));
-				dataset2.setValue(y2, "Mortality rate, infant (per 1,000 live births)", String.valueOf(x));
-				x++;
-			}
-
-			BarRenderer barrenderer1 = new BarRenderer();
-			BarRenderer barrenderer2 = new BarRenderer();
-
-			plot.setDataset(0, dataset);
-			plot.setRenderer(0, barrenderer1);
-			CategoryAxis domainAxis = new CategoryAxis("Year");
-			plot.setDomainAxis(domainAxis);
-			plot.setRangeAxis(new NumberAxis(""));
-
-			plot.setDataset(1, dataset2);
-			plot.setRenderer(1, barrenderer2);
-			plot.setRangeAxis(1, new NumberAxis(""));
-
-			plot.mapDatasetToRangeAxis(0, 0);// 1st dataset to 1st y-axis
-			plot.mapDatasetToRangeAxis(1, 1); // 2nd dataset to 2nd y-axis
-
-			// if analysis 8:
-		} else if (analysis == "a8") {
-
-			DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-			DefaultCategoryDataset dataset2 = new DefaultCategoryDataset();
-
-			DataSet ds1 = Analysis
-					.annualPercentChange(Data.fetchData(country, yearStart-1, yearEnd, "SE.XPD.TOTL.GD.ZS"));
-			DataSet ds2 = Analysis
-					.annualPercentChange(Data.fetchData(country, yearStart-1, yearEnd, "SH.XPD.CHEX.GD.ZS"));
-
-			XYSeries series1 = new XYSeries("Government expenditure on education, total (% of GDP) ");
-			XYSeries series2 = new XYSeries("Current health expenditure (% of GDP)");
-
-			List<Point> points1 = ds1.getPoints();
-			List<Point> points2 = ds2.getPoints();
-
-			// plot the graphs
-			int x = yearStart;
-			for (int i = 0; i < (yearEnd - yearStart) + 1; i++) {
-				double y1 = points1.get(i).y;
-				double y2 = points2.get(i).y;
-				if (y1 > -100 && y1 < 100 && y1 != 0) {
-					dataset.setValue(y1, "Government expenditure on education, total (% of GDP)", String.valueOf(x));
-				}
-				if (y2 > -100 && y2 < 100 && y2 != 0) {
-					dataset.setValue(y2, "Current health expenditure (% of GDP)", String.valueOf(x));
-				}
-				x++;
-			}
-
-			BarRenderer barrenderer1 = new BarRenderer();
-			BarRenderer barrenderer2 = new BarRenderer();
-
-			plot.setDataset(0, dataset);
-			plot.setRenderer(0, barrenderer1);
-			CategoryAxis domainAxis = new CategoryAxis("Year");
-			plot.setDomainAxis(domainAxis);
-			plot.setRangeAxis(new NumberAxis(""));
-
-			plot.setDataset(1, dataset2);
-			plot.setRenderer(1, barrenderer2);
-			plot.setRangeAxis(1, new NumberAxis(""));
-
-			plot.mapDatasetToRangeAxis(0, 0);// 1st dataset to 1st y-axis
-			plot.mapDatasetToRangeAxis(1, 1); // 2nd dataset to 2nd y-axis
+		for (i = 0; i < data.size(); i++) {
+			points.add(data.get(i).getPoints());
 		}
+
+		// plot the graphs
+		int x = yearStart;
+		for (i = 0; i < (yearEnd - yearStart) + 1; i++) {
+			List<Double> y = new ArrayList<Double>();
+			for (j = 0; j < points.size(); j++) {
+				y.add(points.get(j).get(i).y);
+				if (y.get(j) > -100 && y.get(j) < 100 && y.get(j) != 0) {
+					dataset.get(j).setValue(y.get(j), captions.get(j), String.valueOf(x));
+				}
+			}
+
+			x++;
+		}
+
+		CategoryAxis domainAxis = new CategoryAxis("Year");
+		plot.setDomainAxis(domainAxis);
+
+		for (i = 0; i < points.size(); i++) {
+
+			plot.setDataset(1, dataset.get(i));
+			plot.setRenderer(1, barrenderer.get(i));
+			plot.setRangeAxis(1, new NumberAxis(""));
+		}
+
+		plot.mapDatasetToRangeAxis(0, 0);// 1st dataset to 1st y-axis
+		plot.mapDatasetToRangeAxis(1, 1); // 2nd dataset to 2nd y-axis
 
 		// Formatting
 		JFreeChart barChart = new JFreeChart("", new Font("Serif", java.awt.Font.BOLD, 18), plot, true);
@@ -677,184 +315,48 @@ public class Graph extends JFrame {
 		return bar;
 
 	}
-	
+
 	// -------------------------Scatter--------------------------------------------------------------------------------
 
 	public static JPanel createScatter(String country, int yearStart, int yearEnd, String analysis) {
 
 		// create new JPanel for Graph
 		JPanel scatter = new JPanel();
-
 		TimeSeriesCollection dataset = null;
+		int i = 0;
+		int j = 0;
+		List<TimeSeries> series = new ArrayList<TimeSeries>();
+		List<List<Point>> points = new ArrayList<List<Point>>();
 
-		// if analysis 1:
-		if (analysis == "a1") {
-			// create 3 datasets corresponding to annual percent change of 1, 2, and 3
-			DataSet ds1 = Analysis.annualPercentChange(Data.fetchData(country, yearStart-1, yearEnd, "EN.ATM.CO2E.PC"));
-			DataSet ds2 = Analysis
-					.annualPercentChange(Data.fetchData(country, yearStart-1, yearEnd, "EG.USE.PCAP.KG.OE"));
-			DataSet ds3 = Analysis
-					.annualPercentChange(Data.fetchData(country, yearStart-1, yearEnd, "EN.ATM.PM25.MC.M3"));
+		List<DataSet> data = Analysis.getData(country, yearStart, yearEnd, analysis);
+		List<String> captions = Analysis.captions(analysis);
 
-			TimeSeries series1 = new TimeSeries("CO2 emissions (as metric tons per capita)");
-			TimeSeries series2 = new TimeSeries("Energy use (as kg of oil equivalent per capita)");
-			TimeSeries series3 = new TimeSeries(
-					"PM2.5 air pollution, mean annual exposure \n (as micrograms per cubic meter)");
-
-			List<Point> points1 = ds1.getPoints();
-			List<Point> points2 = ds2.getPoints();
-			List<Point> points3 = ds3.getPoints();
-
-			// plot the graphs
-			int x = yearStart;
-			for (int i = 0; i < (yearEnd - yearStart) + 1; i++) {
-				double y1 = points1.get(i).y;
-				double y2 = points2.get(i).y;
-				double y3 = points3.get(i).y;
-				if (y1 > -100 && y1 < 100 && y1 != 0) {
-					series1.add(new Year(x), y1);
-				}
-				if (y2 > -100 && y2 < 100 && y2 != 0) {
-					series2.add(new Year(x), y2);
-				}
-				if (y3 > -100 && y3 < 100 && y3 != 0) {
-					series3.add(new Year(x), y3);
-				}
-
-				x++;
-			}
-			dataset = new TimeSeriesCollection();
-			dataset.addSeries(series1);
-			dataset.addSeries(series2);
-			dataset.addSeries(series3);
-
-			// if analysis 2:
-		} else if (analysis == "a2") {
-			DataSet ds1 = Analysis
-					.annualPercentChange(Data.fetchData(country, yearStart-1, yearEnd, "EN.ATM.PM25.MC.M3"));
-			DataSet ds2 = Analysis.annualPercentChange(Data.fetchData(country, yearStart-1, yearEnd, "AG.LND.FRST.ZS"));
-
-			TimeSeries series1 = new TimeSeries(
-					"PM2.5 air pollution, mean annual \n exposure (as micrograms per cubic meter)");
-			TimeSeries series2 = new TimeSeries("Forest area (as % of land area)");
-
-			List<Point> points1 = ds1.getPoints();
-			List<Point> points2 = ds2.getPoints();
-
-			// plot the graphs
-			int x = yearStart;
-			for (int i = 0; i < (yearEnd - yearStart) + 1; i++) {
-				double y1 = points1.get(i).y;
-				double y2 = points2.get(i).y;
-				if (y1 > -100 && y1 < 100 && y1 != 0) {
-					series1.add(new Year(x), y1);
-				}
-				if (y2 > -100 && y2 < 100 && y2 != 0) {
-					series2.add(new Year(x), y2);
-				}
-				x++;
-			}
-			dataset = new TimeSeriesCollection();
-			dataset.addSeries(series1);
-			dataset.addSeries(series2);
-
-			// if analysis 3:
-		} else if (analysis == "a3") {
-			DataSet ds = Analysis.ratio(Data.fetchData(country, yearStart, yearEnd, "EN.ATM.CO2E.PC"),
-					Data.fetchData(country, yearStart, yearEnd, "NY.GDP.PCAP.CD"));
-
-			TimeSeries series = new TimeSeries(
-					"CO2 emissions (as metric tons per capita) \n/ GDP per capita (as current US$)");
-
-			List<Point> points = ds.getPoints();
-
-			int x = yearStart;
-			for (int i = 0; i < (yearEnd - yearStart) + 1; i++) {
-				double y = points.get(i).y;
-				System.out.println(x + ", " + y);
-				series.add(new Year(x), y);
-				x++;
-			}
-			dataset = new TimeSeriesCollection();
-			dataset.addSeries(series);
-
-			// if analysis 6: (WTF IS THIS)
-		} else if (analysis == "a6") {
-			DataSet ds = Analysis.ratio2(Data.fetchData(country, yearStart, yearEnd, "SH.XPD.CHEX.PC.CD"),
-					Data.fetchData(country, yearStart, yearEnd, "SP.POP.TOTL"),
-					Data.fetchData(country, yearStart, yearEnd, "SH.MED.BEDS.ZS"));
-
-
-			TimeSeries series = new TimeSeries(
-					"Current health expenditure (per 1,000 people) \n" + "/ Hospital beds (per 1,000 people)");
-			List<Point> points = ds.getPoints();
-
-			int x = yearStart;
-			for (int i = 0; i < (yearEnd - yearStart) + 1; i++) {
-				double y = points.get(i).y;
-				System.out.println(x + ", " + y);
-				series.add(new Year(x), y);
-				x++;
-			}
-			dataset = new TimeSeriesCollection();
-			dataset.addSeries(series);
-
-			// if analysis 7: (DS1 has no data)
-		} else if (analysis == "a7") {
-			DataSet ds1 = Data.fetchData(country, yearStart, yearEnd, "SH.ACS.MONY.Q1.ZS");
-			DataSet ds2 = Data.fetchData(country, yearStart, yearEnd, "SP.DYN.IMRT.IN");
-
-			TimeSeries series1 = new TimeSeries(
-					"Problems in accessing health care (getting money for treatment) (% of women): Q1 (lowest wealth)");
-			TimeSeries series2 = new TimeSeries("Mortality rate, infant (per 1,000 live births)");
-
-			List<Point> points1 = ds1.getPoints();
-			List<Point> points2 = ds2.getPoints();
-
-			// plot the graphs
-			int x = yearStart;
-			for (int i = 0; i < (yearEnd - yearStart) + 1; i++) {
-				double y1 = points1.get(i).y;
-				double y2 = points2.get(i).y;
-				series1.add(new Year(x), y1);
-				series2.add(new Year(x), y2);
-				x++;
-			}
-			dataset = new TimeSeriesCollection();
-			dataset.addSeries(series1);
-			dataset.addSeries(series2);
-
-			// if analysis 8:
-		} else if (analysis == "a8") {
-			DataSet ds1 = Analysis
-					.annualPercentChange(Data.fetchData(country, yearStart-1, yearEnd, "SE.XPD.TOTL.GD.ZS"));
-			DataSet ds2 = Analysis
-					.annualPercentChange(Data.fetchData(country, yearStart-1, yearEnd, "SH.XPD.CHEX.GD.ZS"));
-
-			TimeSeries series1 = new TimeSeries("Government expenditure on education, total (% of GDP) ");
-			TimeSeries series2 = new TimeSeries("Current health expenditure (% of GDP)");
-
-			List<Point> points1 = ds1.getPoints();
-			List<Point> points2 = ds2.getPoints();
-
-			// plot the graphs
-			int x = yearStart;
-			for (int i = 0; i < (yearEnd - yearStart) + 1; i++) {
-				double y1 = points1.get(i).y;
-				double y2 = points2.get(i).y;
-				if (y1 > -100 && y1 < 100 && y1 != 0) {
-					series1.add(new Year(x), y1);
-				}
-				if (y2 > -100 && y2 < 100 && y2 != 0) {
-					series2.add(new Year(x), y2);
-				}
-				x++;
-			}
-			dataset = new TimeSeriesCollection();
-			dataset.addSeries(series1);
-			dataset.addSeries(series2);
+		for (String s : captions) {
+			TimeSeries newseries = new TimeSeries(s);
+			series.add(newseries);
+			points.add(data.get(i).getPoints());
 		}
 
+		// plot the graphs
+		int x = yearStart;
+		for (i = 0; i < (yearEnd - yearStart) + 1; i++) {
+			List<Double> y = new ArrayList<Double>();
+			for (j = 0; j < points.size(); j++) {
+				y.add(points.get(j).get(i).y);
+				if (y.get(j) > -100 && y.get(j) < 100 && y.get(j) != 0) {
+					series.get(j).add(new Year(x), y.get(j));
+				}
+			}
+			x++;
+		}
+
+		dataset = new TimeSeriesCollection();
+
+		for (i = 0; i < series.size(); i++)
+
+		{
+			dataset.addSeries(series.get(i));
+		}
 		XYPlot plot = new XYPlot();
 		XYItemRenderer itemrenderer1 = new XYLineAndShapeRenderer(false, true);
 
@@ -876,23 +378,23 @@ public class Graph extends JFrame {
 		return scatter;
 	}
 
-	public static void main(String[] args) {
-		// dont change
-		JFrame f = new JFrame();
-		f.setSize(900, 900);
-		f.pack();
-		f.setVisible(true);
-
-		// check all analysis modes
-		String analysisMode = "a2";
-
-		// check all graph types
-		JPanel g1 = Graph.createLine("CAN", 2007, 2019, analysisMode);
-
-		// dont change
-		f.getContentPane().add(g1);
-		f.resize(500, 500);
-
-	}
+//	public static void main(String[] args) {
+//		// dont change
+//		JFrame f = new JFrame();
+//		f.setSize(900, 900);
+//		f.pack();
+//		f.setVisible(true);
+//
+//		// check all analysis modes
+//		String analysisMode = "a5";
+//
+//		// check all graph types
+//		JPanel g1 = Graph.createPie("CHN", 2008, 2008, analysisMode);
+//
+//		// dont change
+//		f.getContentPane().add(g1);
+//		f.resize(500, 500);
+//
+//	}
 
 }

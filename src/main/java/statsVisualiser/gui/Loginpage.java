@@ -3,8 +3,6 @@ package statsVisualiser.gui;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -89,6 +87,7 @@ public class Loginpage extends JFrame implements ActionListener {
 				passwordList.add(user.get(i).getPassword());
 			}
 			if ( authentication(usernameList, passwordList, username, password) ){
+				dispose();
 				Main main = new Main();
 			}else{
 				JOptionPane.showMessageDialog(this, "Login Credentials incorrect!!");

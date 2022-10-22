@@ -1,114 +1,100 @@
 package analysis;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import fetchers.Data;
 import fetchers.DataSet;
 import fetchers.PieDataSet;
-import fetchers.Point;
 
 public class Analysis {
-	/*
-	 * 	Go To document from eClass:
-	 *  EECS3311-Project-Description-Use-Cases-README-FIRST.docx
-	 *  (page 9-10)
-	 */
-	
-	
-	/*
-	 * returns a new DataSet corresponding to the annual percent change of parameter ds 
-	 */
-	public static DataSet annualPercentChange(DataSet ds) {
-		
-		DataSet sol = new DataSet();
-		//System.out.println(ds.getPoints().size());
-	
-		
-		for (int i = 1; i < ds.getPoints().size(); i++) {
-			
-			double x = ds.p.get(i).x;
-			System.out.println(x);
-			double fv = ds.p.get(i).y;
-			System.out.println(fv);
-			double iv = ds.p.get(i - 1).y;
-			double pc = ((fv - iv)/iv) * 100;
-			System.out.println(pc);
-			Point p = new Point(x, pc);
-			sol.addPoint(p);
+
+	public static List<DataSet> getData(String country, int yearStart, int yearEnd, String analysis) {
+		List<DataSet> data = new ArrayList<DataSet>();
+		if (analysis == "a1") {
+			DataSet ds1 = AnnualPercentChange
+					.getPercent(Data.fetchData(country, yearStart - 1, yearEnd, "EN.ATM.CO2E.PC"));
+			data.add(ds1);
+			DataSet ds2 = AnnualPercentChange
+					.getPercent(Data.fetchData(country, yearStart - 1, yearEnd, "EG.USE.PCAP.KG.OE"));
+			data.add(ds2);
+			DataSet ds3 = AnnualPercentChange
+					.getPercent(Data.fetchData(country, yearStart - 1, yearEnd, "EN.ATM.PM25.MC.M3"));
+			data.add(ds3);
+		} else if (analysis == "a2") {
+			DataSet ds1 = AnnualPercentChange
+					.getPercent(Data.fetchData(country, yearStart - 1, yearEnd, "EN.ATM.PM25.MC.M3"));
+			data.add(ds1);
+			DataSet ds2 = AnnualPercentChange
+					.getPercent(Data.fetchData(country, yearStart - 1, yearEnd, "AG.LND.FRST.ZS"));
+			data.add(ds2);
+		} else if (analysis == "a3") {
+			DataSet ds = Ratio.getRatio(Data.fetchData(country, yearStart, yearEnd, "EN.ATM.CO2E.PC"),
+					Data.fetchData(country, yearStart, yearEnd, "NY.GDP.PCAP.CD"));
+			data.add(ds);
+		} else if (analysis == "a6") {
+			DataSet ds = Ratio2.getRatio(Data.fetchData(country, yearStart, yearEnd, "SH.XPD.CHEX.PC.CD"),
+					Data.fetchData(country, yearStart, yearEnd, "SP.POP.TOTL"),
+					Data.fetchData(country, yearStart, yearEnd, "SH.MED.BEDS.ZS"));
+			data.add(ds);
+		} else if (analysis == "a7") {
+			DataSet ds1 = Data.fetchData(country, yearStart, yearEnd, "SH.ACS.MONY.Q1.ZS");
+			data.add(ds1);
+			DataSet ds2 = Data.fetchData(country, yearStart, yearEnd, "SP.DYN.IMRT.IN");
+			data.add(ds2);
+
+		} else if (analysis == "a8") {
+			DataSet ds1 = AnnualPercentChange
+					.getPercent(Data.fetchData(country, yearStart - 1, yearEnd, "SE.XPD.TOTL.GD.ZS"));
+			data.add(ds1);
+			DataSet ds2 = AnnualPercentChange
+					.getPercent(Data.fetchData(country, yearStart - 1, yearEnd, "SH.XPD.CHEX.GD.ZS"));
+			data.add(ds2);
 		}
-	
-		
-		return sol;
-		
-	
+		return data;
 	}
-	
-	/*
-	 * returns a new DataSet corresponding to the ratio of ds1 and ds2
-	 */
-	public static DataSet ratio(DataSet ds1, DataSet ds2) {
-		
-		//System.out.println(ds1.p.size());
-		
-		if (ds1.p.size() != ds2.p.size()) {
-			System.out.println("Data Sets different sizes");
+
+	public static PieDataSet getPieData(String country, int yearStart, int yearEnd, String analysis) {
+		PieDataSet Piedata = new PieDataSet();
+		if (analysis == "a4") {
+			Piedata = Average.getAverage(Data.fetchData(country, yearStart, yearEnd, "AG.LND.FRST.ZS"));
+		} else if (analysis == "a5") {
+			Piedata = Average.getAverage(Data.fetchData(country, yearStart, yearEnd, "SE.XPD.TOTL.GD.ZS"));
 		}
-		
-		DataSet sol = new DataSet();
-		
-		for (int i = 0; i < ds1.p.size(); i++) {
-			double x = ds1.p.get(i).x;
-			System.out.println(x);
-			double y = ds1.p.get(i).y / ds2.p.get(i).y;
-			System.out.println(y);
-			Point p = new Point(x, y);
-			sol.addPoint(p);
-		}
-		return sol;
+		return Piedata;
 	}
-	
-	public static DataSet ratio2(DataSet ds1, DataSet ds2, DataSet ds3) {
-		
-		//System.out.println(ds1.p.size());
-		
-		if (ds1.p.size() != ds2.p.size() && ds2.p.size() != ds3.p.size()) {
-			System.out.println("Data Sets different sizes");
+
+	public static List<String> captions(String analysis) {
+		List<String> captions = new ArrayList<String>();
+		if (analysis == "a1") {
+			captions.add("CO2 emissions (as metric tons per capita)");
+			captions.add("Energy use (as kg of oil equivalent per capita)");
+			captions.add("PM2.5 air pollution, mean annual exposure \n (as micrograms per cubic meter)");
+		} else if (analysis == "a2") {
+			captions.add("PM2.5 air pollution, mean annual \n exposure (as micrograms per cubic meter)");
+			captions.add("Forest area (as % of land area)");
+		} else if (analysis == "a3") {
+			captions.add("CO2 emissions (as metric tons per capita) \n/ GDP per capita (as current US$)");
+		} else if (analysis == "a4") {
+			captions.add("Forest area");
+			captions.add("Land for other uses");
+			captions.add("Forest area (% of land area)");
+		} else if (analysis == "a5") {
+			captions.add("Education");
+			captions.add("Other");
+			captions.add("Government expenditure on education (as % of GDP)");
+		} else if (analysis == "a6") {
+			captions.add(
+					"Current health expenditure (per 1,000 people) \n / Hospital beds (per 1,000 people)");
+		} else if (analysis == "a7") {
+			captions.add(
+					"Problems in accessing health care (getting money for treatment) (% of women): Q1 (lowest wealth)");
+			captions.add("Mortality rate, infant (per 1,000 live births)");
+		} else if (analysis == "a8") {
+			captions.add("CO2 emissions (as metric tons per capita)");
+			captions.add("Energy use (as kg of oil equivalent per capita)");
 		}
-		
-		DataSet sol = new DataSet();
-		
-		for (int i = 0; i < ds1.p.size(); i++) {
-			double x = ds1.p.get(i).x;
-			System.out.println(x);
-			double y = ((ds1.p.get(i).y / ds2.p.get(i).y) * 1000) / ds3.p.get(i).y;
-			System.out.println(y);
-			Point p = new Point(x, y);
-			sol.addPoint(p);
-		}
-		return sol;
+		return captions;
 	}
-	
-	
-	/*
-	 * return 
-	 */
-	public static PieDataSet average(DataSet ds) {
-		PieDataSet sol = new PieDataSet();
-		double sum = 0;
-		//System.out.println(ds.p.size());
-		for (int i = 0; i < ds.p.size(); i++) {
-			sum += ds.p.get(i).y;
-			System.out.println(sum);
-		}
-		sol.ds.add(sum / ds.p.size());
-		sol.ds.add(100 - (sum / ds.p.size()));
-		return sol;
-		
-	}
-	
-	public static void main(String[] args) {
-		DataSet here = Analysis.ratio(Data.fetchData("CAN", 2011, 2019, "EN.ATM.CO2E.PC"), 
-				Data.fetchData("CAN", 2011, 2019, "NY.GDP.PCAP.CD"));
-		//System.out.println(here.getPoints());
-	}
-	
-	
+
 }

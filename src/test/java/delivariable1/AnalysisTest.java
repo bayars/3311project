@@ -1,11 +1,11 @@
 package delivariable1;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
 import analysis.Analysis;
-import fetchers.Data;
 import fetchers.DataSet;
 import fetchers.PieDataSet;
 import fetchers.Point;
@@ -14,8 +14,9 @@ class AnalysisTest {
 
 	@Test
 	public void Analysis1Test() throws Exception {
+		java.util.List<DataSet> data = Analysis.getData("CA", 2013, 2014, "a1");
 
-		DataSet setA1 = Analysis.annualPercentChange(Data.fetchData("CAN", 2012, 2014, "EN.ATM.CO2E.PC"));
+		DataSet setA1 = data.get(0);
 
 		DataSet setA2 = new DataSet();
 		Point p1 = new Point(2013.0, 0.66088205886719);
@@ -32,7 +33,7 @@ class AnalysisTest {
 			assertTrue(setA1.p.get(i).y == setA2.p.get(i).y);
 		}
 
-		DataSet setB1 = Analysis.annualPercentChange(Data.fetchData("CAN", 2012, 2014, "EG.USE.PCAP.KG.OE"));
+		DataSet setB1 = data.get(1);
 
 		DataSet setB2 = new DataSet();
 		Point p3 = new Point(2013.0, 0.13337046905228936);
@@ -49,7 +50,7 @@ class AnalysisTest {
 			assertTrue(setB1.p.get(i).y == setB2.p.get(i).y);
 		}
 
-		DataSet setC1 = Analysis.annualPercentChange(Data.fetchData("CAN", 2012, 2014, "EN.ATM.PM25.MC.M3"));
+		DataSet setC1 = data.get(2);
 
 		DataSet setC2 = new DataSet();
 		Point p5 = new Point(2013.0, -3.89488567794262);
@@ -71,7 +72,10 @@ class AnalysisTest {
 	@Test
 	public void Analysis2Test() throws Exception {
 
-		DataSet setA1 = Analysis.annualPercentChange(Data.fetchData("CA", 2015, 2017, "EN.ATM.PM25.MC.M3"));
+		java.util.List<DataSet> data = Analysis.getData("CA", 2016, 2017, "a2");
+		// System.out.println(data.size());
+
+		DataSet setA1 = data.get(0);
 
 		DataSet setA2 = new DataSet();
 		Point p1 = new Point(2016.0, -8.424812456352997);
@@ -88,7 +92,7 @@ class AnalysisTest {
 			assertTrue(setA1.p.get(i).y == setA2.p.get(i).y);
 		}
 
-		DataSet setB1 = Analysis.annualPercentChange(Data.fetchData("CA", 2015, 2017, "AG.LND.FRST.ZS"));
+		DataSet setB1 = data.get(1);
 
 		DataSet setB2 = new DataSet();
 		Point p3 = new Point(2016.0, -0.011428465741217331);
@@ -110,8 +114,9 @@ class AnalysisTest {
 	@Test
 	public void Analysis3Test() throws Exception {
 
-		DataSet set = Analysis.ratio(Data.fetchData("USA", 2010, 2016, "EN.ATM.CO2E.PC"),
-				Data.fetchData("USA", 2010, 2016, "NY.GDP.PCAP.CD"));
+		java.util.List<DataSet> data = Analysis.getData("USA", 2010, 2016, "a3");
+
+		DataSet set = data.get(0);
 
 		DataSet set2 = new DataSet();
 		Point p1 = new Point(2010.0, 0.00035830437923793954);
@@ -141,37 +146,29 @@ class AnalysisTest {
 
 	@Test
 	public void Analysis4Test() throws Exception {
+		PieDataSet data = Analysis.getPieData("FR", 2005, 2020, "a4");
 
-		try {
-			PieDataSet set = Analysis.average(Data.fetchData("FR", 2005, 2020, "AG.LND.FRST.ZS"));
+		PieDataSet set2 = new PieDataSet();
+		set2.addSection(30.3158506785595);
+		set2.addSection(100 - 30.3158506785595);
 
-			PieDataSet set2 = new PieDataSet();
-			set2.addSection(30.3158506785595);
-			for (int i = 0; i < set.length(); i++) {
-				assertTrue(set.ds.get(i) == set2.ds.get(i));
-			}
-		} catch (AssertionError e) {
-			System.out.println(e.getMessage());
+		for (int i = 0; i < data.length(); i++) {
+			assertEquals(data.ds.get(0), set2.ds.get(0), 0.0);
 		}
-
 	}
 
 	@Test
 	public void Analysis5Test() throws Exception {
 
-		PieDataSet set = Analysis.average(Data.fetchData("CHN", 2008, 2008, "SE.XPD.TOTL.GD.ZS"));
+		PieDataSet data = Analysis.getPieData("CHN", 2008, 2008, "a5");
 
 		PieDataSet set2 = new PieDataSet();
+
 		set2.addSection(3.63000011444092);
 		set2.addSection(100.0 - 3.63000011444092);
 
-		System.out.println(set2.ds.get(0));
-		try {
-			for (int i = 0; i < set.length(); i++) {
-				assertTrue(set.ds.get(i) == set2.ds.get(i));
-			}
-		} catch (AssertionError e) {
-			System.out.println(e.getMessage());
+		for (int i = 0; i < data.length(); i++) {
+			assertEquals(data.ds.get(0), set2.ds.get(0), 0.0);
 		}
 
 	}
@@ -179,17 +176,18 @@ class AnalysisTest {
 	@Test
 	public void Analysis6Test() throws Exception {
 
-		DataSet set = Analysis.ratio2(Data.fetchData("CA", 2000, 2003, "SH.XPD.CHEX.GD.ZS"),
-				Data.fetchData("CAN", 2000, 2003, "SP.POP.TOTL"), Data.fetchData("CAN", 2000, 2003, "SH.MED.BEDS.ZS"));
+		java.util.List<DataSet> data = Analysis.getData("CA", 2000, 2003, "a6");
+
+		DataSet set = data.get(0);
 
 		DataSet set2 = new DataSet();
-		Point p1 = new Point(2000.0, 0.00007129817816171667);
+		Point p1 = new Point(2000.0, 0.017356419169708138);
 		set2.addPoint(p1);
-		Point p2 = new Point(2001.0, 0.000075347601464832);
+		Point p2 = new Point(2001.0, 0.018030744017429327);
 		set2.addPoint(p2);
-		Point p3 = new Point(2002.0, 0.0000775878266641603);
+		Point p3 = new Point(2002.0, 0.01891636366040299);
 		set2.addPoint(p3);
-		Point p4 = new Point(2003.0, 0.00008135953082295882);
+		Point p4 = new Point(2003.0, 0.023140584385238725);
 		set2.addPoint(p4);
 
 		assertTrue(set.length() == set2.length());
@@ -205,7 +203,9 @@ class AnalysisTest {
 	@Test
 	public void Analysis8Test() throws Exception {
 
-		DataSet setA1 = Analysis.annualPercentChange(Data.fetchData("BRA", 2000, 2002, "SE.XPD.TOTL.GD.ZS"));
+		java.util.List<DataSet> data = Analysis.getData("BRA", 2001, 2002, "a8");
+
+		DataSet setA1 = data.get(0);
 
 		DataSet setA2 = new DataSet();
 		Point p1 = new Point(2001.0, -2.639954457561476);
@@ -222,7 +222,7 @@ class AnalysisTest {
 			assertTrue(setA1.p.get(i).y == setA2.p.get(i).y);
 		}
 
-		DataSet setB1 = Analysis.annualPercentChange(Data.fetchData("BRA", 2000, 2002, "SH.XPD.CHEX.GD.ZS"));
+		DataSet setB1 = data.get(1);
 
 		DataSet setB2 = new DataSet();
 		Point p3 = new Point(2001.0, 2.5797720973728544);

@@ -3,18 +3,9 @@ package fetchers;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Scanner;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
-
-import analysis.Analysis;
 
 
 public class Data {
@@ -68,30 +59,30 @@ public class Data {
 		return ds;
 	}
 	
-	public static void main(String[] args) {
-	
-		String country = "CAN";
-		int startYear = 2000;
-		int endYear = 2021;
-		
-	
-		String a1 = "SP.POP.TOTL";
-		String a2 = "EN.ATM.CO2E.PC";
-		String a3 ="EN.ATM.PM25.MC.M3";
-		String a4 ="AG.LND.FRST.ZS";
-		String a5 ="NY.GDP.PCAP.CD";
-		String a6 ="SH.MED.BEDS.ZS";
-		String a7 ="SE.XPD.TOTL.GD.ZS";
-		String a8 ="SH.STA.MMRT";
-		String a9 ="SH.XPD.CHEX.PC.CD";
-		String a10 ="SH.XPD.CHEX.GD.ZS";
-		String a11 ="SP.DYN.IMRT.IN";
-		String a12 ="SH.ACS.MONY.Q1.ZS";
-		
-		
-		DataSet ds = Data.fetchData(country, startYear, endYear, a4);
-		PieDataSet pie = Analysis.average(ds);
-		System.out.println(pie.getSections());
+//	public static void main(String[] args) {
+//	
+//		String country = "CAN";
+//		int startYear = 2000;
+//		int endYear = 2021;
+//		
+//	
+//		String a1 = "SP.POP.TOTL";
+//		String a2 = "EN.ATM.CO2E.PC";
+//		String a3 ="EN.ATM.PM25.MC.M3";
+//		String a4 ="AG.LND.FRST.ZS";
+//		String a5 ="NY.GDP.PCAP.CD";
+//		String a6 ="SH.MED.BEDS.ZS";
+//		String a7 ="SE.XPD.TOTL.GD.ZS";
+//		String a8 ="SH.STA.MMRT";
+//		String a9 ="SH.XPD.CHEX.PC.CD";
+//		String a10 ="SH.XPD.CHEX.GD.ZS";
+//		String a11 ="SP.DYN.IMRT.IN";
+//		String a12 ="SH.ACS.MONY.Q1.ZS";
+//		
+//		
+//		DataSet ds = Data.fetchData(country, startYear, endYear, a4);
+//		PieDataSet pie = Average.getAverage(ds);
+//		System.out.println(pie.getSections());
 		
 		//
 		//DataSet ds = Data.fetchData(country, startYear, endYear, a2);
@@ -104,7 +95,7 @@ public class Data {
 		
 		//DataSet dsLine = Analysis.annualPercentChange(ds);
 		//System.out.println(dsLine.getPoints());
-	}	
+//	}	
 	
 }
 

@@ -1,37 +1,23 @@
 package statsVisualiser.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.util.Stack;
 import java.util.Vector;
-
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 
 public class Main  {
 	
-private static final long serialVersionUID = 1L;
-	
-	
-
-	//dynamic values of buttons
+//dynamic values of buttons
 	public String country;
 	public int yearStart, yearEnd;
 	
@@ -65,26 +51,13 @@ private static final long serialVersionUID = 1L;
 
 	
 	public Main() {
-		
-
-
-
-
-
 		panelNorth.setLayout(new FlowLayout());
 		panelSouth.setLayout(new FlowLayout());
 		panelCenter.setLayout(new GridLayout(0,3));
-
-		
-
 		f.add(panelNorth,BorderLayout.NORTH);
 		f.add(panelSouth,BorderLayout.SOUTH);
 		f.add(panelCenter,BorderLayout.CENTER);
-
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		
-		
 		Vector<String> countriesNames = new Vector<String>();
 		countriesNames.add("USA");
 		countriesNames.add("Canada");
