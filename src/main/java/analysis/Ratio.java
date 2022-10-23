@@ -3,7 +3,7 @@ package analysis;
 import fetchers.DataSet;
 import fetchers.Point;
 
-public class Ratio {
+public class Ratio extends Analysis{
 	public static DataSet getRatio(DataSet ds1, DataSet ds2) {
 
 		// System.out.println(ds1.p.size());

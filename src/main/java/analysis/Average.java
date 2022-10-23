@@ -3,7 +3,7 @@ package analysis;
 import fetchers.DataSet;
 import fetchers.PieDataSet;
 
-public class Average {
+public class Average extends Analysis {
 	public static PieDataSet getAverage(DataSet ds) {
 		PieDataSet sol = new PieDataSet();
 		double sum = 0;

@@ -3,7 +3,7 @@ package analysis;
 import fetchers.DataSet;
 import fetchers.Point;
 
-public class AnnualPercentChange {
+public class AnnualPercentChange extends Analysis {
 	public static DataSet getPercent(DataSet ds) {
 
 		DataSet sol = new DataSet();
