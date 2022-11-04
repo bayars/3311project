@@ -7,23 +7,17 @@ import java.util.Scanner;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 
+import analysis.Analysis;
+
 
 public class Data {
-	
-	
-	public static String makeURL(String country, int yearStart, int yearEnd, String analysisMode) {
-		String url = "http://api.worldbank.org/v2/country/%s/indicator/" + analysisMode + "?date=%d:%d&format=json";
-		String urlFormatted = String.format(url, country, yearStart, yearEnd);
-		return urlFormatted;
-	}
+
 	
 	
 	public static DataSet fetchData(String country, int yearStart, int yearEnd, String analysisMode) {
 
-		String urlString = makeURL(country, yearStart, yearEnd, analysisMode);
+		String urlString = new Url.UrlBuilder().setCountry(country).setYearStart(yearStart).setYearEnd(yearEnd).setanalysisMode(analysisMode).build().toString();
 		DataSet ds = new DataSet();
-
-		
 
 		try {
 			URL url = new URL(urlString);
@@ -59,14 +53,14 @@ public class Data {
 		return ds;
 	}
 	
-//	public static void main(String[] args) {
+	public static void main(String[] args) {
 //	
-//		String country = "CAN";
-//		int startYear = 2000;
-//		int endYear = 2021;
+		String country = "CAN";
+		int startYear = 2000;
+		int endYear = 2021;
 //		
 //	
-//		String a1 = "SP.POP.TOTL";
+		String a1 = "SP.POP.TOTL";
 //		String a2 = "EN.ATM.CO2E.PC";
 //		String a3 ="EN.ATM.PM25.MC.M3";
 //		String a4 ="AG.LND.FRST.ZS";
@@ -80,14 +74,13 @@ public class Data {
 //		String a12 ="SH.ACS.MONY.Q1.ZS";
 //		
 //		
-//		DataSet ds = Data.fetchData(country, startYear, endYear, a4);
+//		DataSet ds = Data.fetchData(country, startYear, endYear, a1);
 //		PieDataSet pie = Average.getAverage(ds);
 //		System.out.println(pie.getSections());
 		
 		//
-		//DataSet ds = Data.fetchData(country, startYear, endYear, a2);
-		//DataSet ds2 = Data.fetchData(country, startYear, endYear, a5);
-		
+		DataSet ds = Data.fetchData(country, startYear, endYear, a1);
+		System.out.println(ds.getPoints());
 		
 		//DataSet ratio = Analysis.ratio(ds, ds2);
 		//System.out.println(ratio.getPoints());
@@ -95,7 +88,7 @@ public class Data {
 		
 		//DataSet dsLine = Analysis.annualPercentChange(ds);
 		//System.out.println(dsLine.getPoints());
-//	}	
+	}	
 	
 }
 
