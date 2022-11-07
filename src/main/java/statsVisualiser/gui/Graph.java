@@ -43,121 +43,7 @@ public class Graph extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	/*
-	 * A1. Displayed as 3-series graphs, the annual percentage change of
-	 * EN.ATM.CO2E.PC - CO2 emissions (as metric tons per capita) EG.USE.PCAP.KG.OE
-	 * - Energy use (as kg of oil equivalent per capita) EN.ATM.PM25.MC.M3 - PM2.5
-	 * air pollution, mean annual exposure (as micrograms per cubic meter) (3-series
-	 * graph).
-	 * 
-	 * The change rate for the first selected year would be with respect to the
-	 * previous year. For example, if you select as a range 2018 – 2021 the annual
-	 * change rate for 2018 would be between 2017 and 2018.
-	 * 
-	 * A2. Displayed as 2-series graphs, the annual percentage change of
-	 * EN.ATM.PM25.MC.M3 - PM2.5 air pollution, mean annual exposure (as micrograms
-	 * per cubic meter) AG.LND.FRST.ZS - Forest area (as % of land area)
-	 * 
-	 * A3. Displayed as a 1-series graphs, the ratio CO2 emissions (as metric tons
-	 * per capita) GDP per capita (as current US$)
-	 * 
-	 * A4. Displayed as a 1-series pie chart graph, the average Forest area (as % of
-	 * land area) for the selected years. The rest percentage would be land for all
-	 * other uses
-	 * 
-	 * A5. Displayed as a 1-series pie chart graph, the average Government
-	 * expenditure on education (as % of GDP) for the selected years. The rest
-	 * percentage would be expenditures for all other purposes.
-	 * 
-	 * A6. Displayed as a 1-series graphs, the ratio (pay attention on the
-	 * computations needed here) Current health expenditure (per 1,000 people).
-	 * Hospital beds (per 1,000 people)
-	 * 
-	 * A7. Displayed as 2-series graphs NO DATA Problems in accessing health care
-	 * (getting money for treatment) (% of women): Q1 (lowest wealth) Mortality
-	 * rate, infant (per 1,000 live births)
-	 * 
-	 * A8. Displayed as 2-series graphs the annual percentage change Government
-	 * expenditure on education, total (% of GDP) Current health expenditure (% of
-	 * GDP).
-	 * 
-	 */
-
-	public static JPanel createBlankLine() {
-		JPanel blank = new JPanel();
-		XYSeries series = new XYSeries("");
-
-		XYSeriesCollection dataset = new XYSeriesCollection();
-		dataset.addSeries(series);
-		JFreeChart chart = ChartFactory.createXYLineChart("", "", "", dataset, PlotOrientation.VERTICAL, true, true,
-				false);
-
-		XYPlot plot = chart.getXYPlot();
-
-		XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
-		renderer.setSeriesPaint(0, Color.RED);
-		renderer.setSeriesStroke(0, new BasicStroke(2.0f));
-
-		plot.setRenderer(renderer);
-		plot.setBackgroundPaint(Color.white);
-
-		plot.setRangeGridlinesVisible(true);
-		plot.setRangeGridlinePaint(Color.BLACK);
-
-		plot.setDomainGridlinesVisible(true);
-		plot.setDomainGridlinePaint(Color.BLACK);
-
-		chart.getLegend().setFrame(BlockBorder.NONE);
-
-		ChartPanel chartPanel = new ChartPanel(chart);
-		chartPanel.setPreferredSize(new Dimension(400, 300));
-		chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-		chartPanel.setBackground(Color.white);
-
-		blank.add(chartPanel);
-		return blank;
-	}
-
-	public static JPanel createBlankScatter() {
-		JPanel scatter = new JPanel();
-
-		TimeSeriesCollection dataset = new TimeSeriesCollection();
-
-		XYPlot plot = new XYPlot();
-
-		plot.setDataset(0, dataset);
-
-		DateAxis domainAxis = new DateAxis("");
-		plot.setDomainAxis(domainAxis);
-		plot.setRangeAxis(new NumberAxis(""));
-
-		plot.mapDatasetToRangeAxis(0, 0);// 1st dataset to 1st y-axis
-		plot.mapDatasetToRangeAxis(1, 1); // 2nd dataset to 2nd y-axis
-
-		JFreeChart scatterChart = new JFreeChart("", new Font("Serif", java.awt.Font.BOLD, 18), plot, true);
-
-		ChartPanel chartPanel = new ChartPanel(scatterChart);
-		chartPanel.setPreferredSize(new Dimension(400, 300));
-		chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-		chartPanel.setBackground(Color.white);
-		scatter.add(chartPanel);
-		return scatter;
-
-	}
-
-	public static JPanel createBlankPie() {
-		JPanel pie = new JPanel();
-		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-		dataset.addValue(100, "", "");
-		JFreeChart pieChart = ChartFactory.createMultiplePieChart("", dataset, TableOrder.BY_COLUMN, true, true, false);
-
-		ChartPanel chartPanel = new ChartPanel(pieChart);
-		chartPanel.setPreferredSize(new Dimension(400, 300));
-		chartPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-		chartPanel.setBackground(Color.white);
-		pie.add(chartPanel);
-		return pie;
-	}
+	
 
 	// -------------------------Pie--------------------------------------------------------------------------------
 
@@ -201,7 +87,7 @@ public class Graph extends JFrame {
 		
 		//System.out.println(data.size());
 		for (String s : captions) {
-			System.out.println(s);
+			//System.out.println(s);
 			XYSeries newseries = new XYSeries(s);
 			series.add(newseries);
 			points.add(data.get(i).getPoints());
@@ -218,7 +104,7 @@ public class Graph extends JFrame {
 					series.get(j).add(x, y.get(j));
 				}
 			}
-			System.out.println(y);
+			//System.out.println(y);
 			x++;
 		}
 
@@ -378,23 +264,5 @@ public class Graph extends JFrame {
 		return scatter;
 	}
 
-//	public static void main(String[] args) {
-//		// dont change
-//		JFrame f = new JFrame();
-//		f.setSize(900, 900);
-//		f.pack();
-//		f.setVisible(true);
-//
-//		// check all analysis modes
-//		String analysisMode = "a5";
-//
-//		// check all graph types
-//		JPanel g1 = Graph.createPie("CHN", 2008, 2008, analysisMode);
-//
-//		// dont change
-//		f.getContentPane().add(g1);
-//		f.resize(500, 500);
-//
-//	}
 
 }

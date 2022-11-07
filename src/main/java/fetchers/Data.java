@@ -32,7 +32,7 @@ public class Data {
 					inline += sc.nextLine();
 				}
 				sc.close();
-				System.out.println(inline);
+				//System.out.println(inline);
 				JsonArray jsonArray = new JsonParser().parse(inline).getAsJsonArray();	
 				
 				int x = yearStart;

@@ -1,11 +1,15 @@
 package analysis;
 
+import java.util.List;
+
 import fetchers.DataSet;
 import fetchers.Point;
 
-public class AnnualPercentChange extends Analysis {
-	public static DataSet getPercent(DataSet ds) {
-
+public class AnnualPercentChange implements AnalysisMethod {
+	
+	public DataSet getAnalyzedData(List<DataSet> dataSets) {
+		
+		DataSet ds = dataSets.get(0);
 		DataSet sol = new DataSet();
 		// System.out.println(ds.getPoints().size());
 
