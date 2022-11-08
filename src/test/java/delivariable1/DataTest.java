@@ -15,7 +15,7 @@ public class DataTest {
 	 */
 	@Test 
 	public void validURL() throws Exception {
-		DataSet make = Data.fetchData("CAN", 2000, 2002, "SP.POP.TOTL");
+		String make = Data.makeURL("CAN", 2000, 2002, "SP.POP.TOTL");
 		System.out.println(make);
 		String URL = "http://api.worldbank.org/v2/country/CAN/indicator/SP.POP.TOTL?date=2000:2002&format=json";
 		assertEquals(make, URL);

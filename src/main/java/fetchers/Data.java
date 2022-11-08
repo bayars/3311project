@@ -13,10 +13,15 @@ import analysis.Analysis;
 public class Data {
 
 	
+	public static String makeURL(String country, int yearStart, int yearEnd, String analysisMode) {
+		return new Url.UrlBuilder().setCountry(country).setYearStart(yearStart).setYearEnd(yearEnd).setanalysisMode(analysisMode).build().toString();
+
+	}
+	
 	
 	public static DataSet fetchData(String country, int yearStart, int yearEnd, String analysisMode) {
 
-		String urlString = new Url.UrlBuilder().setCountry(country).setYearStart(yearStart).setYearEnd(yearEnd).setanalysisMode(analysisMode).build().toString();
+		String urlString = makeURL(country, yearStart, yearEnd, analysisMode);
 		DataSet ds = new DataSet();
 
 		try {

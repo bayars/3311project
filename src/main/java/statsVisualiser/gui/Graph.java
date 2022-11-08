@@ -7,7 +7,6 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -43,8 +42,6 @@ public class Graph extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	
-
 	// -------------------------Pie--------------------------------------------------------------------------------
 
 	public static JPanel createPie(String country, int yearStart, int yearEnd, String analysis) {
@@ -52,10 +49,10 @@ public class Graph extends JFrame {
 		JPanel pie = new JPanel();
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		PieDataSet pds = Analysis.getPieData(country, yearStart, yearEnd, analysis);
-		//System.out.println(pds + "\n");
+		// System.out.println(pds + "\n");
 
 		List<String> captions = Analysis.captions(analysis);
-		//System.out.println(captions.get(index));
+		// System.out.println(captions.get(index));
 
 		dataset.addValue(pds.getSections().get(0), captions.get(0), captions.get(2));
 		dataset.addValue(pds.getSections().get(1), captions.get(1), captions.get(2));
@@ -81,13 +78,14 @@ public class Graph extends JFrame {
 		XYSeriesCollection dataset;
 		List<XYSeries> series = new ArrayList<XYSeries>();
 		List<List<Point>> points = new ArrayList<List<Point>>();
-		
+
 		List<DataSet> data = Analysis.getData(country, yearStart, yearEnd, analysis);
+		System.out.println(data.size());
 		List<String> captions = Analysis.captions(analysis);
-		
-		//System.out.println(data.size());
+
+		// System.out.println(data.size());
 		for (String s : captions) {
-			System.out.println(s);
+			// System.out.println(s);
 			XYSeries newseries = new XYSeries(s);
 			series.add(newseries);
 			points.add(data.get(i).getPoints());
@@ -104,7 +102,7 @@ public class Graph extends JFrame {
 					series.get(j).add(x, y.get(j));
 				}
 			}
-			System.out.println(y);
+			// System.out.println(y);
 			x++;
 		}
 
@@ -153,9 +151,8 @@ public class Graph extends JFrame {
 		int i = 0;
 		int j = 0;
 		List<List<Point>> points = new ArrayList<List<Point>>();
-		List<DefaultCategoryDataset> dataset = new ArrayList<DefaultCategoryDataset>();
-		List<BarRenderer> barrenderer = new ArrayList<BarRenderer>();
-		
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
 		List<DataSet> data = Analysis.getData(country, yearStart, yearEnd, analysis);
 		List<String> captions = Analysis.captions(analysis);
 
@@ -170,28 +167,25 @@ public class Graph extends JFrame {
 			for (j = 0; j < points.size(); j++) {
 				y.add(points.get(j).get(i).y);
 				if (y.get(j) > -100 && y.get(j) < 100 && y.get(j) != 0) {
-					dataset.get(j).setValue(y.get(j), captions.get(j), String.valueOf(x));
+					dataset.setValue(y.get(j), captions.get(j), String.valueOf(x));
 				}
 			}
 
 			x++;
 		}
 
+		BarRenderer barrenderer = new BarRenderer();
+
+		plot.setDataset(0, dataset);
+		plot.setRenderer(0, barrenderer);
 		CategoryAxis domainAxis = new CategoryAxis("Year");
 		plot.setDomainAxis(domainAxis);
-
-		for (i = 0; i < points.size(); i++) {
-
-			plot.setDataset(1, dataset.get(i));
-			plot.setRenderer(1, barrenderer.get(i));
-			plot.setRangeAxis(1, new NumberAxis(""));
-		}
+		plot.setRangeAxis(new NumberAxis(""));
 
 		plot.mapDatasetToRangeAxis(0, 0);// 1st dataset to 1st y-axis
-		plot.mapDatasetToRangeAxis(1, 1); // 2nd dataset to 2nd y-axis
 
-		// Formatting
-		JFreeChart barChart = new JFreeChart("", new Font("Serif", java.awt.Font.BOLD, 18), plot, true);
+		JFreeChart barChart = new JFreeChart("Mortality vs Expenses & Hospital Beds",
+				new Font("Serif", java.awt.Font.BOLD, 18), plot, true);
 
 		ChartPanel chartPanel = new ChartPanel(barChart);
 		chartPanel.setPreferredSize(new Dimension(400, 300));
@@ -264,5 +258,23 @@ public class Graph extends JFrame {
 		return scatter;
 	}
 
+	public static void main(String[] args) {
+		// dont change
+		JFrame f = new JFrame();
+		f.setSize(900, 900);
+		f.pack();
+		f.setVisible(true);
+
+		// check all analysis modes
+		String analysisMode = "a2";
+
+		// check all graph types
+		JPanel g1 = Graph.createLine("CAN", 2007, 2019, analysisMode);
+
+		// dont change
+		f.getContentPane().add(g1);
+		f.resize(500, 500);
+
+	}
 
 }
