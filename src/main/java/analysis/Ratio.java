@@ -11,7 +11,7 @@ public class Ratio implements AnalysisMethod{
 		// System.out.println(ds1.p.size());
 		
 		DataSet ds1 = dataSets.get(0);
-		DataSet ds2 = dataSets.get(0);
+		DataSet ds2 = dataSets.get(1);
 		
 
 		if (ds1.p.size() != ds2.p.size()) {

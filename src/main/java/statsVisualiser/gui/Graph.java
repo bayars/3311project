@@ -87,7 +87,7 @@ public class Graph extends JFrame {
 		
 		//System.out.println(data.size());
 		for (String s : captions) {
-			//System.out.println(s);
+			System.out.println(s);
 			XYSeries newseries = new XYSeries(s);
 			series.add(newseries);
 			points.add(data.get(i).getPoints());
@@ -104,7 +104,7 @@ public class Graph extends JFrame {
 					series.get(j).add(x, y.get(j));
 				}
 			}
-			//System.out.println(y);
+			System.out.println(y);
 			x++;
 		}
 
