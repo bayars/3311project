@@ -10,6 +10,8 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -215,6 +217,7 @@ public class Graph extends JFrame {
 			TimeSeries newseries = new TimeSeries(s);
 			series.add(newseries);
 			points.add(data.get(i).getPoints());
+			i++;
 		}
 
 		// plot the graphs
@@ -258,6 +261,48 @@ public class Graph extends JFrame {
 		return scatter;
 	}
 
+	public static JPanel createReport(String country, int yearStart, int yearEnd, String analysis) {
+		JPanel text = new JPanel();
+		JTextArea report = new JTextArea();
+		report.setEditable(false);
+		report.setPreferredSize(new Dimension(500, 400));
+		report.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+		report.setBackground(Color.white);
+		String reportMessage;
+		int i = 0;
+		int j = 0;
+
+		List<List<Point>> points = new ArrayList<List<Point>>();
+
+		List<DataSet> data = Analysis.getData(country, yearStart, yearEnd, analysis);
+		List<String> captions = Analysis.captions(analysis);
+
+		reportMessage = analysis + "\n==============================\n";
+
+		for (i = 0; i < data.size(); i++) {
+			points.add(data.get(i).getPoints());
+		}
+
+		int x = yearStart;
+		for (i = 0; i < (yearEnd - yearStart) + 1; i++) {
+			List<Double> y = new ArrayList<Double>();
+			reportMessage = reportMessage + "Year " + String.valueOf(x) + ":\n";
+			for (j = 0; j < points.size(); j++) {
+				y.add(points.get(j).get(i).y);
+				if (y.get(j) > -100 && y.get(j) < 100 && y.get(j) != 0) {
+					reportMessage = reportMessage + "\t" + captions.get(j) + "=>" + y.get(j) + "\n";
+				}
+			}
+			x++;
+		}
+
+		report.setText(reportMessage);
+		JScrollPane outputScrollPane = new JScrollPane(report);
+		text.add(outputScrollPane);
+		return text;
+
+	}
+
 	public static void main(String[] args) {
 		// dont change
 		JFrame f = new JFrame();
@@ -266,10 +311,10 @@ public class Graph extends JFrame {
 		f.setVisible(true);
 
 		// check all analysis modes
-		String analysisMode = "a2";
+		String analysisMode = "a1";
 
 		// check all graph types
-		JPanel g1 = Graph.createLine("CAN", 2007, 2019, analysisMode);
+		JPanel g1 = Graph.createReport("CAN", 2012, 2015, analysisMode);
 
 		// dont change
 		f.getContentPane().add(g1);
