@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import statsVisualiser.factory.*;
-import statsVisualizer.graph.*;
+import statsVisualiser.graph.graph;
 
 public class Main  {
 	
