@@ -1,6 +1,7 @@
 package statsVisualiser.gui;
 
 import java.awt.BorderLayout;
+
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -8,12 +9,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Stack;
 import java.util.Vector;
+
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import statsVisualiser.factory.*;
+import statsVisualizer.graph.*;
 
 public class Main  {
 	
@@ -35,15 +41,23 @@ public class Main  {
 	public static JComboBox<Integer> fromSelector;
 	public static JComboBox<Integer> toSelector;
 	public static JComboBox<String> analysisSelector;
+	
+
 
 	//Sections of ui
 	JPanel panelNorth = new JPanel();
 	JPanel panelSouth = new JPanel();
 	JPanel panelCenter = new JPanel();
 	
+	
+	Vector<Integer> fromYears;
+	Vector<Integer> toYears;
+	
+	
 	 JFrame f = new JFrame();
 
-	JPanel latestAdded;
+	 graph currentGraph;
+	 JPanel currentJPanel;
 	
 	int counter = 0;
 	
@@ -64,13 +78,32 @@ public class Main  {
 		countriesNames.add("France");
 		countriesNames.add("China");
 		countriesNames.add("Brazil");
+
 		
-		
-		Vector<Integer> years = new Vector<Integer>();
+		 fromYears = new Vector<Integer>();
 		for(int i = 1972; i < 2022; i++) {
-			years.add(i);
+			fromYears.add(i);
+			
 		}
-	
+		
+		 toYears = new Vector<Integer>();
+		for(int i = 1972; i < 2022; i++) {
+			toYears.add(i);
+			
+		}
+		
+		
+		
+		DefaultComboBoxModel fromYearsComboBox = new DefaultComboBoxModel(fromYears);
+		DefaultComboBoxModel toYearsComboBox = new DefaultComboBoxModel(toYears);
+		
+		
+		fromSelector = new JComboBox<Integer>();
+		toSelector = new JComboBox<Integer>();
+
+		fromSelector.setModel(fromYearsComboBox);
+		toSelector.setModel(toYearsComboBox);
+
 		
 		Vector<String> analyses = new Vector<String>();
 		analyses.add("Analysis 1");  
@@ -87,17 +120,15 @@ public class Main  {
 		viewsNames.add("Pie Chart");
 		viewsNames.add("Bar Chart");
 		viewsNames.add("Scatter Chart");
-		view = "Line";
 		
 		 viewSelector = new JComboBox<String>(viewsNames);
 		 countrySelector = new JComboBox<String>(countriesNames);
-		 fromSelector = new JComboBox<Integer>(years);
-	  	 toSelector = new JComboBox<Integer>(years);
 		 analysisSelector = new JComboBox<String>(analyses);
 		
 		JButton plusButton = new JButton("+");
 		JButton minusButton = new JButton("-");
 		JLabel to = new JLabel("to");
+		JButton recalculateButton = new JButton("Recalculate");
 
 		
 		countrySelector.setBorder(new EmptyBorder(10,1,1,1));
@@ -116,14 +147,16 @@ public class Main  {
 		panelSouth.add(viewSelector);
 		panelSouth.add(plusButton);
 		panelSouth.add(minusButton);
+		panelSouth.add(recalculateButton);
 
 		
-		country = "USA";
-		view = "Line Chart";
 		yearStart = 1972;
 		yearEnd = 1972;
-		analysis = "a1";
 
+		country = "USA";
+		analysis = "a1";
+		view = "Line Chart";
+		
 		
 		countrySelector.addActionListener(new ActionListener() {
 			
@@ -208,6 +241,7 @@ public class Main  {
 			public void actionPerformed(ActionEvent e) {
 				int selected = (Integer) fromSelector.getSelectedItem();
 				yearStart = selected;
+				remakeToSelector();
 			}
 			
 		});
@@ -217,6 +251,8 @@ public class Main  {
 			public void actionPerformed(ActionEvent e) {
 				int selected = (Integer) toSelector.getSelectedItem();
 				yearEnd = selected;
+				remakeFromSelector();
+				
 			}
 			
 			
@@ -227,73 +263,91 @@ public class Main  {
 		plusButton.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				
-				JPanel graph = null;
-				
 
-					switch(view) {
-						case "Line Chart":
-							 graph = Graph.createLine(country, yearStart, yearEnd, analysis);
-							 System.out.println(analysis);
-							 System.out.println(country);
-							 System.out.println(yearStart);
-							 System.out.println(yearEnd);
-							 System.out.println(view);
-
-						break;
-						case "Pie Chart":
-							 graph = Graph.createPie(country, yearStart, yearEnd, analysis);
-							 System.out.println(analysis);
-							 System.out.println(country);
-							 System.out.println(yearStart);
-							 System.out.println(yearEnd);
-							 System.out.println(view);
-
-						break;
-						case "Scatter Chart":
-							 graph = Graph.createScatter(country, yearStart, yearEnd, analysis);
-							 System.out.println(analysis);
-							 System.out.println(country);
-							 System.out.println(yearStart);
-							 System.out.println(yearEnd);
-							 System.out.println(view);
-
-						break;
-						case "Bar Chart":
-							 graph = Graph.createBar(country, yearStart, yearEnd, analysis);
-							 System.out.println(analysis);
-							 System.out.println(country);
-							 System.out.println(yearStart);
-							 System.out.println(yearEnd);
-							 System.out.println(view);
-
-						break;
-					}
+					drawGraph();
 					
-					
-					graph.setVisible(true);
-					panelCenter.add(graph);
-					panelCenter.repaint();
-					f.pack();
-					graphStack.push(graph);
+				
 			}
 		});
 		
+		
+
 		
 		minusButton.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
 			
-				panelCenter.remove(graphStack.peek());
-				panelCenter.repaint();
-				f.pack();
-				graphStack.pop();
+				eraseGraph();
 
 			}
 		});
+		
+		recalculateButton.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+			
+				eraseGraph();
+				drawGraph();
+			}
+		});
+		
+		
+		
+		
 		f.pack();
 		f.setVisible(true);
 	}
+
+	
+	
+	private void remakeToSelector(){
+		
+		toYears.clear();
+		for(int i = yearStart; i < 2022; i++) {
+			toYears.add(i);
+			
+		}
+
+	}
+	
+	private void remakeFromSelector(){
+		
+		fromYears.clear();
+		for(int i = 1972; i < yearEnd; i++) {
+			fromYears.add(i);
+			
+		}
+
+	}
+	
+	
+	private void eraseGraph() {
+		
+		panelCenter.remove(graphStack.peek());
+		panelCenter.repaint();
+		f.pack();
+		graphStack.pop();
+		
+	}
+	
+
+	private void drawGraph() {	
+		
+		GraphFactory graphfactory = new GraphFactory();
+		currentGraph = graphfactory.createGraph(country, yearStart, yearEnd, analysis, view);
+		
+		
+		currentJPanel = currentGraph.panel;
+		this.currentJPanel.setVisible(true);
+		panelCenter.add(currentJPanel);
+		panelCenter.repaint();
+		f.pack();
+		graphStack.push(currentJPanel);
+		
+	}
+	
+	
+	
 }
 		
 		
