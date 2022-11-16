@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -333,8 +334,15 @@ public class Main  {
 
 	private void drawGraph() {	
 		
+		
+		
 		GraphFactory graphfactory = new GraphFactory();
+		
+		
 		currentGraph = graphfactory.createGraph(country, yearStart, yearEnd, analysis, view);
+		if (graphfactory.isEmpty) {
+			JOptionPane.showMessageDialog(addView, "Data not found");
+		}
 		
 		
 		currentJPanel = currentGraph.panel;

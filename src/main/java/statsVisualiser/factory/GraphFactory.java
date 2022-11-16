@@ -13,15 +13,20 @@ public class GraphFactory {
 
 	
 	
-	
+	public boolean isEmpty = false;
 	
 	
 	public graph createGraph (String country, int yearStart, int yearEnd, String analysis,String graphType){
 		
 		
 	    if(graphType == "Line Chart") {
-			
-			return(new LineGraph(country,yearStart,yearEnd,analysis));
+	    	LineGraph line = new LineGraph(country,yearStart,yearEnd,analysis);
+	    	if (line.isEmpty(country, yearStart, yearEnd, analysis)) {
+	    		isEmpty =  true;
+	    	}else {
+	    	
+	    		return(line);
+	    	}
 	    	
 		} else if(graphType == "Bar Chart") {
 			

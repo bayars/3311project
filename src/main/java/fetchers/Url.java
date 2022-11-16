@@ -7,21 +7,6 @@ public class Url {
 	private int yearEnd;
 	private String analysisMode;
 	
-	public String getCountry() {
-		return this.country;
-	}
-	
-	public int yearStart() {
-		return this.yearStart;
-	}
-	
-	public int yearEnd() {
-		return this.yearEnd;
-	}
-	
-	public String analysisMode() {
-		return this.analysisMode;
-	}
 	
 	private Url(UrlBuilder builder) {
 		this.country = builder.country;
@@ -36,7 +21,7 @@ public class Url {
 		return String.format("http://api.worldbank.org/v2/country/%s/indicator/" + this.analysisMode + "?date=%d:%d&format=json", this.country, this.yearStart, this.yearEnd);
 	}
 	
-	public static class UrlBuilder {
+	public static class UrlBuilder implements Builder{
 
 		String country;
 		int yearStart;

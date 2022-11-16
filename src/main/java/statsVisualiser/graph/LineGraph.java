@@ -109,5 +109,19 @@ public class LineGraph extends graph {
 		
 	}
 	
+	public boolean isEmpty(String country, int yearStart, int yearEnd, String analysis) {
+		List<DataSet> data = Analysis.getData(country, yearStart, yearEnd, analysis);
+		int count = 0;
+		for (int i = 0; i < data.size(); i++) {
+			if (data.get(i).length() < 2) {
+				count++;
+			}
+		}
+		if (count == data.size()) {
+			return true;
+		}
+		return false;
+	}
+	
 
 }
