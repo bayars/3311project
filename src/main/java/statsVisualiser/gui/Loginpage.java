@@ -66,7 +66,6 @@ public class Loginpage extends JFrame implements ActionListener {
    }
    
 	@SuppressWarnings("deprecation")
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		ArrayList<String> usernameList = new ArrayList<>();
 		ArrayList<String> passwordList = new ArrayList<>();
@@ -88,6 +87,7 @@ public class Loginpage extends JFrame implements ActionListener {
 			}
 			if ( authentication(usernameList, passwordList, username, password) ){
 				dispose();
+				@SuppressWarnings("unused")
 				Main main = new Main();
 			}else{
 				JOptionPane.showMessageDialog(this, "Login Credentials incorrect!!");

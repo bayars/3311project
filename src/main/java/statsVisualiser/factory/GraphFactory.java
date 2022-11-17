@@ -10,15 +10,10 @@ import statsVisualiser.graph.ReportGraph;
 import statsVisualiser.graph.graph;
 
 public class GraphFactory {
-
-	
 	
 	public boolean isEmpty = false;
-	
-	
+
 	public graph createGraph (String country, int yearStart, int yearEnd, String analysis,String graphType){
-		
-		
 	    if(graphType == "Line Chart") {
 	    	LineGraph line = new LineGraph(country,yearStart,yearEnd,analysis);
 	    	if (line.isEmpty(country, yearStart, yearEnd, analysis)) {
@@ -27,29 +22,31 @@ public class GraphFactory {
 	    	
 	    		return(line);
 	    	}
-	    	
 		} else if(graphType == "Bar Chart") {
-			
-			return(new BarGraph(country,yearStart,yearEnd,analysis));
-
-		} else if (graphType == "Pie Chart") {
-			return(new PieGraph(country,yearStart,yearEnd,analysis));
-
-			
-		} else if (graphType == "Report") {
-			
-			return(new ReportGraph(country,yearStart,yearEnd,analysis));
-
-			
+			BarGraph bar = new  BarGraph(country,yearStart,yearEnd,analysis);
+	    	if (bar.isEmpty(country, yearStart, yearEnd, analysis)) {
+	    		isEmpty =  true;
+	    	}else {
+	    	
+	    		return(bar);
+	    	}
+		} else if (graphType == "Pie Chart") {	
+			PieGraph pie = new PieGraph(country,yearStart,yearEnd,analysis);
+	    	if (pie.isEmpty(country, yearStart, yearEnd, analysis)) {
+	    		isEmpty =  true;
+	    	}else {
+	    	
+	    		return(pie);
+	    	}						
+		} else if (graphType == "Report") {		
+			ReportGraph report = new ReportGraph(country,yearStart,yearEnd,analysis);
+	    	if (report.isEmpty(country, yearStart, yearEnd, analysis)) {
+	    		isEmpty =  true;
+	    	}else {
+	    	
+	    		return(report);
+	    	}				
 		}
-		
-		
 		return null;
-		
-
-		
 	}
-	
-	
-	
 }

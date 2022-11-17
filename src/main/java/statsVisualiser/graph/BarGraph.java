@@ -23,10 +23,6 @@ import fetchers.Point;
 
 public class BarGraph extends graph {
 
-	
-	
-	
-	
 	public BarGraph(String country, int yearStart, int yearEnd, String analysis) {
 		
 		JPanel bar = new JPanel();
@@ -76,14 +72,25 @@ public class BarGraph extends graph {
 		chartPanel.setBackground(Color.white);
 		bar.add(chartPanel);
 		this.panel = bar;
-		
-		
-		
-		
 	}
 	
-	
-	
-	
-	
+	public boolean isEmpty(String country, int yearStart, int yearEnd, String analysis) {
+        List<DataSet> data = Analysis.getData(country, yearStart, yearEnd, analysis);
+        int count = 0;
+        int countY = 0;
+        System.out.println(data.get(0).length());
+
+        for (int i = 0; i < data.size(); i++) {
+            for (int j = 0; j < data.get(i).getPoints().size(); j++) {
+                countY ++;
+                if (data.get(i).getPoints().get(j).y == 0) {
+                    count++;
+                }
+            }
+        }
+        if (count ==  countY) {
+            return true;
+        }
+        return false;
+    }
 }

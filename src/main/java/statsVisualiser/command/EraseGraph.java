@@ -1,11 +1,11 @@
 package statsVisualiser.command;
 
-import statsVisualiser.gui.main;
+import statsVisualiser.gui.Main;
 
 public class EraseGraph extends Command {
 	
 	
-	public EraseGraph(main ui) {
+	public EraseGraph(Main ui) {
 		super(ui);
 	}
 

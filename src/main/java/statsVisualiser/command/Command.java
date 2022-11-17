@@ -1,14 +1,14 @@
 package statsVisualiser.command;
 
-import statsVisualiser.gui.main;
+import statsVisualiser.gui.Main;
 
 public abstract class Command {
 
 	public String country, analysis, graphType;
 	public int yearStart, yearEnd;
-	main ui;
+	Main ui;
 	
-	public Command(main ui){
+	public Command(Main ui){
 		
 		this.ui = ui;
 		
