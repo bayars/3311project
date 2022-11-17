@@ -43,21 +43,16 @@ public class PieGraph extends graph {
 	}
 	
 	public boolean isEmpty(String country, int yearStart, int yearEnd, String analysis) {
-        List<DataSet> data = Analysis.getData(country, yearStart, yearEnd, analysis);
-        int count = 0;
-        int countY = 0;
-        System.out.println(data.get(0).length());
+        PieDataSet data = Analysis.getPieData(country, yearStart, yearEnd, analysis);
+        
+        //System.out.println(data.get(0).length());
 
-        for (int i = 0; i < data.size(); i++) {
-            for (int j = 0; j < data.get(i).getPoints().size(); j++) {
-                countY ++;
-                if (data.get(i).getPoints().get(j).y == 0) {
-                    count++;
-                }
+        
+        for (int j = 0; j < 2; j++) {
+         
+            if (data.ds.get(j) == 0) {
+            	return true;
             }
-        }
-        if (count ==  countY) {
-            return true;
         }
         return false;
     }

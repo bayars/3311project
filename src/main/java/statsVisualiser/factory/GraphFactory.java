@@ -7,6 +7,7 @@ import statsVisualiser.graph.BarGraph;
 import statsVisualiser.graph.LineGraph;
 import statsVisualiser.graph.PieGraph;
 import statsVisualiser.graph.ReportGraph;
+import statsVisualiser.graph.ScatterGraph;
 import statsVisualiser.graph.graph;
 
 public class GraphFactory {
@@ -45,6 +46,14 @@ public class GraphFactory {
 	    	}else {
 	    	
 	    		return(report);
+	    	}				
+		} else if (graphType == "Scatter Chart") {		
+			ScatterGraph scatter = new ScatterGraph(country,yearStart,yearEnd,analysis);
+	    	if (scatter.isEmpty(country, yearStart, yearEnd, analysis)) {
+	    		isEmpty =  true;
+	    	}else {
+	    	
+	    		return(scatter);
 	    	}				
 		}
 		return null;
