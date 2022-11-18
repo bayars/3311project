@@ -19,6 +19,9 @@ import fetchers.PieDataSet;
 
 public class PieGraph extends graph {
 	public PieGraph(String country, int yearStart, int yearEnd, String analysis) {
+		if (wrongAnalysisType(country, yearStart, yearEnd, analysis)) {
+			return;
+		}
 		JPanel pie = new JPanel();
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		PieDataSet pds = Analysis.getPieData(country, yearStart, yearEnd, analysis);
@@ -44,16 +47,19 @@ public class PieGraph extends graph {
 	
 	public boolean isEmpty(String country, int yearStart, int yearEnd, String analysis) {
         PieDataSet data = Analysis.getPieData(country, yearStart, yearEnd, analysis);
-        
-        //System.out.println(data.get(0).length());
-
-        
         for (int j = 0; j < 2; j++) {
          
-            if (data.ds.get(j) == 0) {
+            if (data.ds.get(j) == 0 || data.ds.get(j) == 100 || data.ds.get(j) == null) {
             	return true;
             }
         }
         return false;
     }
+	
+	public boolean wrongAnalysisType(String country, int yearStart, int yearEnd, String analysis) {
+		if (analysis != "a4" && analysis != "a5") {
+			return true;
+		}
+		return false;
+	}
 }

@@ -46,6 +46,9 @@ public class ScatterGraph extends graph {
 	
 	
 	public ScatterGraph(String country, int yearStart, int yearEnd, String analysis) {
+		if (wrongAnalysisType(country, yearStart, yearEnd, analysis)) {
+			return;
+		}
 
 		// create new JPanel for Graph
 		JPanel scatter = new JPanel();
@@ -125,6 +128,13 @@ public class ScatterGraph extends graph {
         }
         return false;
     }
+	
+	public boolean wrongAnalysisType(String country, int yearStart, int yearEnd, String analysis) {
+		if (analysis == "a4" || analysis == "a5") {
+			return true;
+		}
+		return false;
+	}
 	
 	
 }

@@ -44,6 +44,9 @@ public class ReportGraph extends graph {
 
 	
 	public ReportGraph(String country, int yearStart, int yearEnd, String analysis) {
+		if (wrongAnalysisType(country, yearStart, yearEnd, analysis)) {
+			return;
+		}
 		JPanel text = new JPanel();
 		JTextArea report = new JTextArea();
 		report.setEditable(false);
@@ -104,4 +107,11 @@ public class ReportGraph extends graph {
         }
         return false;
     }
+	
+	public boolean wrongAnalysisType(String country, int yearStart, int yearEnd, String analysis) {
+		if (analysis == "a4" || analysis == "a5") {
+			return true;
+		}
+		return false;
+	}
 }

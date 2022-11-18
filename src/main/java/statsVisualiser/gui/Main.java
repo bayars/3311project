@@ -391,6 +391,8 @@ public class Main {
 						JOptionPane.showMessageDialog(addView, "Start year should not smaller than end year!");
 					}else if(graphfactory.isEmpty) {
 						JOptionPane.showMessageDialog(addView, "Data not found");
+					}else if(graphfactory.wrongAnalysisType) {
+						JOptionPane.showMessageDialog(addView, "Graph not applicable for this analysis type");
 					}else {
 						DrawGraph drawgraph = new DrawGraph(UI);
 						executeCommand(drawgraph);
