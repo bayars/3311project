@@ -25,7 +25,7 @@ import analysis.Analysis;
 import fetchers.DataSet;
 import fetchers.Point;
 
-public class LineGraph extends graph {
+public class LineGraph extends Graph {
 
 	
 
@@ -46,7 +46,7 @@ public class LineGraph extends graph {
 				List<List<Point>> points = new ArrayList<List<Point>>();
 
 				List<DataSet> data = Analysis.getData(country, yearStart, yearEnd, analysis);
-				System.out.println(data.size());
+				System.out.println("data size: " + data.size());
 				List<String> captions = Analysis.captions(analysis);
 
 				// System.out.println(data.size());
@@ -116,13 +116,15 @@ public class LineGraph extends graph {
         List<DataSet> data = Analysis.getData(country, yearStart, yearEnd, analysis);
         int count = 0;
         int countY = 0;
-        System.out.println(data.get(0).length());
+       // System.out.println("length: " + data.get(0).length());
 
         for (int i = 0; i < data.size(); i++) {
             for (int j = 0; j < data.get(i).getPoints().size(); j++) {
                 countY ++;
-                if (data.get(i).getPoints().get(j).y == 0) {
+               // System.out.println("countY: " + countY);
+                if (Double.isNaN(data.get(i).getPoints().get(j).y) || data.get(i).getPoints().get(j).y == 0) {
                     count++;
+                    System.out.println("count: " + count);
                 }
             }
         }

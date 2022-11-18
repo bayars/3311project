@@ -35,7 +35,7 @@ import statsVisualiser.command.Command;
 import statsVisualiser.command.DrawGraph;
 import statsVisualiser.command.EraseGraph;
 import statsVisualiser.factory.GraphFactory;
-import statsVisualiser.graph.graph;
+import statsVisualiser.graph.Graph;
 
 public class Main {
 	
@@ -75,7 +75,7 @@ public class Main {
 	
 	 public JFrame f = new JFrame();
 
-	 public graph currentGraph;
+	 public Graph currentGraph;
 	 public JPanel currentJPanel;
 	
 	int counter = 0;

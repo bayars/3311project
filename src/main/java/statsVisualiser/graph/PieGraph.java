@@ -17,7 +17,7 @@ import analysis.Analysis;
 import fetchers.DataSet;
 import fetchers.PieDataSet;
 
-public class PieGraph extends graph {
+public class PieGraph extends Graph {
 	public PieGraph(String country, int yearStart, int yearEnd, String analysis) {
 		if (wrongAnalysisType(country, yearStart, yearEnd, analysis)) {
 			return;

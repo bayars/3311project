@@ -8,14 +8,14 @@ import statsVisualiser.graph.LineGraph;
 import statsVisualiser.graph.PieGraph;
 import statsVisualiser.graph.ReportGraph;
 import statsVisualiser.graph.ScatterGraph;
-import statsVisualiser.graph.graph;
+import statsVisualiser.graph.Graph;
 
 public class GraphFactory {
 	
 	public boolean isEmpty = false;
 	public boolean wrongAnalysisType = false;
 
-	public graph createGraph (String country, int yearStart, int yearEnd, String analysis,String graphType){
+	public Graph createGraph (String country, int yearStart, int yearEnd, String analysis,String graphType){
 	    if(graphType == "Line Chart") {
 	    	LineGraph line = new LineGraph(country,yearStart,yearEnd,analysis);
 	    	if(line.wrongAnalysisType(country, yearStart, yearEnd, analysis)){
