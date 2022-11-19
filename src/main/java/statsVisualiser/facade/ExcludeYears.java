@@ -15,7 +15,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
 public class ExcludeYears {
-	public HashMap<String, ArrayList<String>> availableYearsforAnalysis = new HashMap<String, ArrayList<String>>();
+	private HashMap<String, ArrayList<String>> availableYearsforAnalysis = new HashMap<String, ArrayList<String>>();
 
 	private Vector<Integer> removeExcludedYears(Vector<Integer> fromandtoyears, HashMap<String, ArrayList<String>> excludedList, String analysis, Vector <String> analysisName){
 		ArrayList<Integer> newList = new ArrayList<Integer>();
