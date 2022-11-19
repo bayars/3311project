@@ -124,7 +124,6 @@ public class LineGraph extends Graph {
                // System.out.println("countY: " + countY);
                 if (Double.isNaN(data.get(i).getPoints().get(j).y) || data.get(i).getPoints().get(j).y == 0) {
                     count++;
-                    System.out.println("count: " + count);
                 }
             }
         }
