@@ -271,7 +271,7 @@ public class Main {
 		yearStart = 1972;
 		yearEnd = 1972;
 
-		country = "USA";
+		country = "AF";
 		analysis = "a1";
 		view = "Line Chart";
 		
