@@ -8,12 +8,25 @@ public class Average {
 		PieDataSet sol = new PieDataSet();
 		double sum = 0;
 		//System.out.println(ds.p.size());
+		int listSize = 0;
+		
 		for (int i = 0; i < ds.p.size(); i++) {
-			sum += ds.p.get(i).y;
-			//System.out.println(sum);
+			if (ds.p.get(i).y > 0) {
+				listSize++;
+				System.out.println("y " + ds.p.get(i).y);
+				System.out.println("ListSize "+ listSize);
+			}
 		}
-		sol.ds.add(sum / ds.p.size());
-		sol.ds.add(100 - (sum / ds.p.size()));
+		
+		for (int i = 0; i < listSize; i++) {
+			if (ds.p.get(i).y != 0) {
+				sum += ds.p.get(i).y;
+			}
+			System.out.println("Sum " + sum);
+		}
+		
+		sol.ds.add(sum / listSize);
+		sol.ds.add(100 - (sum / listSize));
 		//System.out.println("in pie dataset " + sol.ds.get(0) + " " + sol.ds.get(1));
 		return sol;
 

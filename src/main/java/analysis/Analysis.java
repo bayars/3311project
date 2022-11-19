@@ -78,12 +78,23 @@ public class Analysis {
 
 			data.add(ds);
 
-		} else if (analysis == "a7") {
+		} else if (analysis == "a7") {	
+			
+			AnalysisMethod method1 = new AnnualPercentChange();
+			AnalysisMethod method2 = new AnnualPercentChange();
 
-			DataSet ds1 = Data.fetchData(country, yearStart, yearEnd, "SH.ACS.MONY.Q1.ZS");
+			List<DataSet> dataSets1 = new ArrayList<DataSet>();
+			List<DataSet> dataSets2 = new ArrayList<DataSet>();
+
+			dataSets1.add(Data.fetchData(country, yearStart - 1, yearEnd, "SE.XPD.TOTL.GD.ZS"));
+			dataSets2.add(Data.fetchData(country, yearStart - 1, yearEnd, "SP.DYN.IMRT.IN"));
+
+			DataSet ds1 = method1.getAnalyzedData(dataSets1);
+			DataSet ds2 = method2.getAnalyzedData(dataSets2);
+
 			data.add(ds1);
-			DataSet ds2 = Data.fetchData(country, yearStart, yearEnd, "SP.DYN.IMRT.IN");
 			data.add(ds2);
+			
 
 		} else if (analysis == "a8") {
 
@@ -139,7 +150,7 @@ public class Analysis {
 			captions.add("Current health expenditure (per 1,000 people) \n / Hospital beds (per 1,000 people)");
 		} else if (analysis == "a7") {
 			captions.add(
-					"Problems in accessing health care (getting money for treatment) (% of women): Q1 (lowest wealth)");
+					"Government expenditure on education, total (% of GDP)");
 			captions.add("Mortality rate, infant (per 1,000 live births)");
 		} else if (analysis == "a8") {
 			captions.add("Government expenditure on education, total (% of GDP)");

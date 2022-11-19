@@ -14,6 +14,7 @@ import org.jfree.chart.util.TableOrder;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import analysis.Analysis;
+import fetchers.Data;
 import fetchers.DataSet;
 import fetchers.PieDataSet;
 
@@ -46,10 +47,15 @@ public class PieGraph extends Graph {
 	}
 	
 	public boolean isEmpty(String country, int yearStart, int yearEnd, String analysis) {
-        PieDataSet data = Analysis.getPieData(country, yearStart, yearEnd, analysis);
-        for (int j = 0; j < 2; j++) {
+		DataSet data = null;
+		if (analysis == "a4") {
+			data = Data.fetchData(country, yearStart, yearEnd, "AG.LND.FRST.ZS");
+		}else if (analysis == "a5") {
+			data = Data.fetchData(country, yearStart, yearEnd, "SE.XPD.TOTL.GD.ZS");
+		}
+        for (int j = 0; j < data.p.size(); j++) {
          
-            if (data.ds.get(j) == 0 || data.ds.get(j) == 100 || data.ds.get(j) == null) {
+            if (data.p.get(j).y == 0) {
             	return true;
             }
         }
