@@ -25,7 +25,6 @@ public class GraphFactory {
 	    	if (line.isEmpty(country, yearStart, yearEnd, analysis)) {
 	    		isEmpty =  true;
 	    	}else {
-	    	
 	    		return(line);
 	    	}
 		} else if(graphType == "Bar Chart") {

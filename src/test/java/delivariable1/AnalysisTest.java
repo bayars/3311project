@@ -14,7 +14,7 @@ class AnalysisTest {
 
 	@Test
 	public void Analysis1Test() throws Exception {
-		java.util.List<DataSet> data = Analysis.getData("CA", 2013, 2014, "a1");
+		java.util.List<DataSet> data = Analysis.getData("CA", 2013, 2014, "Annual Percentage Change of CO2 Emissions, Energy Use and PM2.5 Air Pollution");
 
 		DataSet setA1 = data.get(0);
 
@@ -72,7 +72,7 @@ class AnalysisTest {
 	@Test
 	public void Analysis2Test() throws Exception {
 
-		java.util.List<DataSet> data = Analysis.getData("CA", 2016, 2017, "a2");
+		java.util.List<DataSet> data = Analysis.getData("CA", 2016, 2017, "Annual Percentage Change of PM2.5 Air Pollution and Forest Area");
 		// System.out.println(data.size());
 
 		DataSet setA1 = data.get(0);
@@ -114,7 +114,7 @@ class AnalysisTest {
 	@Test
 	public void Analysis3Test() throws Exception {
 
-		java.util.List<DataSet> data = Analysis.getData("USA", 2010, 2016, "a3");
+		java.util.List<DataSet> data = Analysis.getData("USA", 2010, 2016, "CO2 Emissions Per GDP");
 
 		DataSet set = data.get(0);
 
@@ -146,7 +146,7 @@ class AnalysisTest {
 
 	@Test
 	public void Analysis4Test() throws Exception {
-		PieDataSet data = Analysis.getPieData("FR", 2005, 2020, "a4");
+		PieDataSet data = Analysis.getPieData("FR", 2005, 2020, "Average Forest Area");
 
 		PieDataSet set2 = new PieDataSet();
 		set2.addSection(30.3158506785595);
@@ -160,7 +160,7 @@ class AnalysisTest {
 	@Test
 	public void Analysis5Test() throws Exception {
 
-		PieDataSet data = Analysis.getPieData("CHN", 2008, 2008, "a5");
+		PieDataSet data = Analysis.getPieData("CHN", 2008, 2008, "Average Government Expenditure on Educati");
 
 		PieDataSet set2 = new PieDataSet();
 
@@ -176,7 +176,7 @@ class AnalysisTest {
 	@Test
 	public void Analysis6Test() throws Exception {
 
-		java.util.List<DataSet> data = Analysis.getData("CA", 2000, 2003, "a6");
+		java.util.List<DataSet> data = Analysis.getData("CA", 2000, 2003, "Health Expenditure Per Hospital Beds");
 
 		DataSet set = data.get(0);
 
@@ -203,7 +203,7 @@ class AnalysisTest {
 	@Test
 	public void Analysis8Test() throws Exception {
 
-		java.util.List<DataSet> data = Analysis.getData("BRA", 2001, 2002, "a8");
+		java.util.List<DataSet> data = Analysis.getData("BRA", 2001, 2002, "Anual Percent Change of Expenditure on Education And Health Expenditure");
 
 		DataSet setA1 = data.get(0);
 

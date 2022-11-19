@@ -23,17 +23,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
-
 import statsVisualiser.command.Command;
 import statsVisualiser.command.DrawGraph;
 import statsVisualiser.command.EraseGraph;
+import statsVisualiser.facade.ExcludeCountry;
+import statsVisualiser.facade.ExcludeYears;
 import statsVisualiser.factory.GraphFactory;
 import statsVisualiser.graph.Graph;
 
@@ -43,7 +37,7 @@ public class Main {
 
 	
 	//dynamic values of buttons
-	public String country;
+	public static String country;
 	public int yearStart, yearEnd;
 	
 	//+/- buttons and recalculate
@@ -61,7 +55,10 @@ public class Main {
 	public static JComboBox<Integer> toSelector;
 	public static JComboBox<String> analysisSelector;
 	
-
+	public HashMap<String, ArrayList<String>> availableYearsforAnalysis = new HashMap<String, ArrayList<String>>();
+	public HashMap<String, String> conversionofAnalysis = new HashMap<String, String>();
+	Map<String, String> ISOCountries = new HashMap<>();
+	Vector<String> countriesNames = new Vector<String>();
 
 	//Sections of ui
 	JPanel panelNorth = new JPanel();
@@ -83,96 +80,7 @@ public class Main {
 	public Stack<JPanel> graphStack = new Stack<JPanel>();  
 
 	public static Vector<String> analyses = new Vector<String>();
-	public static HashMap<String, String> conversionofAnalysis = new HashMap<String, String>();
-	String[] countries = Locale.getISOCountries();
-	Vector<String> allCountries = new Vector<String>();
-	Map<String, String> ISOCountries = new HashMap<>();
-	
-	
-	private Vector <String> initilizeCountries(){
-		for(int i = 0; i < countries.length; i++) { 	
-			String country = countries[i];
-			Locale locale = new Locale("en", country);
-			allCountries.add(locale.getDisplayCountry());
-//				System.out.print("\""+locale.getDisplayCountry()+"\", " ); // Prints all countries
-		}	
-		return allCountries;
-	}
-	
-	private Map<String, String> ISOconverter() {
-		Map<String, String> countries = new HashMap<>();
-		for (String iso : Locale.getISOCountries()) {
-			Locale l = new Locale("", iso);
-		    countries.put(l.getDisplayCountry(), iso);
-		}
-		return countries;
-	}
 
-	private Vector <String> findExcludedCountries(Vector <String> allCountries){
-		try {
-			JsonElement jelement = new JsonParser().parse(new FileReader("./data.json"));
-			JsonObject jobject = jelement.getAsJsonObject();
-			JsonArray jarray = jobject.getAsJsonArray("excludedlCountries");
-			for(int k = 0;k<jarray.size();k++) {
-				allCountries.remove(jarray.get(k).toString().replaceAll("\"", ""));
-			}	
-        } catch (JsonIOException e) {
-	            System.out.println("IO failure");
-	            e.printStackTrace();
-	    } catch (JsonSyntaxException e) {
-	            System.out.println("JSON format is not correct!!");
-	            e.printStackTrace();
-	    } catch (FileNotFoundException e) {
-	            System.out.println("File not found!!");
-	            e.printStackTrace();
-	    }
-	    return allCountries;
-		
-	}
-	
-	HashMap<String, ArrayList<String>> availableYearsforAnalysis = new HashMap<String, ArrayList<String>>();
-	private HashMap<String, ArrayList<String>> readJsonforFindAvailableYears(){
-		try {
-			JsonElement jelement = new JsonParser().parse(new FileReader("./data.json"));
-			JsonObject jobject = jelement.getAsJsonObject();
-			jobject = jobject.getAsJsonObject("excludedYears");
-			for( int i = 1; i < jobject.size()+1;i++) {
-				ArrayList<String> years = new ArrayList<String>();
-				String analysisName = "Analysis " + i;
-				JsonArray jarray = jobject.getAsJsonArray(analysisName);
-				for(int y = 0; y < jarray.size(); y++) {
-					years.add(jarray.get(y).toString());
-				}
-				availableYearsforAnalysis.put(analysisName, years);
-			}
-			return availableYearsforAnalysis;
-        } catch (JsonIOException e) {
-	            System.out.println("IO failure");
-	            e.printStackTrace();
-	    } catch (JsonSyntaxException e) {
-	            System.out.println("JSON format is not correct!!");
-	            e.printStackTrace();
-	    } catch (FileNotFoundException e) {
-	            System.out.println("File not found!!");
-	            e.printStackTrace();
-	    }
-
-		if (availableYearsforAnalysis == null) {
-			System.out.println("availableYearsforAnalysis is null");
-		}
-		return null;
-	}
-	
-	private Vector<Integer> removeExcludedYears(Vector<Integer> fromandtoyears, HashMap<String, ArrayList<String>> excludedList ,String analysis){
-		conversionofAnalysis = makeConversionMap(analyses);
-		ArrayList<Integer> newList = new ArrayList<Integer>();
-		for (String myInt : excludedList.get(conversionofAnalysis.get(analysis))) 
-        { 
-          newList.add(Integer.parseInt(myInt.toString().replaceAll("\"", ""))); 
-        }
-        fromandtoyears.removeAll(newList);
-		return fromandtoyears;
-	}
 	
 	private Vector<Integer> makeYears(Vector<Integer> a) {
 		a.clear();
@@ -181,19 +89,13 @@ public class Main {
 		}
 		return a;
 	}
-	
-	private HashMap<String, String> makeConversionMap(Vector <String> analysis){
-		int t = 1;
-		for(String k: analysis) {
-			String name = "a" + t;
-			t++;
-			conversionofAnalysis.put(name,k);
-		}
-		return conversionofAnalysis;
-	}
 
+	ExcludeYears yearsExcluded = new ExcludeYears();
+	ExcludeCountry countryExcluded = new ExcludeCountry();
+	
 	
 	public Main() {
+
 		panelNorth.setLayout(new FlowLayout());
 		panelSouth.setLayout(new FlowLayout());
 		panelCenter.setLayout(new GridLayout(0,3));
@@ -201,16 +103,35 @@ public class Main {
 		f.add(panelSouth,BorderLayout.SOUTH);
 		f.add(panelCenter,BorderLayout.CENTER);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Vector<String> countriesNames = new Vector<String>();
 		
-		countriesNames = findExcludedCountries(initilizeCountries());
-		availableYearsforAnalysis = readJsonforFindAvailableYears();
+		yearStart = 1972;
+		yearEnd = 1972;
+		
+		ISOCountries = countryExcluded.ISOconverter();
+		country = ISOCountries.get("Afghanistan");
+		System.out.println(ISOCountries);
+		
+		analysis = "Annual Percentage Change of CO2 Emissions, Energy Use and PM2.5 Air Pollution";
+		view = "Line Chart";
 		
 		fromYears = new Vector<Integer>();
 		fromYears = makeYears(fromYears);
 		
 		toYears = new Vector<Integer>();
 		toYears = makeYears(toYears);
+		
+		analyses.add("Annual Percentage Change of CO2 Emissions, Energy Use and PM2.5 Air Pollution");  
+		analyses.add("Annual Percentage Change of PM2.5 Air Pollution and Forest Area");  
+		analyses.add("CO2 Emissions Per GDP");  
+		analyses.add("Average Forest Area");  
+		analyses.add("Average Government Expenditure on Education");  
+		analyses.add("Health Expenditure Per Hospital Beds");  
+		analyses.add("Expenditure on Education VS Mortality Rate");  
+		analyses.add("Anual Percent Change of Expenditure on Education And Health Expenditure");  
+		
+		availableYearsforAnalysis = yearsExcluded.readJson();
+		countriesNames = countryExcluded.initilizeCountries();
+		countryExcluded.findExcludedCountries(countriesNames);
 		
 		DefaultComboBoxModel fromYearsComboBox = new DefaultComboBoxModel(fromYears);
 		DefaultComboBoxModel toYearsComboBox = new DefaultComboBoxModel(toYears);
@@ -221,17 +142,6 @@ public class Main {
 
 		fromSelector.setModel(fromYearsComboBox);
 		toSelector.setModel(toYearsComboBox);
-
-		analyses.add("Analysis 1");  
-		analyses.add("Analysis 2");  
-		analyses.add("Analysis 3");  
-		analyses.add("Analysis 4");  
-		analyses.add("Analysis 5");  
-		analyses.add("Analysis 6");  
-		analyses.add("Analysis 7");  
-		analyses.add("Analysis 8");  
-		
-		conversionofAnalysis = makeConversionMap(analyses);
 
 		Vector<String> viewsNames = new Vector<String>();
 		viewsNames.add("Line Chart");
@@ -267,30 +177,19 @@ public class Main {
 		panelSouth.add(minusButton);
 		panelSouth.add(recalculateButton);
 
-		
-		yearStart = 1972;
-		yearEnd = 1972;
+		fromYears = yearsExcluded.excludeYears(fromYears, availableYearsforAnalysis, analysis,analyses);
+		toYears = yearsExcluded.excludeYears(toYears, availableYearsforAnalysis, analysis,analyses);
 
-		country = "AF";
-		analysis = "a1";
-		view = "Line Chart";
-		
-		fromYears = removeExcludedYears(fromYears, availableYearsforAnalysis, analysis);
-		toYears = removeExcludedYears(toYears, availableYearsforAnalysis, analysis);
-		
 		countrySelector.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				String selected = (String) countrySelector.getSelectedItem();
-				ISOCountries =  ISOconverter();
-				
+				String selected = (String) countrySelector.getSelectedItem();				
 				if ( ISOCountries.containsKey(selected)) {
 					country = ISOCountries.get(selected);
 				}else{
 					System.out.println("Country conversion Error");
 				}
 			}
-			
 		});
 		
 		analysisSelector.addActionListener(new ActionListener() {	
@@ -299,61 +198,54 @@ public class Main {
 				analysis = selected;
 				System.out.println(selected);
 				switch (selected){	
-				case "Analysis 1":
-					analysis = "a1";
+				case "Annual Percentage Change of CO2 Emissions, Energy Use and PM2.5 Air Pollution":
 					fromYears = makeYears(fromYears);
 					toYears = makeYears(toYears);
-					toYears = removeExcludedYears(toYears, availableYearsforAnalysis, analysis);
-					fromYears = removeExcludedYears(fromYears, availableYearsforAnalysis, analysis);
+					toYears = yearsExcluded.excludeYears(toYears, availableYearsforAnalysis, analysis,analyses);
+					fromYears = yearsExcluded.excludeYears(fromYears, availableYearsforAnalysis, analysis,analyses);
 					break;
-				case "Analysis 2":
-					analysis = "a2";
+				case "Annual Percentage Change of PM2.5 Air Pollution and Forest Area":
 					fromYears = makeYears(fromYears);
 					toYears = makeYears(toYears);
-					toYears = removeExcludedYears(toYears, availableYearsforAnalysis, analysis);
-					fromYears = removeExcludedYears(fromYears, availableYearsforAnalysis, analysis);
+					toYears = yearsExcluded.excludeYears(toYears, availableYearsforAnalysis, analysis,analyses);
+					fromYears = yearsExcluded.excludeYears(fromYears, availableYearsforAnalysis, analysis,analyses);
 					break;
-				case "Analysis 3":
-					analysis = "a3";
+				case "CO2 Emissions Per GDP":
+					analysis = "CO2 Emissions Per GDP";
 					fromYears = makeYears(fromYears);
 					toYears = makeYears(toYears);
-					toYears = removeExcludedYears(toYears, availableYearsforAnalysis, analysis);
-					fromYears = removeExcludedYears(fromYears, availableYearsforAnalysis, analysis);
+					toYears = yearsExcluded.excludeYears(toYears, availableYearsforAnalysis, analysis,analyses);
+					fromYears = yearsExcluded.excludeYears(fromYears, availableYearsforAnalysis, analysis,analyses);
 					break;
-				case "Analysis 4":
-					analysis = "a4";
+				case "Average Forest Area":
 					fromYears = makeYears(fromYears);
 					toYears = makeYears(toYears);
-					toYears = removeExcludedYears(toYears, availableYearsforAnalysis, analysis);
-					fromYears = removeExcludedYears(fromYears, availableYearsforAnalysis, analysis);
+					toYears = yearsExcluded.excludeYears(toYears, availableYearsforAnalysis, analysis,analyses);
+					fromYears = yearsExcluded.excludeYears(fromYears, availableYearsforAnalysis, analysis,analyses);
 					break;
-				case "Analysis 5":
-					analysis = "a5";
+				case "Average Government Expenditure on Education":
 					fromYears = makeYears(fromYears);
 					toYears = makeYears(toYears);
-					toYears = removeExcludedYears(toYears, availableYearsforAnalysis, analysis);
-					fromYears = removeExcludedYears(fromYears, availableYearsforAnalysis, analysis);
+					toYears = yearsExcluded.excludeYears(toYears, availableYearsforAnalysis, analysis,analyses);
+					fromYears = yearsExcluded.excludeYears(fromYears, availableYearsforAnalysis, analysis,analyses);
 					break;
-				case "Analysis 6":
-					analysis = "a6";
+				case "Health Expenditure Per Hospital Beds":
 					fromYears = makeYears(fromYears);
 					toYears = makeYears(toYears);
-					toYears = removeExcludedYears(toYears, availableYearsforAnalysis, analysis);
-					fromYears = removeExcludedYears(fromYears, availableYearsforAnalysis, analysis);
+					toYears = yearsExcluded.excludeYears(toYears, availableYearsforAnalysis, analysis,analyses);
+					fromYears = yearsExcluded.excludeYears(fromYears, availableYearsforAnalysis, analysis,analyses);
 					break;
-				case "Analysis 7":
-					analysis = "a7";
+				case "Expenditure on Education VS Mortality Rate":
 					fromYears = makeYears(fromYears);
 					toYears = makeYears(toYears);
-					toYears = removeExcludedYears(toYears, availableYearsforAnalysis, analysis);
-					fromYears = removeExcludedYears(fromYears, availableYearsforAnalysis, analysis);
+					toYears = yearsExcluded.excludeYears(toYears, availableYearsforAnalysis, analysis,analyses);
+					fromYears = yearsExcluded.excludeYears(fromYears, availableYearsforAnalysis, analysis,analyses);
 					break;
-				case "Analysis 8":
-					analysis = "a8";
+				case "Anual Percent Change of Expenditure on Education And Health Expenditure":
 					fromYears = makeYears(fromYears);
 					toYears = makeYears(toYears);
-					toYears = removeExcludedYears(toYears, availableYearsforAnalysis, analysis);
-					fromYears = removeExcludedYears(fromYears, availableYearsforAnalysis, analysis);
+					toYears = yearsExcluded.excludeYears(toYears, availableYearsforAnalysis, analysis,analyses);
+					fromYears = yearsExcluded.excludeYears(fromYears, availableYearsforAnalysis, analysis,analyses);
 					break;
 				}
 			}
@@ -431,7 +323,7 @@ public class Main {
 			for(int i = yearStart; i < 2022; i++) {
 				toYears.add(i);
 			}
-			toYears = removeExcludedYears(toYears, availableYearsforAnalysis, analysis);
+			toYears = yearsExcluded.excludeYears(toYears, availableYearsforAnalysis, analysis,analyses);
 		}
 		
 		private void remakeFromSelector(){
@@ -439,7 +331,7 @@ public class Main {
 			for(int i = 1972; i < yearEnd; i++) {
 				fromYears.add(i);
 			}
-			fromYears = removeExcludedYears(fromYears, availableYearsforAnalysis, analysis);
+			fromYears = yearsExcluded.excludeYears(fromYears, availableYearsforAnalysis, analysis,analyses);
 		}
 		
 		void executeCommand(Command command){

@@ -65,32 +65,31 @@ public class Data {
 		int endYear = 2021;
 //		
 //	
-		String a1 = "SP.POP.TOTL";
-//		String a2 = "EN.ATM.CO2E.PC";
-//		String a3 ="EN.ATM.PM25.MC.M3";
-//		String a4 ="AG.LND.FRST.ZS";
-//		String a5 ="NY.GDP.PCAP.CD";
-//		String a6 ="SH.MED.BEDS.ZS";
-//		String a7 ="SE.XPD.TOTL.GD.ZS";
-//		String a8 ="SH.STA.MMRT";
+//		String Annual Percentage Change of CO2 Emissions, Energy Use and PM2.5 Air Pollution = "SP.POP.TOTL";
+//		String Annual Percentage Change of PM2.5 Air Pollution and Forest Area = "EN.ATM.CO2E.PC";
+//		String CO2 Emissions Per GDP ="EN.ATM.PM25.MC.M3";
+//		String Average Forest Area ="AG.LND.FRST.ZS";
+//		String Average Government Expenditure on Educati ="NY.GDP.PCAP.CD";
+//		String Health Expenditure Per Hospital Beds ="SH.MED.BEDS.ZS";
+//		String Expenditure on Education VS Mortality Rate ="SE.XPD.TOTL.GD.ZS";
+//		String Anual Percent Change of Expenditure on Education And Health Expenditure ="SH.STA.MMRT";
 //		String a9 ="SH.XPD.CHEX.PC.CD";
 //		String a10 ="SH.XPD.CHEX.GD.ZS";
 //		String a11 ="SP.DYN.IMRT.IN";
 //		String a12 ="SH.ACS.MONY.Q1.ZS";
 //		
 //		
-//		DataSet ds = Data.fetchData(country, startYear, endYear, a1);
+//		DataSet ds = Data.fetchData(country, startYear, endYear, Annual Percentage Change of CO2 Emissions, Energy Use and PM2.5 Air Pollution);
 //		PieDataSet pie = Average.getAverage(ds);
 //		System.out.println(pie.getSections());
 		
 		//
-		DataSet ds = Data.fetchData(country, startYear, endYear, a1);
-		System.out.println(ds.getPoints());
+//		DataSet ds = Data.fetchData(country, startYear, endYear, Annual Percentage Change of CO2 Emissions, Energy Use and PM2.5 Air Pollution);
+//		System.out.println(ds.getPoints());
 		
 		//DataSet ratio = Analysis.ratio(ds, ds2);
 		//System.out.println(ratio.getPoints());
-		
-		
+
 		//DataSet dsLine = Analysis.annualPercentChange(ds);
 		//System.out.println(dsLine.getPoints());
 	}	

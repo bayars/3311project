@@ -11,8 +11,8 @@ public class Analysis {
 
 	public static List<DataSet> getData(String country, int yearStart, int yearEnd, String analysis) {
 		List<DataSet> data = new ArrayList<DataSet>();
-
-		if (analysis == "a1") {
+		
+		if (analysis == "Annual Percentage Change of CO2 Emissions, Energy Use and PM2.5 Air Pollution") {
 
 			AnalysisMethod method1 = new AnnualPercentChange();
 			AnalysisMethod method2 = new AnnualPercentChange();
@@ -34,7 +34,7 @@ public class Analysis {
 			data.add(ds2);
 			data.add(ds3);
 
-		} else if (analysis == "a2") {
+		} else if (analysis == "Annual Percentage Change of PM2.5 Air Pollution and Forest Area") {
 
 			AnalysisMethod method1 = new AnnualPercentChange();
 			AnalysisMethod method2 = new AnnualPercentChange();
@@ -51,7 +51,7 @@ public class Analysis {
 			data.add(ds1);
 			data.add(ds2);
 
-		} else if (analysis == "a3") {
+		} else if (analysis == "CO2 Emissions Per GDP") {
 
 			AnalysisMethod method1 = new Ratio();
 
@@ -64,7 +64,7 @@ public class Analysis {
 
 			data.add(ds);
 
-		} else if (analysis == "a6") {
+		} else if (analysis == "Health Expenditure Per Hospital Beds") {
 
 			AnalysisMethod method1 = new Ratio2();
 
@@ -78,7 +78,7 @@ public class Analysis {
 
 			data.add(ds);
 
-		} else if (analysis == "a7") {	
+		} else if (analysis == "Expenditure on Education VS Mortality Rate") {	
 			
 			AnalysisMethod method1 = new AnnualPercentChange();
 			AnalysisMethod method2 = new AnnualPercentChange();
@@ -94,9 +94,8 @@ public class Analysis {
 
 			data.add(ds1);
 			data.add(ds2);
-			
 
-		} else if (analysis == "a8") {
+		} else if (analysis == "Anual Percent Change of Expenditure on Education And Health Expenditure") {
 
 			AnalysisMethod method1 = new AnnualPercentChange();
 			AnalysisMethod method2 = new AnnualPercentChange();
@@ -119,9 +118,9 @@ public class Analysis {
 
 	public static PieDataSet getPieData(String country, int yearStart, int yearEnd, String analysis) {
 		PieDataSet Piedata = new PieDataSet();
-		if (analysis == "a4") {
+		if (analysis == "Average Forest Area") {
 			Piedata = Average.getAverage(Data.fetchData(country, yearStart, yearEnd, "AG.LND.FRST.ZS"));
-		} else if (analysis == "a5") {
+		} else if (analysis == "Average Government Expenditure on Educati") {
 			Piedata = Average.getAverage(Data.fetchData(country, yearStart, yearEnd, "SE.XPD.TOTL.GD.ZS"));
 		}
 		return Piedata;
@@ -129,30 +128,30 @@ public class Analysis {
 
 	public static List<String> captions(String analysis) {
 		List<String> captions = new ArrayList<String>();
-		if (analysis == "a1") {
+		if (analysis == "Annual Percentage Change of CO2 Emissions, Energy Use and PM2.5 Air Pollution") {
 			captions.add("CO2 emissions (metric tons per capita)");
 			captions.add("Energy use (as kg of oil equivalent per capita)");
 			captions.add("PM2.5 air pollution, mean annual exposure \n (as micrograms per cubic meter)");
-		} else if (analysis == "a2") {
+		} else if (analysis == "Annual Percentage Change of PM2.5 Air Pollution and Forest Area") {
 			captions.add("PM2.5 air pollution, mean annual \n exposure (as micrograms per cubic meter)");
 			captions.add("Forest area (as % of land area)");
-		} else if (analysis == "a3") {
+		} else if (analysis == "CO2 Emissions Per GDP") {
 			captions.add("CO2 emissions (as metric tons per capita) \n/ GDP per capita (as current US$)");
-		} else if (analysis == "a4") {
+		} else if (analysis == "Average Forest Area") {
 			captions.add("Forest area");
 			captions.add("Land for other uses");
 			captions.add("Forest area (% of land area)");
-		} else if (analysis == "a5") {
+		} else if (analysis == "Average Government Expenditure on Educati") {
 			captions.add("Education");
 			captions.add("Other");
 			captions.add("Government expenditure on education (as % of GDP)");
-		} else if (analysis == "a6") {
+		} else if (analysis == "Health Expenditure Per Hospital Beds") {
 			captions.add("Current health expenditure (per 1,000 people) \n / Hospital beds (per 1,000 people)");
-		} else if (analysis == "a7") {
+		} else if (analysis == "Expenditure on Education VS Mortality Rate") {
 			captions.add(
 					"Government expenditure on education, total (% of GDP)");
 			captions.add("Mortality rate, infant (per 1,000 live births)");
-		} else if (analysis == "a8") {
+		} else if (analysis == "Anual Percent Change of Expenditure on Education And Health Expenditure") {
 			captions.add("Government expenditure on education, total (% of GDP)");
 			captions.add("Current health expenditure (% of GDP)");
 		}

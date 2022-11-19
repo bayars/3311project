@@ -52,7 +52,6 @@ public class BarGraph extends Graph {
 					dataset.setValue(y.get(j), captions.get(j), String.valueOf(x));
 				}
 			}
-
 			x++;
 		}
 
