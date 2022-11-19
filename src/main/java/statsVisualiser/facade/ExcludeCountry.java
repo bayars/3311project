@@ -16,9 +16,9 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
 public class ExcludeCountry {
-	static String[] countries = Locale.getISOCountries();
-	static Vector<String> allCountries = new Vector<String>();
-	static Map<String, String> ISOCountries = new HashMap<>();
+	private static String[] countries = Locale.getISOCountries();
+	private static Vector<String> allCountries = new Vector<String>();
+	private static Map<String, String> ISOCountries = new HashMap<>();
 	
 	
 	public Vector <String> initilizeCountries(){
