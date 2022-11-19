@@ -26,7 +26,6 @@ public class ExcludeCountry {
 			String country = countries[i];
 			Locale locale = new Locale("en", country);
 			allCountries.add(locale.getDisplayCountry());
-//				System.out.print("\""+locale.getDisplayCountry()+"\", " ); // Prints all countries
 		}	
 		return allCountries;
 	}
