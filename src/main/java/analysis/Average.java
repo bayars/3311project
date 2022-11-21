@@ -13,8 +13,8 @@ public class Average {
 		for (int i = 0; i < ds.p.size(); i++) {
 			if (ds.p.get(i).y > 0) {
 				listSize++;
-				System.out.println("y " + ds.p.get(i).y);
-				System.out.println("ListSize "+ listSize);
+				//System.out.println("y " + ds.p.get(i).y);
+				//System.out.println("ListSize "+ listSize);
 			}
 		}
 		
@@ -22,7 +22,7 @@ public class Average {
 			if (ds.p.get(i).y != 0) {
 				sum += ds.p.get(i).y;
 			}
-			System.out.println("Sum " + sum);
+			//System.out.println("Sum " + sum);
 		}
 		
 		sol.ds.add(sum / listSize);
