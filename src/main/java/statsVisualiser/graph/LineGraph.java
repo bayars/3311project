@@ -46,7 +46,6 @@ public class LineGraph extends Graph {
 				List<List<Point>> points = new ArrayList<List<Point>>();
 
 				List<DataSet> data = Analysis.getData(country, yearStart, yearEnd, analysis);
-				System.out.println("data size: " + data.size());
 				List<String> captions = Analysis.captions(analysis);
 
 				// System.out.println(data.size());

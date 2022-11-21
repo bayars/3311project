@@ -14,34 +14,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
-public class ExcludeYears {
+public class ExcludeYears implements Exclude {
 	private HashMap<String, ArrayList<String>> availableYearsforAnalysis = new HashMap<String, ArrayList<String>>();
-
-	private Vector<Integer> removeExcludedYears(Vector<Integer> fromandtoyears, HashMap<String, ArrayList<String>> excludedList, String analysis, Vector <String> analysisName){
-		ArrayList<Integer> newList = new ArrayList<Integer>();
-//		System.out.println("List as dasdasd: "+excludedList);
-//		System.out.println(analysis.toString());
-//		System.out.println("analysis asas: "+excludedList.get(analysis.replaceAll("\"", "")));
-
-		for (String myInt : excludedList.get(analysis)){ 
-          newList.add(Integer.parseInt(myInt.toString().replaceAll("\"", ""))); 
-        }
-        fromandtoyears.removeAll(newList);
-		return fromandtoyears;
-	}
-
-	private ArrayList<String> analysisType(){
-		ArrayList<String> analysis = new ArrayList<>();
-		analysis.add("Annual Percentage Change of CO2 Emissions, Energy Use and PM2.5 Air Pollution");  
-		analysis.add("Annual Percentage Change of PM2.5 Air Pollution and Forest Area");  
-		analysis.add("CO2 Emissions Per GDP");  
-		analysis.add("Average Forest Area");  
-		analysis.add("Average Government Expenditure on Education");  
-		analysis.add("Health Expenditure Per Hospital Beds");  
-		analysis.add("Annual Percent Change of Expenditure on Education And Mortality Rate");  
-		analysis.add("Annual Percent Change of Expenditure on Education And Health Expenditure");  
-		return analysis; 
-	}
 
 	public HashMap<String, ArrayList<String>> readJson() {
 		ArrayList<String> analysis = analysisType();
@@ -79,6 +53,55 @@ public class ExcludeYears {
 	public Vector<Integer> excludeYears(Vector<Integer> years, HashMap<String, ArrayList<String>> excludedList,
 			String analysis, Vector<String> analysisName) {
 		return removeExcludedYears(years, excludedList, analysis, analysisName);
+	}
+
+	@Override
+	public Vector<String> excludeCountry(Vector<Integer> years, HashMap<String, ArrayList<String>> excludedList,
+			String analysis) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, String> ISOconverter() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Vector<String> initilizeCountries() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Vector<String> findExcludedCountries(Vector<String> allCountries) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<String> analysisType() {
+		ArrayList<String> analysis = new ArrayList<>();
+		analysis.add("Annual Percentage Change of CO2 Emissions, Energy Use and PM2.5 Air Pollution");  
+		analysis.add("Annual Percentage Change of PM2.5 Air Pollution and Forest Area");  
+		analysis.add("CO2 Emissions Per GDP");  
+		analysis.add("Average Forest Area");  
+		analysis.add("Average Government Expenditure on Education");  
+		analysis.add("Health Expenditure Per Hospital Beds");  
+		analysis.add("Annual Percent Change of Expenditure on Education And Mortality Rate");  
+		analysis.add("Annual Percent Change of Expenditure on Education And Health Expenditure");  
+		return analysis; 
+	}
+
+	@Override
+	public Vector<Integer> removeExcludedYears(Vector<Integer> fromandtoyears, HashMap<String, ArrayList<String>> excludedList, String analysis, Vector <String> analysisName) {
+		ArrayList<Integer> newList = new ArrayList<Integer>();
+		for (String myInt : excludedList.get(analysis)){ 
+          newList.add(Integer.parseInt(myInt.toString().replaceAll("\"", ""))); 
+        }
+        fromandtoyears.removeAll(newList);
+		return fromandtoyears;
 	}
 
 	

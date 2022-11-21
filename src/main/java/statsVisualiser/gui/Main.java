@@ -6,11 +6,8 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Stack;
 import java.util.Vector;
@@ -26,6 +23,7 @@ import javax.swing.border.EmptyBorder;
 import statsVisualiser.command.Command;
 import statsVisualiser.command.DrawGraph;
 import statsVisualiser.command.EraseGraph;
+import statsVisualiser.facade.Exclude;
 import statsVisualiser.facade.ExcludeCountry;
 import statsVisualiser.facade.ExcludeYears;
 import statsVisualiser.factory.GraphFactory;
@@ -90,8 +88,8 @@ public class Main {
 		return a;
 	}
 
-	ExcludeYears yearsExcluded = new ExcludeYears();
-	ExcludeCountry countryExcluded = new ExcludeCountry();
+	Exclude yearsExcluded = new ExcludeYears();
+	Exclude countryExcluded = new ExcludeCountry();
 	
 	
 	public Main() {
@@ -109,7 +107,6 @@ public class Main {
 		
 		ISOCountries = countryExcluded.ISOconverter();
 		country = ISOCountries.get("Afghanistan");
-		System.out.println(ISOCountries);
 		
 		analysis = "Annual Percentage Change of CO2 Emissions, Energy Use and PM2.5 Air Pollution";
 		view = "Line Chart";
