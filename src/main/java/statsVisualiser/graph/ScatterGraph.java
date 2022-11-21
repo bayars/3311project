@@ -130,7 +130,7 @@ public class ScatterGraph extends Graph {
     }
 	
 	public boolean wrongAnalysisType(String country, int yearStart, int yearEnd, String analysis) {
-		if (analysis == "Average Forest Area" || analysis == "Average Government Expenditure on Educati") {
+		if (analysis == "Average Forest Area" || analysis == "Average Government Expenditure on Education") {
 			return true;
 		}
 		return false;

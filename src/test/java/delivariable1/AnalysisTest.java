@@ -160,7 +160,7 @@ class AnalysisTest {
 	@Test
 	public void Analysis5Test() throws Exception {
 
-		PieDataSet data = Analysis.getPieData("CHN", 2008, 2008, "Average Government Expenditure on Educati");
+		PieDataSet data = Analysis.getPieData("CHN", 2008, 2008, "Average Government Expenditure on Education");
 
 		PieDataSet set2 = new PieDataSet();
 

@@ -120,7 +120,7 @@ public class Analysis {
 		PieDataSet Piedata = new PieDataSet();
 		if (analysis == "Average Forest Area") {
 			Piedata = Average.getAverage(Data.fetchData(country, yearStart, yearEnd, "AG.LND.FRST.ZS"));
-		} else if (analysis == "Average Government Expenditure on Educati") {
+		} else if (analysis == "Average Government Expenditure on Education") {
 			Piedata = Average.getAverage(Data.fetchData(country, yearStart, yearEnd, "SE.XPD.TOTL.GD.ZS"));
 		}
 		return Piedata;
@@ -141,7 +141,7 @@ public class Analysis {
 			captions.add("Forest area");
 			captions.add("Land for other uses");
 			captions.add("Forest area (% of land area)");
-		} else if (analysis == "Average Government Expenditure on Educati") {
+		} else if (analysis == "Average Government Expenditure on Education") {
 			captions.add("Education");
 			captions.add("Other");
 			captions.add("Government expenditure on education (as % of GDP)");

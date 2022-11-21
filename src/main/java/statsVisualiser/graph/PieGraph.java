@@ -48,9 +48,9 @@ public class PieGraph extends Graph {
 	
 	public boolean isEmpty(String country, int yearStart, int yearEnd, String analysis) {
 		DataSet data = null;
-		if (analysis == "a4") {
+		if (analysis == "Average Forest Area") {
 			data = Data.fetchData(country, yearStart, yearEnd, "AG.LND.FRST.ZS");
-		}else if (analysis == "a5") {
+		}else if (analysis == "Average Government Expenditure on Education") {
 			data = Data.fetchData(country, yearStart, yearEnd, "SE.XPD.TOTL.GD.ZS");
 		}
         for (int j = 0; j < data.p.size(); j++) {
@@ -63,7 +63,7 @@ public class PieGraph extends Graph {
     }
 	
 	public boolean wrongAnalysisType(String country, int yearStart, int yearEnd, String analysis) {
-		if (analysis != "Average Forest Area" && analysis != "Average Government Expenditure on Educati") {
+		if (analysis != "Average Forest Area" && analysis != "Average Government Expenditure on Education") {
 			return true;
 		}
 		return false;
