@@ -145,6 +145,8 @@ public class Main {
 		viewsNames.add("Pie Chart");
 		viewsNames.add("Bar Chart");
 		viewsNames.add("Scatter Chart");
+		viewsNames.add("Report Chart");
+
 		
 		 viewSelector = new JComboBox<String>(viewsNames);
 		 countrySelector = new JComboBox<String>(countriesNames);

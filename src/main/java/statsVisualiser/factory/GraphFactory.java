@@ -51,7 +51,7 @@ public class GraphFactory {
 	    	}else {  	
 	    		return(pie);
 	    	}						
-		} else if (graphType == "Report") {		
+		} else if (graphType == "Report Chart") {		
 			ReportGraph report = new ReportGraph(country,yearStart,yearEnd,analysis);
 			if(report.wrongAnalysisType(country, yearStart, yearEnd, analysis)){
 				wrongAnalysisType = true;
