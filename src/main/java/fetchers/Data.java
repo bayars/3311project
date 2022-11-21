@@ -71,8 +71,8 @@ public class Data {
 //		String Average Forest Area ="AG.LND.FRST.ZS";
 //		String Average Government Expenditure on Educati ="NY.GDP.PCAP.CD";
 //		String Health Expenditure Per Hospital Beds ="SH.MED.BEDS.ZS";
-//		String Expenditure on Education VS Mortality Rate ="SE.XPD.TOTL.GD.ZS";
-//		String Anual Percent Change of Expenditure on Education And Health Expenditure ="SH.STA.MMRT";
+//		String Annual Percent Change of Expenditure on Education And Mortality Rate ="SE.XPD.TOTL.GD.ZS";
+//		String Annual Percent Change of Expenditure on Education And Health Expenditure ="SH.STA.MMRT";
 //		String a9 ="SH.XPD.CHEX.PC.CD";
 //		String a10 ="SH.XPD.CHEX.GD.ZS";
 //		String a11 ="SP.DYN.IMRT.IN";

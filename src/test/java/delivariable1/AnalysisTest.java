@@ -203,7 +203,7 @@ class AnalysisTest {
 	@Test
 	public void Analysis8Test() throws Exception {
 
-		java.util.List<DataSet> data = Analysis.getData("BRA", 2001, 2002, "Anual Percent Change of Expenditure on Education And Health Expenditure");
+		java.util.List<DataSet> data = Analysis.getData("BRA", 2001, 2002, "Annual Percent Change of Expenditure on Education And Health Expenditure");
 
 		DataSet setA1 = data.get(0);
 

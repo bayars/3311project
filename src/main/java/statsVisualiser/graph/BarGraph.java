@@ -65,7 +65,7 @@ public class BarGraph extends Graph {
 
 		plot.mapDatasetToRangeAxis(0, 0);// 1st dataset to 1st y-axis
 
-		JFreeChart barChart = new JFreeChart("Mortality vs Expenses & Hospital Beds",
+		JFreeChart barChart = new JFreeChart(analysis,
 				new Font("Serif", java.awt.Font.BOLD, 18), plot, true);
 
 		ChartPanel chartPanel = new ChartPanel(barChart);

@@ -38,8 +38,8 @@ public class ExcludeYears {
 		analysis.add("Average Forest Area");  
 		analysis.add("Average Government Expenditure on Education");  
 		analysis.add("Health Expenditure Per Hospital Beds");  
-		analysis.add("Expenditure on Education VS Mortality Rate");  
-		analysis.add("Anual Percent Change of Expenditure on Education And Health Expenditure");  
+		analysis.add("Annual Percent Change of Expenditure on Education And Mortality Rate");  
+		analysis.add("Annual Percent Change of Expenditure on Education And Health Expenditure");  
 		return analysis; 
 	}
 

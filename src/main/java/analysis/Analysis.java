@@ -78,7 +78,7 @@ public class Analysis {
 
 			data.add(ds);
 
-		} else if (analysis == "Expenditure on Education VS Mortality Rate") {	
+		} else if (analysis == "Annual Percent Change of Expenditure on Education And Mortality Rate") {	
 			
 			AnalysisMethod method1 = new AnnualPercentChange();
 			AnalysisMethod method2 = new AnnualPercentChange();
@@ -95,7 +95,7 @@ public class Analysis {
 			data.add(ds1);
 			data.add(ds2);
 
-		} else if (analysis == "Anual Percent Change of Expenditure on Education And Health Expenditure") {
+		} else if (analysis == "Annual Percent Change of Expenditure on Education And Health Expenditure") {
 
 			AnalysisMethod method1 = new AnnualPercentChange();
 			AnalysisMethod method2 = new AnnualPercentChange();
@@ -147,11 +147,11 @@ public class Analysis {
 			captions.add("Government expenditure on education (as % of GDP)");
 		} else if (analysis == "Health Expenditure Per Hospital Beds") {
 			captions.add("Current health expenditure (per 1,000 people) \n / Hospital beds (per 1,000 people)");
-		} else if (analysis == "Expenditure on Education VS Mortality Rate") {
+		} else if (analysis == "Annual Percent Change of Expenditure on Education And Mortality Rate") {
 			captions.add(
 					"Government expenditure on education, total (% of GDP)");
 			captions.add("Mortality rate, infant (per 1,000 live births)");
-		} else if (analysis == "Anual Percent Change of Expenditure on Education And Health Expenditure") {
+		} else if (analysis == "Annual Percent Change of Expenditure on Education And Health Expenditure") {
 			captions.add("Government expenditure on education, total (% of GDP)");
 			captions.add("Current health expenditure (% of GDP)");
 		}

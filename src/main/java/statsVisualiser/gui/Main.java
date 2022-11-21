@@ -126,8 +126,8 @@ public class Main {
 		analyses.add("Average Forest Area");  
 		analyses.add("Average Government Expenditure on Education");  
 		analyses.add("Health Expenditure Per Hospital Beds");  
-		analyses.add("Expenditure on Education VS Mortality Rate");  
-		analyses.add("Anual Percent Change of Expenditure on Education And Health Expenditure");  
+		analyses.add("Annual Percent Change of Expenditure on Education And Mortality Rate");  
+		analyses.add("Annual Percent Change of Expenditure on Education And Health Expenditure");  
 		
 		availableYearsforAnalysis = yearsExcluded.readJson();
 		countriesNames = countryExcluded.initilizeCountries();
@@ -235,13 +235,13 @@ public class Main {
 					toYears = yearsExcluded.excludeYears(toYears, availableYearsforAnalysis, analysis,analyses);
 					fromYears = yearsExcluded.excludeYears(fromYears, availableYearsforAnalysis, analysis,analyses);
 					break;
-				case "Expenditure on Education VS Mortality Rate":
+				case "Annual Percent Change of Expenditure on Education And Mortality Rate":
 					fromYears = makeYears(fromYears);
 					toYears = makeYears(toYears);
 					toYears = yearsExcluded.excludeYears(toYears, availableYearsforAnalysis, analysis,analyses);
 					fromYears = yearsExcluded.excludeYears(fromYears, availableYearsforAnalysis, analysis,analyses);
 					break;
-				case "Anual Percent Change of Expenditure on Education And Health Expenditure":
+				case "Annual Percent Change of Expenditure on Education And Health Expenditure":
 					fromYears = makeYears(fromYears);
 					toYears = makeYears(toYears);
 					toYears = yearsExcluded.excludeYears(toYears, availableYearsforAnalysis, analysis,analyses);

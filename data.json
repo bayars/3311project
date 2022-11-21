@@ -8,8 +8,8 @@
 		"Average Government Expenditure on Education": ["1980", "1981", "1982", "1983", "1984", "1985", "1986"],
 		"Health Expenditure Per Hospital Beds": ["1975", "1976", "1977", "1978", "1979", "1980", "1981", 
 					"2010", "2011", "2012", "2013", "2014", "2016", "2017", "2018", "2019"],
-		"Expenditure on Education VS Mortality Rate": ["1980", "1981", "1982", "1983", "1984", "1985", "1986"],
-		"Anual Percent Change of Expenditure on Education And Health Expenditure": ["1980", "1981", "1982", "1983", "1984", "1985", 
+		"Annual Percent Change of Expenditure on Education And Mortality Rate": ["1980", "1981", "1982", "1983", "1984", "1985", "1986"],
+		"Annual Percent Change of Expenditure on Education And Health Expenditure": ["1980", "1981", "1982", "1983", "1984", "1985", 
 					"1986", "2000", "2001", "2001", "2002", "2004", "2005","2006"]
 	},
 
