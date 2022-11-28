@@ -125,7 +125,7 @@ public class Main {
 		analyses.add("Health Expenditure Per Hospital Beds");  
 		analyses.add("Annual Percent Change of Expenditure on Education And Mortality Rate");  
 		analyses.add("Annual Percent Change of Expenditure on Education And Health Expenditure");  
-		
+	
 		availableYearsforAnalysis = yearsExcluded.readJson();
 		countriesNames = countryExcluded.initilizeCountries();
 		countryExcluded.findExcludedCountries(countriesNames);
