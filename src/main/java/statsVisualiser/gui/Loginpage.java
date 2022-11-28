@@ -103,16 +103,6 @@ public class Loginpage extends JFrame implements ActionListener {
 		return false;
 	}
    
-	public static void main(String[] args) {
-
-//		JFrame frame = new Loginpage();
-//        frame.setTitle("Login Page");
-//        frame.setBounds(10,10,400,200);
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.setResizable(false);
-//		frame.setVisible(true);
-	}
-
 
 	
 }
