@@ -61,13 +61,6 @@ public class ExcludeCountry implements Exclude{
 	}
 
 	@Override
-	public Vector<String> excludeCountry(Vector<Integer> years, HashMap<String, ArrayList<String>> excludedList,
-			String analysis) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Vector<Integer> excludeYears(Vector<Integer> years, HashMap<String, ArrayList<String>> excludedList,
 			String analysis, Vector<String> analysisName) {
 		// TODO Auto-generated method stub

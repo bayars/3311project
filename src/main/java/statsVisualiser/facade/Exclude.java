@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Vector;
 
 public interface Exclude {
-	public Vector<String> excludeCountry(Vector<Integer> years, HashMap<String, ArrayList<String>> excludedList, String analysis);
 	public Vector<Integer> excludeYears(Vector<Integer> fromandtoyears, HashMap<String, ArrayList<String>> excludedList, String analysis, Vector <String> analysisName);
 	public HashMap<String, ArrayList<String>> readJson();
 	public Map<String, String> ISOconverter();
