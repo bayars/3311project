@@ -1,9 +1,8 @@
-package deliverable3;
+package delivariable3;
 
 import java.awt.event.ActionEvent;
-import org.junit.jupiter.api.*;
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.Assert.*;
+import org.junit.Test;
 import statsVisualiser.factory.GraphFactory;
 import statsVisualiser.graph.Graph;
 import statsVisualiser.graph.ScatterGraph;

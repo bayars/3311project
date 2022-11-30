@@ -1,12 +1,9 @@
 package delivariable1;
 
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.Assert.*;
+import org.junit.Test;
 import java.util.ArrayList;
-
-import org.junit.jupiter.api.Test;
-
 import login.Csv;
 import login.User;
 import statsVisualiser.gui.Loginpage;
