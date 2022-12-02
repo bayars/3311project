@@ -35,7 +35,7 @@ public class Main {
 
 	
 	//dynamic values of buttons
-	public static String country;
+	public String country;
 	public int yearStart, yearEnd;
 	
 	//+/- buttons and recalculate

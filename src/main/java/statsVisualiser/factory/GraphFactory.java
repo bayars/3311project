@@ -16,7 +16,7 @@ public class GraphFactory {
 	public boolean wrongAnalysisType = false;
 
 	public Graph createGraph (String country, int yearStart, int yearEnd, String analysis,String graphType){
-	    if(graphType == "Line Chart") {
+	    if(graphType.equals("Line Chart")) {
 	    	LineGraph line = new LineGraph(country,yearStart,yearEnd,analysis);
 	    	if(line.wrongAnalysisType(country, yearStart, yearEnd, analysis)){
 				wrongAnalysisType = true;
@@ -27,7 +27,7 @@ public class GraphFactory {
 	    	}else {
 	    		return(line);
 	    	}
-		} else if(graphType == "Bar Chart") {
+		} else if(graphType.equals("Bar Chart")) {
 			BarGraph bar = new  BarGraph(country,yearStart,yearEnd,analysis);
 			if(bar.wrongAnalysisType(country, yearStart, yearEnd, analysis)){
 				wrongAnalysisType = true;
@@ -39,7 +39,7 @@ public class GraphFactory {
 	    	
 	    		return(bar);
 	    	}
-		} else if (graphType == "Pie Chart") {	
+		} else if (graphType.equals("Pie Chart")) {	
 			
 			PieGraph pie = new PieGraph(country,yearStart,yearEnd,analysis);
 			if(pie.wrongAnalysisType(country, yearStart, yearEnd, analysis)){
@@ -51,7 +51,7 @@ public class GraphFactory {
 	    	}else {  	
 	    		return(pie);
 	    	}						
-		} else if (graphType == "Report Chart") {		
+		} else if (graphType.equals("Report Chart")) {		
 			ReportGraph report = new ReportGraph(country,yearStart,yearEnd,analysis);
 			if(report.wrongAnalysisType(country, yearStart, yearEnd, analysis)){
 				wrongAnalysisType = true;
@@ -63,7 +63,7 @@ public class GraphFactory {
 	    	
 	    		return(report);
 	    	}				
-		} else if (graphType == "Scatter Chart") {		
+		} else if (graphType.equals("Scatter Chart")) {		
 			ScatterGraph scatter = new ScatterGraph(country,yearStart,yearEnd,analysis);
 			if(scatter.wrongAnalysisType(country, yearStart, yearEnd, analysis)){
 				wrongAnalysisType = true;
