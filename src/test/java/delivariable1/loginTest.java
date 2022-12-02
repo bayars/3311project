@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import login.Csv;
 import login.User;
@@ -58,5 +58,3 @@ public class loginTest {
 		assertEquals(user.getPassword(), "testPassword");
 	}
 }
-
-

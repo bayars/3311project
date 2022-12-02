@@ -12,9 +12,7 @@ import com.google.gson.JsonSyntaxException;
 import statsVisualiser.facade.Exclude;
 import statsVisualiser.facade.ExcludeCountry;
 import statsVisualiser.facade.ExcludeYears;
-
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;

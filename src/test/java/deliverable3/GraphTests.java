@@ -2,7 +2,6 @@ package deliverable3;
 
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
-
 import statsVisualiser.factory.GraphFactory;
 import statsVisualiser.graph.BarGraph;
 import statsVisualiser.graph.Graph;
@@ -18,7 +17,6 @@ public class GraphTests {
 		GraphFactory gf = new GraphFactory();
 		assertEquals(g.isEmpty("CAN", 2000, 2019, "Annual Percentage Change of CO2 Emissions, Energy Use and PM2.5 Air Pollution"), gf.isEmpty);
 	}
-
 
 	@Test
 	public void TestScatter2() throws Exception {
