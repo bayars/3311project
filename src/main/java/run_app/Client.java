@@ -5,7 +5,7 @@ import javax.swing.JFrame;
 import statsVisualiser.gui.Loginpage;
 
 public class Client {
-
+	
 	public static void main(String[] args) {
 		JFrame frame = Loginpage.getInstance();
         frame.setTitle("Login Page");
