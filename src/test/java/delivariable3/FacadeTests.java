@@ -38,7 +38,6 @@ public class FacadeTests {
 			Locale l = new Locale("", iso);
 		    countries.put(l.getDisplayCountry(), iso);
 		}
-
 		assertEquals(countryExcluded.ISOconverter(), countries);
 	}
 

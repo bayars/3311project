@@ -42,7 +42,6 @@ public class GraphTests {
 	}
 
 	
-	
 	@Test
 	public void TestPie() throws Exception {
 		Graph g = new PieGraph("CAN", 2017, 2019, "Average Forest Area");

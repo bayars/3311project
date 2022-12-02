@@ -12,10 +12,5 @@ public class MainTests {
 		Main m = new Main();
 		String selected = "Annual Percentage Change of CO2 Emissions, Energy Use and PM2.5 Air Pollution";
 	}
-	
-
-	
-	
-	
 
 }
