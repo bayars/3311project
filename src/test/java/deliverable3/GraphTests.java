@@ -1,7 +1,7 @@
-package delivariable3;
+package deliverable3;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
 import statsVisualiser.factory.GraphFactory;
 import statsVisualiser.graph.BarGraph;
 import statsVisualiser.graph.Graph;
