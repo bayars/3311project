@@ -1,6 +1,7 @@
-package deliverable3;
+package delivariable3;
 
-import org.junit.jupiter.api.*;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -12,7 +13,6 @@ import com.google.gson.JsonSyntaxException;
 import statsVisualiser.facade.Exclude;
 import statsVisualiser.facade.ExcludeCountry;
 import statsVisualiser.facade.ExcludeYears;
-import static org.junit.jupiter.api.Assertions.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;

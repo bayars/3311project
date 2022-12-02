@@ -1,15 +1,13 @@
 package delivariable1;
 
-
-import org.junit.jupiter.api.*;
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.Assert.*;
+import org.junit.Test;
 import analysis.Analysis;
 import fetchers.DataSet;
 import fetchers.PieDataSet;
 import fetchers.Point;
 
-class AnalysisTest {
+public class AnalysisTest {
 
 	@Test
 	public void Analysis1Test() throws Exception {

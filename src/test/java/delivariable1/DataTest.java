@@ -1,8 +1,7 @@
 package delivariable1;
 
-import org.junit.jupiter.api.*;
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.Assert.*;
+import org.junit.Test;
 
 import fetchers.Data;
 import fetchers.DataSet;
