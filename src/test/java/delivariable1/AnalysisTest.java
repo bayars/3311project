@@ -236,6 +236,46 @@ public class AnalysisTest {
 			assertTrue(setB1.p.get(i).y == setB2.p.get(i).y);
 		}
 
+		
 	}
+	
+	@Test
+    public void Analysis7Test() throws Exception {
+
+        java.util.List<DataSet> data = Analysis.getData("US", 2018, 2018, "Annual Percent Change of Expenditure on Education And Mortality Rate");
+
+        DataSet setA1 = data.get(0);
+
+        DataSet setA2 = new DataSet();
+        Point p1 = new Point(2018.0, -3.8536190699022974);
+        setA2.addPoint(p1);
+
+        assertTrue(setA1.length() == setA2.length());
+
+        for (int i = 0; i < setA1.length(); i++) {
+            assertTrue(setA1.p.get(i).x == setA2.p.get(i).x);
+        }
+        for (int i = 0; i < setA1.length(); i++) {
+            assertTrue(setA1.p.get(i).y == setA2.p.get(i).y);
+        }
+
+        DataSet setB1 = data.get(1);
+
+        DataSet setB2 = new DataSet();
+        Point p2 = new Point(2018.0, -1.75438596491229);
+        setB2.addPoint(p2);
+
+        assertTrue(setB1.length() == setB2.length());
+
+        for (int i = 0; i < setB1.length(); i++) {
+            assertTrue(setB1.p.get(i).x == setB2.p.get(i).x);
+        }
+        for (int i = 0; i < setB1.length(); i++) {
+            assertTrue(setB1.p.get(i).y == setB2.p.get(i).y);
+        }
+
+    }
+	
+	
 
 }

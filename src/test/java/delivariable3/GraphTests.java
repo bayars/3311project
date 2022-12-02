@@ -18,7 +18,6 @@ public class GraphTests {
 		assertEquals(g.isEmpty("CAN", 2000, 2019, "Annual Percentage Change of CO2 Emissions, Energy Use and PM2.5 Air Pollution"), gf.isEmpty);
 	}
 
-
 	@Test
 	public void TestScatter2() throws Exception {
 		GraphFactory gf = new GraphFactory();

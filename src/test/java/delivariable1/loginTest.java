@@ -55,5 +55,3 @@ public class loginTest {
 		assertEquals(user.getPassword(), "testPassword");
 	}
 }
-
-
