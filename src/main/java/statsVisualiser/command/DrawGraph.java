@@ -5,9 +5,9 @@ import statsVisualiser.gui.Main;
 public class DrawGraph extends Command {
 
 	public DrawGraph(Main ui) {
-		super(ui);
+		super(ui); 
 	}
-
+	
 	public void execute() {
 		ui.currentJPanel = ui.currentGraph.panel;
 		ui.currentJPanel.setVisible(true);
@@ -17,9 +17,5 @@ public class DrawGraph extends Command {
 		ui.graphStack.push(ui.currentJPanel);		
 	}
 
-	
-	
-	
-	
 	
 }

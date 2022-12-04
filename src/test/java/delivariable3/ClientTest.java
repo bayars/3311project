@@ -7,9 +7,9 @@ import statsVisualiser.factory.GraphFactory;
 
 public class ClientTest {
 
-//	@Test
-//	public void wrongAnalysisTypeLine() throws Exception {
-//		Client c = new Client();
-//		c.main(null);
-//	}
+	@Test
+	public void wrongAnalysisTypeLine() throws Exception {
+		Client c = new Client();
+		c.main(null);
+	}
 }

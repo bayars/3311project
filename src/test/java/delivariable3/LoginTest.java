@@ -1,4 +1,4 @@
-package delivariable1;
+package delivariable3;
 
 
 import static org.junit.Assert.*;
@@ -8,7 +8,7 @@ import login.Csv;
 import login.User;
 import statsVisualiser.gui.Loginpage;
 
-public class loginTest {
+public class LoginTest {
 
 	@Test
 	public void CsvLoad() throws Exception {
@@ -27,8 +27,7 @@ public class loginTest {
 		String username = "safa";
 		String password = "12345";
 		assertTrue(login.authentication(usernameList, passswordList, username, password));
-	}
-	
+	}	
 	@Test
 	public void InvalidCredentialUserLogin() throws Exception {
 		Loginpage login = Loginpage.getInstance();

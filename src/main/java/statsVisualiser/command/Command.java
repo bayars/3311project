@@ -6,7 +6,8 @@ public abstract class Command {
 
 	public String country, analysis, graphType;
 	public int yearStart, yearEnd;
-	Main ui;
+	Main ui; 
+	
 	
 	public Command(Main ui){
 		
@@ -14,7 +15,7 @@ public abstract class Command {
 		
 	}
 	
-	 public abstract void execute();
+	public abstract void execute();
 	
 	
 	

@@ -1,0 +1,2 @@
+PING 10.20.30.40 (10.20.30.40): 56 data bytes
+Request timeout for icmp_seq 0
