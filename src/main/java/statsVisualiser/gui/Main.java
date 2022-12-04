@@ -35,23 +35,24 @@ public class Main {
 
 	
 	//dynamic values of buttons
-	public String country;
-	public int yearStart, yearEnd;
+	public static String country;
+	public static int  yearStart, yearEnd;
 	
 	//+/- buttons and recalculate
-	public JButton addView, removeView, recalculate; 
+	public static JButton addView, removeView, recalculate; 
+	public static JButton plusButton,minusButton;
 	
 	//how program checks if button pressed/graph selected
-	public String view;
+	public static String view;
 	public boolean r, plus, line, pie, scatter, bar, remove;
-	public String analysis;
+	public static String analysis;
 
 	//ComboBoxes
-	public static JComboBox<String> viewSelector;
-	public static JComboBox<String> countrySelector;
-	public static JComboBox<Integer> fromSelector;
-	public static JComboBox<Integer> toSelector;
-	public static JComboBox<String> analysisSelector;
+	public static  JComboBox<String> viewSelector;
+	public static  JComboBox<String> countrySelector;
+	public static  JComboBox<Integer> fromSelector;
+	public static  JComboBox<Integer> toSelector;
+	public static  JComboBox<String> analysisSelector;
 	
 	public HashMap<String, ArrayList<String>> availableYearsforAnalysis = new HashMap<String, ArrayList<String>>();
 	public HashMap<String, String> conversionofAnalysis = new HashMap<String, String>();
@@ -69,7 +70,6 @@ public class Main {
 	
 	
 	 public JFrame f = new JFrame();
-
 	 public Graph currentGraph;
 	 public JPanel currentJPanel;
 	
@@ -152,8 +152,8 @@ public class Main {
 		 countrySelector = new JComboBox<String>(countriesNames);
 		 analysisSelector = new JComboBox<String>(analyses);
 		
-		JButton plusButton = new JButton("+");
-		JButton minusButton = new JButton("-");
+		 plusButton = new JButton("+");
+		 minusButton = new JButton("-");
 		JLabel to = new JLabel("to");
 		JButton recalculateButton = new JButton("Recalculate");
 
@@ -321,6 +321,7 @@ public class Main {
 			toYears.clear();
 			for(int i = yearStart; i < 2022; i++) {
 				toYears.add(i);
+				
 			}
 			toYears = yearsExcluded.excludeYears(toYears, availableYearsforAnalysis, analysis,analyses);
 		}
@@ -336,6 +337,8 @@ public class Main {
 		void executeCommand(Command command){
 			command.execute();
 		}
+		
+	
 }
 		
 
