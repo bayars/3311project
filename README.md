@@ -1,6 +1,6 @@
 # EECS3311 Project 
 
-This project made for term assignment. 
+This project made for term assignment. The project originally includes 50 junit tests and 40.000 randoop generated test cases. We also made PIT testing at the end of the project.
 
 ## Components:
 Login compenent works with a csv file. The path hard coded in Loginpage class. You can set up with your computer. Basically, I added three lines in csv file. I am adding this file to project file directory. You can copy in your computer. (That would be different in windows and mac.)
